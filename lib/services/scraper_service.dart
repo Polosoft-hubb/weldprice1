@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/material.dart';
@@ -36,7 +37,10 @@ class ScraperService {
       final String url = cat["url"]!;
       
       try {
-        final response = await http.get(Uri.parse(url)).timeout(const Duration(seconds: 15));
+        final requestUrl = kIsWeb
+            ? 'https://api.allorigins.win/raw?url=${Uri.encodeComponent(url)}'
+            : url;
+        final response = await http.get(Uri.parse(requestUrl)).timeout(const Duration(seconds: 15));
         if (response.statusCode == 200) {
           // Decode html as UTF-8
           final html = utf8.decode(response.bodyBytes);
