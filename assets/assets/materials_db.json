@@ -1,0 +1,4618 @@
+[
+  {
+    "id": "96",
+    "name": "Арматура А1 гладкая 6 мм, А240 (в бухтах)",
+    "url": "https://100met.ru/catalog/armatura/armatura-gladkaya/armatura-a1-gladkaya-6mm-a240-v-buhtah.html",
+    "unit": "пог. м",
+    "price": 16.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "97",
+    "name": "Арматура А1 гладкая 6 мм, А240 (в прутках)",
+    "url": "https://100met.ru/catalog/armatura/armatura-gladkaya/armatura-a1-gladkaya-6mm-a240-v-prutkah.html",
+    "unit": "пог. м",
+    "price": 18.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "98",
+    "name": "Арматура А1 гладкая 8 мм, А240 (в бухтах)",
+    "url": "https://100met.ru/catalog/armatura/armatura-gladkaya/armatura-a1-gladkaya-8mm-a240-v-buhtah.html",
+    "unit": "пог. м",
+    "price": 27.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "99",
+    "name": "Арматура А1 гладкая 8 мм, А240 (в прутках)",
+    "url": "https://100met.ru/catalog/armatura/armatura-gladkaya/armatura-a1-gladkaya-8mm-a240-v-prutkah.html",
+    "unit": "пог. м",
+    "price": 29.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "100",
+    "name": "Арматура А1 гладкая 10 мм, А240",
+    "url": "https://100met.ru/catalog/armatura/armatura-gladkaya/armatura-a1-gladkaya-10mm-a240.html",
+    "unit": "пог. м",
+    "price": 45.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "101",
+    "name": "Арматура А1 гладкая 12 мм, А240",
+    "url": "https://100met.ru/catalog/armatura/armatura-gladkaya/armatura-a1-gladkaya-12mm-a240.html",
+    "unit": "пог. м",
+    "price": 60.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "102",
+    "name": "Арматура А1 гладкая 14 мм, А240",
+    "url": "https://100met.ru/catalog/armatura/armatura-gladkaya/armatura-a1-gladkaya-14mm-a240.html",
+    "unit": "пог. м",
+    "price": 80.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "103",
+    "name": "Арматура А1 гладкая 16 мм, А240",
+    "url": "https://100met.ru/catalog/armatura/armatura-gladkaya/armatura-a1-gladkaya-16mm-a240.html",
+    "unit": "пог. м",
+    "price": 110.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "104",
+    "name": "Арматура А1 гладкая 18 мм, А240",
+    "url": "https://100met.ru/catalog/armatura/armatura-gladkaya/armatura-a1-gladkaya-18mm-a240.html",
+    "unit": "пог. м",
+    "price": 130.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "105",
+    "name": "Арматура А1 гладкая 20 мм, А240",
+    "url": "https://100met.ru/catalog/armatura/armatura-gladkaya/armatura-a1-gladkaya-20mm-a240.html",
+    "unit": "пог. м",
+    "price": 165.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "106",
+    "name": "Арматура А1 гладкая 22 мм, А240",
+    "url": "https://100met.ru/catalog/armatura/armatura-gladkaya/armatura-a1-gladkaya-22mm-a240.html",
+    "unit": "пог. м",
+    "price": 230.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "107",
+    "name": "Арматура А1 гладкая 25 мм, А240",
+    "url": "https://100met.ru/catalog/armatura/armatura-gladkaya/armatura-a1-gladkaya-25mm-a240.html",
+    "unit": "пог. м",
+    "price": 320.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "108",
+    "name": "Арматура А3 рифленая 6 мм, А500С",
+    "url": "https://100met.ru/catalog/armatura/armatura-riflenaya/armatura-a3-riflenaya-6mm-a500s.html",
+    "unit": "пог. м",
+    "price": 14.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "109",
+    "name": "Арматура А3 рифленая 8 мм, А500С",
+    "url": "https://100met.ru/catalog/armatura/armatura-riflenaya/armatura-a3-riflenaya-8mm-a500s.html",
+    "unit": "пог. м",
+    "price": 25.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "110",
+    "name": "Арматура А3 рифленая 10 мм, А500С",
+    "url": "https://100met.ru/catalog/armatura/armatura-riflenaya/armatura-a3-riflenaya-10mm-a500s.html",
+    "unit": "пог. м",
+    "price": 35.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "111",
+    "name": "Арматура А3 рифленая 12 мм, А500С",
+    "url": "https://100met.ru/catalog/armatura/armatura-riflenaya/armatura-a3-riflenaya-12mm-a500s.html",
+    "unit": "пог. м",
+    "price": 47.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "112",
+    "name": "Арматура А3 рифленая 14 мм, А500С",
+    "url": "https://100met.ru/catalog/armatura/armatura-riflenaya/armatura-a3-riflenaya-14mm-a500s.html",
+    "unit": "пог. м",
+    "price": 65.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "113",
+    "name": "Арматура А3 рифленая 16 мм, А500С",
+    "url": "https://100met.ru/catalog/armatura/armatura-riflenaya/armatura-a3-riflenaya-16mm-a500s.html",
+    "unit": "пог. м",
+    "price": 80.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "114",
+    "name": "Арматура А3 рифленая 18 мм, А500С",
+    "url": "https://100met.ru/catalog/armatura/armatura-riflenaya/armatura-a3-riflenaya-18mm-a500s.html",
+    "unit": "пог. м",
+    "price": 115.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "115",
+    "name": "Арматура А3 рифленая 20 мм, А500С",
+    "url": "https://100met.ru/catalog/armatura/armatura-riflenaya/armatura-a3-riflenaya-20mm-a500s.html",
+    "unit": "пог. м",
+    "price": 141.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "116",
+    "name": "Арматура А3 рифленая 22 мм, А500С",
+    "url": "https://100met.ru/catalog/armatura/armatura-riflenaya/armatura-a3-riflenaya-22mm-a500s.html",
+    "unit": "пог. м",
+    "price": 185.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "117",
+    "name": "Арматура А3 рифленая 25 мм, А500С",
+    "url": "https://100met.ru/catalog/armatura/armatura-riflenaya/armatura-a3-riflenaya-25mm-a500s.html",
+    "unit": "пог. м",
+    "price": 255.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "118",
+    "name": "Арматура А3 рифленая 28 мм, А500С",
+    "url": "https://100met.ru/catalog/armatura/armatura-riflenaya/armatura-a3-riflenaya-28mm-a500s.html",
+    "unit": "пог. м",
+    "price": 280.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "119",
+    "name": "Арматура А3 рифленая 32 мм, А500С",
+    "url": "https://100met.ru/catalog/armatura/armatura-riflenaya/armatura-a3-riflenaya-32mm-a500s.html",
+    "unit": "пог. м",
+    "price": 410.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "120",
+    "name": "Арматура А3 рифленая 40 мм, А500С",
+    "url": "https://100met.ru/catalog/armatura/armatura-riflenaya/armatura-a3-riflenaya-40mm-a500s.html",
+    "unit": "пог. м",
+    "price": 699.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "126",
+    "name": "Арматура композитная 4 мм",
+    "url": "https://100met.ru/catalog/armatura/armatura-kompozitnaya/armatura-kompozitnaya-4-mm.html",
+    "unit": "пог. м",
+    "price": 10.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "121",
+    "name": "Арматура композитная 6 мм",
+    "url": "https://100met.ru/catalog/armatura/armatura-kompozitnaya/armatura-kompozitnaya-6mm.html",
+    "unit": "пог. м",
+    "price": 12.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "122",
+    "name": "Арматура композитная 8 мм",
+    "url": "https://100met.ru/catalog/armatura/armatura-kompozitnaya/armatura-kompozitnaya-8mm.html",
+    "unit": "пог. м",
+    "price": 20.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "123",
+    "name": "Арматура композитная 10 мм",
+    "url": "https://100met.ru/catalog/armatura/armatura-kompozitnaya/armatura-kompozitnaya-10mm.html",
+    "unit": "пог. м",
+    "price": 25.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "124",
+    "name": "Арматура композитная 12 мм",
+    "url": "https://100met.ru/catalog/armatura/armatura-kompozitnaya/armatura-kompozitnaya-12mm.html",
+    "unit": "пог. м",
+    "price": 30.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "125",
+    "name": "Арматура композитная 14 мм",
+    "url": "https://100met.ru/catalog/armatura/armatura-kompozitnaya/armatura-kompozitnaya-14mm.html",
+    "unit": "пог. м",
+    "price": 65.0,
+    "category": "Арматура"
+  },
+  {
+    "id": "127",
+    "name": "Катанка d6 мм",
+    "url": "https://100met.ru/catalog/katanka/katanka-d6mm.html",
+    "unit": "пог. м",
+    "price": 18.0,
+    "category": "Катанка"
+  },
+  {
+    "id": "128",
+    "name": "Катанка d8 мм",
+    "url": "https://100met.ru/catalog/katanka/katanka-d8mm.html",
+    "unit": "пог. м",
+    "price": 29.0,
+    "category": "Катанка"
+  },
+  {
+    "id": "129",
+    "name": "Катанка d10 мм",
+    "url": "https://100met.ru/catalog/katanka/katanka-d10mm.html",
+    "unit": "пог. м",
+    "price": 44.0,
+    "category": "Катанка"
+  },
+  {
+    "id": "130",
+    "name": "Катанка d12 мм",
+    "url": "https://100met.ru/catalog/katanka/katanka-d12mm.html",
+    "unit": "пог. м",
+    "price": 60.0,
+    "category": "Катанка"
+  },
+  {
+    "id": "131",
+    "name": "Катанка d14 мм",
+    "url": "https://100met.ru/catalog/katanka/katanka-d14mm.html",
+    "unit": "пог. м",
+    "price": 80.0,
+    "category": "Катанка"
+  },
+  {
+    "id": "132",
+    "name": "Катанка d16 мм",
+    "url": "https://100met.ru/catalog/katanka/katanka-d16mm.html",
+    "unit": "пог. м",
+    "price": 110.0,
+    "category": "Катанка"
+  },
+  {
+    "id": "137",
+    "name": "Труба профильная квадратная 15х15х1,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-15x15x1.5mm.html",
+    "unit": "пог. м",
+    "price": 50.0,
+    "category": "Труба"
+  },
+  {
+    "id": "138",
+    "name": "Труба профильная квадратная 20х20х1,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-20x20x1.5mm.html",
+    "unit": "пог. м",
+    "price": 62.0,
+    "category": "Труба"
+  },
+  {
+    "id": "139",
+    "name": "Труба профильная квадратная 20х20х2 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-20x20x2mm.html",
+    "unit": "пог. м",
+    "price": 77.0,
+    "category": "Труба"
+  },
+  {
+    "id": "140",
+    "name": "Труба профильная квадратная 25х25х1,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-25x25x1.5mm.html",
+    "unit": "пог. м",
+    "price": 85.0,
+    "category": "Труба"
+  },
+  {
+    "id": "141",
+    "name": "Труба профильная квадратная 25х25х2 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-25x25x2mm.html",
+    "unit": "пог. м",
+    "price": 100.0,
+    "category": "Труба"
+  },
+  {
+    "id": "142",
+    "name": "Труба профильная квадратная 30х30х1,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-30x30x1.5mm.html",
+    "unit": "пог. м",
+    "price": 110.0,
+    "category": "Труба"
+  },
+  {
+    "id": "143",
+    "name": "Труба профильная квадратная 30х30х2 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-30x30x2mm.html",
+    "unit": "пог. м",
+    "price": 125.0,
+    "category": "Труба"
+  },
+  {
+    "id": "179",
+    "name": "Труба профильная квадратная 30x30x3мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-30x30x3mm.html",
+    "unit": "пог. м",
+    "price": 169.0,
+    "category": "Труба"
+  },
+  {
+    "id": "144",
+    "name": "Труба профильная квадратная 40х40х1,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-40x40x1.5mm.html",
+    "unit": "пог. м",
+    "price": 135.0,
+    "category": "Труба"
+  },
+  {
+    "id": "145",
+    "name": "Труба профильная квадратная 40х40х2 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-40x40x2mm.html",
+    "unit": "пог. м",
+    "price": 170.0,
+    "category": "Труба"
+  },
+  {
+    "id": "146",
+    "name": "Труба профильная квадратная 40х40х3 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-40x40x3mm.html",
+    "unit": "пог. м",
+    "price": 215.0,
+    "category": "Труба"
+  },
+  {
+    "id": "147",
+    "name": "Труба профильная квадратная 40х40х4 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-40x40x4mm.html",
+    "unit": "пог. м",
+    "price": 296.0,
+    "category": "Труба"
+  },
+  {
+    "id": "148",
+    "name": "Труба профильная квадратная 50х50х1,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-50x50x1.5mm.html",
+    "unit": "пог. м",
+    "price": 189.0,
+    "category": "Труба"
+  },
+  {
+    "id": "149",
+    "name": "Труба профильная квадратная 50х50х2 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-50x50x2mm.html",
+    "unit": "пог. м",
+    "price": 225.0,
+    "category": "Труба"
+  },
+  {
+    "id": "150",
+    "name": "Труба профильная квадратная 50х50х3 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-50x50x3mm.html",
+    "unit": "пог. м",
+    "price": 289.0,
+    "category": "Труба"
+  },
+  {
+    "id": "151",
+    "name": "Труба профильная квадратная 50х50х4 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-50x50x4mm.html",
+    "unit": "пог. м",
+    "price": 390.0,
+    "category": "Труба"
+  },
+  {
+    "id": "152",
+    "name": "Труба профильная квадратная 60х60х1,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-60x60x1.5mm.html",
+    "unit": "пог. м",
+    "price": 220.0,
+    "category": "Труба"
+  },
+  {
+    "id": "153",
+    "name": "Труба профильная квадратная 60х60х2 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-60x60x2mm.html",
+    "unit": "пог. м",
+    "price": 250.0,
+    "category": "Труба"
+  },
+  {
+    "id": "178",
+    "name": "Труба профильная квадратная 60х60х2,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-60x60x2.5-mm.html",
+    "unit": "пог. м",
+    "price": 350.0,
+    "category": "Труба"
+  },
+  {
+    "id": "154",
+    "name": "Труба профильная квадратная 60х60х3 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-60x60x3mm.html",
+    "unit": "пог. м",
+    "price": 329.0,
+    "category": "Труба"
+  },
+  {
+    "id": "155",
+    "name": "Труба профильная квадратная 60х60х4 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-60x60x4mm.html",
+    "unit": "пог. м",
+    "price": 450.0,
+    "category": "Труба"
+  },
+  {
+    "id": "156",
+    "name": "Труба профильная квадратная 80х80х2 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-80x80x2mm.html",
+    "unit": "пог. м",
+    "price": 370.0,
+    "category": "Труба"
+  },
+  {
+    "id": "157",
+    "name": "Труба профильная квадратная 80х80х2,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-80x80x2.5mm.html",
+    "unit": "пог. м",
+    "price": 460.0,
+    "category": "Труба"
+  },
+  {
+    "id": "158",
+    "name": "Труба профильная квадратная 80х80х3 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-80x80x3mm.html",
+    "unit": "пог. м",
+    "price": 469.0,
+    "category": "Труба"
+  },
+  {
+    "id": "159",
+    "name": "Труба профильная квадратная 80х80х4 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-80x80x4mm.html",
+    "unit": "пог. м",
+    "price": 625.0,
+    "category": "Труба"
+  },
+  {
+    "id": "160",
+    "name": "Труба профильная квадратная 80х80х6 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-80x80x6mm.html",
+    "unit": "пог. м",
+    "price": 939.0,
+    "category": "Труба"
+  },
+  {
+    "id": "161",
+    "name": "Труба профильная квадратная 100х100х3 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-100x100x3mm.html",
+    "unit": "пог. м",
+    "price": 569.0,
+    "category": "Труба"
+  },
+  {
+    "id": "162",
+    "name": "Труба профильная квадратная 100х100х4 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-100x100x4mm.html",
+    "unit": "пог. м",
+    "price": 769.0,
+    "category": "Труба"
+  },
+  {
+    "id": "163",
+    "name": "Труба профильная квадратная 100х100х5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-100x100x5mm.html",
+    "unit": "пог. м",
+    "price": 990.0,
+    "category": "Труба"
+  },
+  {
+    "id": "164",
+    "name": "Труба профильная квадратная 100х100х6 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-100x100x6mm.html",
+    "unit": "пог. м",
+    "price": 1250.0,
+    "category": "Труба"
+  },
+  {
+    "id": "165",
+    "name": "Труба профильная квадратная 120х120х3 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-120x120x3mm.html",
+    "unit": "пог. м",
+    "price": 800.0,
+    "category": "Труба"
+  },
+  {
+    "id": "166",
+    "name": "Труба профильная квадратная 120х120х4 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-120x120x4mm.html",
+    "unit": "пог. м",
+    "price": 995.0,
+    "category": "Труба"
+  },
+  {
+    "id": "167",
+    "name": "Труба профильная квадратная 120х120х5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-120x120x5mm.html",
+    "unit": "пог. м",
+    "price": 1300.0,
+    "category": "Труба"
+  },
+  {
+    "id": "168",
+    "name": "Труба профильная квадратная 120х120х6 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-120x120x6mm.html",
+    "unit": "пог. м",
+    "price": 1890.0,
+    "category": "Труба"
+  },
+  {
+    "id": "169",
+    "name": "Труба профильная квадратная 140х140х4 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-140x140x4mm.html",
+    "unit": "пог. м",
+    "price": 1159.0,
+    "category": "Труба"
+  },
+  {
+    "id": "170",
+    "name": "Труба профильная квадратная 140х140х5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-140x140x5mm.html",
+    "unit": "пог. м",
+    "price": 1590.0,
+    "category": "Труба"
+  },
+  {
+    "id": "171",
+    "name": "Труба профильная квадратная 140х140х6 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-140x140x6mm.html",
+    "unit": "пог. м",
+    "price": 2000.0,
+    "category": "Труба"
+  },
+  {
+    "id": "172",
+    "name": "Труба профильная квадратная 150х150х4 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-150x150x4mm.html",
+    "unit": "пог. м",
+    "price": 1200.0,
+    "category": "Труба"
+  },
+  {
+    "id": "173",
+    "name": "Труба профильная квадратная 150х150х5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-150x150x5mm.html",
+    "unit": "пог. м",
+    "price": 1650.0,
+    "category": "Труба"
+  },
+  {
+    "id": "174",
+    "name": "Труба профильная квадратная 160х160х5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-160x160x5mm.html",
+    "unit": "пог. м",
+    "price": 1550.0,
+    "category": "Труба"
+  },
+  {
+    "id": "175",
+    "name": "Труба профильная квадратная 160х160х6 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-160x160x6mm.html",
+    "unit": "пог. м",
+    "price": 2000.0,
+    "category": "Труба"
+  },
+  {
+    "id": "176",
+    "name": "Труба профильная квадратная 180х180х6 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-180x180x6mm.html",
+    "unit": "пог. м",
+    "price": 2665.0,
+    "category": "Труба"
+  },
+  {
+    "id": "177",
+    "name": "Труба профильная квадратная 200х200х6 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-kvadratnaya-200x200x6mm.html",
+    "unit": "пог. м",
+    "price": 3300.0,
+    "category": "Труба"
+  },
+  {
+    "id": "216",
+    "name": "Труба профильная прямоугольная 30х15х1,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/30x15x1.5mm.html",
+    "unit": "пог. м",
+    "price": 95.0,
+    "category": "Труба"
+  },
+  {
+    "id": "211",
+    "name": "Труба профильная прямоугольная 30х20х1,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/30x20x1.5mm.html",
+    "unit": "пог. м",
+    "price": 92.0,
+    "category": "Труба"
+  },
+  {
+    "id": "180",
+    "name": "Труба профильная прямоугольная 40х20х1,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-40x20x1.5mm.html",
+    "unit": "пог. м",
+    "price": 95.0,
+    "category": "Труба"
+  },
+  {
+    "id": "181",
+    "name": "Труба профильная прямоугольная 40х20х2 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-40x20x2mm.html",
+    "unit": "пог. м",
+    "price": 119.0,
+    "category": "Труба"
+  },
+  {
+    "id": "212",
+    "name": "Труба профильная прямоугольная 40х20х2,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/40x20x2.5mm.html",
+    "unit": "пог. м",
+    "price": 180.0,
+    "category": "Труба"
+  },
+  {
+    "id": "182",
+    "name": "Труба профильная прямоугольная 40х20х3 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-40x20x3mm.html",
+    "unit": "пог. м",
+    "price": 169.0,
+    "category": "Труба"
+  },
+  {
+    "id": "183",
+    "name": "Труба профильная прямоугольная 40х25х1,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-40x25x1.5mm.html",
+    "unit": "пог. м",
+    "price": 123.0,
+    "category": "Труба"
+  },
+  {
+    "id": "184",
+    "name": "Труба профильная прямоугольная 40х25х2 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-40x25x2mm.html",
+    "unit": "пог. м",
+    "price": 135.0,
+    "category": "Труба"
+  },
+  {
+    "id": "185",
+    "name": "Труба профильная прямоугольная 50х25х1,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-50x25x1.5mm.html",
+    "unit": "пог. м",
+    "price": 148.0,
+    "category": "Труба"
+  },
+  {
+    "id": "186",
+    "name": "Труба профильная прямоугольная 50х25х2 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-50x25x2mm.html",
+    "unit": "пог. м",
+    "price": 169.0,
+    "category": "Труба"
+  },
+  {
+    "id": "213",
+    "name": "Труба профильная прямоугольная 50х25х2,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-50x25x2.5mm.html",
+    "unit": "пог. м",
+    "price": 240.0,
+    "category": "Труба"
+  },
+  {
+    "id": "187",
+    "name": "Труба профильная прямоугольная 50х25х3 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-50x25x3mm.html",
+    "unit": "пог. м",
+    "price": 215.0,
+    "category": "Труба"
+  },
+  {
+    "id": "188",
+    "name": "Труба профильная прямоугольная 60х30х1,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-60x30x1.5mm.html",
+    "unit": "пог. м",
+    "price": 169.0,
+    "category": "Труба"
+  },
+  {
+    "id": "189",
+    "name": "Труба профильная прямоугольная 60х30х2 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-60x30x2mm.html",
+    "unit": "пог. м",
+    "price": 199.0,
+    "category": "Труба"
+  },
+  {
+    "id": "214",
+    "name": "Труба профильная прямоугольная 60х30х2,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-60x30x2.5-mm.html",
+    "unit": "пог. м",
+    "price": 260.0,
+    "category": "Труба"
+  },
+  {
+    "id": "190",
+    "name": "Труба профильная прямоугольная 60х30х3 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-60x30x3mm.html",
+    "unit": "пог. м",
+    "price": 248.0,
+    "category": "Труба"
+  },
+  {
+    "id": "191",
+    "name": "Труба профильная прямоугольная 60х40х1,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-60x40x1.5mm.html",
+    "unit": "пог. м",
+    "price": 179.0,
+    "category": "Труба"
+  },
+  {
+    "id": "192",
+    "name": "Труба профильная прямоугольная 60х40х2 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-60x40x2mm.html",
+    "unit": "пог. м",
+    "price": 216.0,
+    "category": "Труба"
+  },
+  {
+    "id": "193",
+    "name": "Труба профильная прямоугольная 60х40х3 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-60x40x3mm.html",
+    "unit": "пог. м",
+    "price": 279.0,
+    "category": "Труба"
+  },
+  {
+    "id": "194",
+    "name": "Труба профильная прямоугольная 60х40х4 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-60x40x4mm.html",
+    "unit": "пог. м",
+    "price": 380.0,
+    "category": "Труба"
+  },
+  {
+    "id": "217",
+    "name": "Труба профильная прямоугольная 80х20х2 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-80x20x2-mm.html",
+    "unit": "пог. м",
+    "price": 359.0,
+    "category": "Труба"
+  },
+  {
+    "id": "195",
+    "name": "Труба профильная прямоугольная 80х40х2 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-80x40x2mm.html",
+    "unit": "пог. м",
+    "price": 255.0,
+    "category": "Труба"
+  },
+  {
+    "id": "215",
+    "name": "Труба профильная прямоугольная 80х40х2,5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-80x40x2.5-mm.html",
+    "unit": "пог. м",
+    "price": 360.0,
+    "category": "Труба"
+  },
+  {
+    "id": "196",
+    "name": "Труба профильная прямоугольная 80х40х3 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-80x40x3mm.html",
+    "unit": "пог. м",
+    "price": 345.0,
+    "category": "Труба"
+  },
+  {
+    "id": "197",
+    "name": "Труба профильная прямоугольная 80х40х4 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-80x40x4mm.html",
+    "unit": "пог. м",
+    "price": 520.0,
+    "category": "Труба"
+  },
+  {
+    "id": "198",
+    "name": "Труба профильная прямоугольная 80х60х2 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-80x60x2mm.html",
+    "unit": "пог. м",
+    "price": 329.0,
+    "category": "Труба"
+  },
+  {
+    "id": "199",
+    "name": "Труба профильная прямоугольная 80х60х3 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-80x60x3mm.html",
+    "unit": "пог. м",
+    "price": 425.0,
+    "category": "Труба"
+  },
+  {
+    "id": "200",
+    "name": "Труба профильная прямоугольная 80х60х4 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-80x60x4mm.html",
+    "unit": "пог. м",
+    "price": 559.0,
+    "category": "Труба"
+  },
+  {
+    "id": "201",
+    "name": "Труба профильная прямоугольная 100х50х2 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-100x50x2mm.html",
+    "unit": "пог. м",
+    "price": 359.0,
+    "category": "Труба"
+  },
+  {
+    "id": "202",
+    "name": "Труба профильная прямоугольная 100х50х3 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-100x50x3mm.html",
+    "unit": "пог. м",
+    "price": 459.0,
+    "category": "Труба"
+  },
+  {
+    "id": "203",
+    "name": "Труба профильная прямоугольная 100х50х4 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-100x50x4mm.html",
+    "unit": "пог. м",
+    "price": 609.0,
+    "category": "Труба"
+  },
+  {
+    "id": "204",
+    "name": "Труба профильная прямоугольная 100х60х2 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-100x60x2mm.html",
+    "unit": "пог. м",
+    "price": 650.0,
+    "category": "Труба"
+  },
+  {
+    "id": "205",
+    "name": "Труба профильная прямоугольная 100х60х3 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-100x60x3mm.html",
+    "unit": "пог. м",
+    "price": 880.0,
+    "category": "Труба"
+  },
+  {
+    "id": "206",
+    "name": "Труба профильная прямоугольная 100х60х4 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-100x60x4mm.html",
+    "unit": "пог. м",
+    "price": 620.0,
+    "category": "Труба"
+  },
+  {
+    "id": "207",
+    "name": "Труба профильная прямоугольная 120х60х3 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-120x60x3mm.html",
+    "unit": "пог. м",
+    "price": 610.0,
+    "category": "Труба"
+  },
+  {
+    "id": "208",
+    "name": "Труба профильная прямоугольная 120х60х4 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-120x60x4mm.html",
+    "unit": "пог. м",
+    "price": 850.0,
+    "category": "Труба"
+  },
+  {
+    "id": "209",
+    "name": "Труба профильная прямоугольная 120х80х4 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-120x80x4mm.html",
+    "unit": "пог. м",
+    "price": 880.0,
+    "category": "Труба"
+  },
+  {
+    "id": "210",
+    "name": "Труба профильная прямоугольная 140х100х5 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/truba-profilnaya-pryamougolnaya-140x100x5mm.html",
+    "unit": "пог. м",
+    "price": 1200.0,
+    "category": "Труба"
+  },
+  {
+    "id": "218",
+    "name": "Т-образный профиль для откатных ворот 65х60х20х2 мм",
+    "url": "https://100met.ru/catalog/truba/profilnaya/t-obraznyiĭ-profil-dlya-otkatnyix-vorot-65x60x20x2-mm.html",
+    "unit": "пог. м",
+    "price": 529.0,
+    "category": "Труба"
+  },
+  {
+    "id": "219",
+    "name": "Труба ВГП 15х2,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-vodogazoprovodnaya-vgp/truba-vgp-15x2.5mm.html",
+    "unit": "пог. м",
+    "price": 100.0,
+    "category": "Труба"
+  },
+  {
+    "id": "220",
+    "name": "Труба ВГП 15х2,8 мм",
+    "url": "https://100met.ru/catalog/truba/truba-vodogazoprovodnaya-vgp/truba-vgp-15x2.8mm.html",
+    "unit": "пог. м",
+    "price": 110.0,
+    "category": "Труба"
+  },
+  {
+    "id": "221",
+    "name": "Труба ВГП 20х2,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-vodogazoprovodnaya-vgp/truba-vgp-20x2.5mm.html",
+    "unit": "пог. м",
+    "price": 120.0,
+    "category": "Труба"
+  },
+  {
+    "id": "222",
+    "name": "Труба ВГП 20х2,8 мм",
+    "url": "https://100met.ru/catalog/truba/truba-vodogazoprovodnaya-vgp/truba-vgp-20x2.8mm.html",
+    "unit": "пог. м",
+    "price": 110.0,
+    "category": "Труба"
+  },
+  {
+    "id": "223",
+    "name": "Труба ВГП 25х2,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-vodogazoprovodnaya-vgp/truba-vgp-25x2.5mm.html",
+    "unit": "пог. м",
+    "price": 150.0,
+    "category": "Труба"
+  },
+  {
+    "id": "224",
+    "name": "Труба ВГП 25х2,8 мм",
+    "url": "https://100met.ru/catalog/truba/truba-vodogazoprovodnaya-vgp/truba-vgp-25x2.8mm.html",
+    "unit": "пог. м",
+    "price": 155.0,
+    "category": "Труба"
+  },
+  {
+    "id": "225",
+    "name": "Труба ВГП 25х3,2 мм",
+    "url": "https://100met.ru/catalog/truba/truba-vodogazoprovodnaya-vgp/truba-vgp-25x3.2mm.html",
+    "unit": "пог. м",
+    "price": 200.0,
+    "category": "Труба"
+  },
+  {
+    "id": "226",
+    "name": "Труба ВГП 32х2,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-vodogazoprovodnaya-vgp/truba-vgp-32x2.5mm.html",
+    "unit": "пог. м",
+    "price": 200.0,
+    "category": "Труба"
+  },
+  {
+    "id": "227",
+    "name": "Труба ВГП 32х2,8 мм",
+    "url": "https://100met.ru/catalog/truba/truba-vodogazoprovodnaya-vgp/truba-vgp-32x2.8mm.html",
+    "unit": "пог. м",
+    "price": 225.0,
+    "category": "Труба"
+  },
+  {
+    "id": "228",
+    "name": "Труба ВГП 32х3 мм",
+    "url": "https://100met.ru/catalog/truba/truba-vodogazoprovodnaya-vgp/truba-vgp-32x3mm.html",
+    "unit": "пог. м",
+    "price": 240.0,
+    "category": "Труба"
+  },
+  {
+    "id": "229",
+    "name": "Труба ВГП 32х3,2 мм",
+    "url": "https://100met.ru/catalog/truba/truba-vodogazoprovodnaya-vgp/truba-vgp-32x3.2mm.html",
+    "unit": "пог. м",
+    "price": 300.0,
+    "category": "Труба"
+  },
+  {
+    "id": "230",
+    "name": "Труба ВГП 40х3 мм",
+    "url": "https://100met.ru/catalog/truba/truba-vodogazoprovodnaya-vgp/truba-vgp-40x3mm.html",
+    "unit": "пог. м",
+    "price": 260.0,
+    "category": "Труба"
+  },
+  {
+    "id": "231",
+    "name": "Труба ВГП 40х3,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-vodogazoprovodnaya-vgp/truba-vgp-40x3.5mm.html",
+    "unit": "пог. м",
+    "price": 350.0,
+    "category": "Труба"
+  },
+  {
+    "id": "232",
+    "name": "Труба ВГП 50х3 мм",
+    "url": "https://100met.ru/catalog/truba/truba-vodogazoprovodnaya-vgp/truba-vgp-50x3mm.html",
+    "unit": "пог. м",
+    "price": 350.0,
+    "category": "Труба"
+  },
+  {
+    "id": "233",
+    "name": "Труба ВГП 50х3,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-vodogazoprovodnaya-vgp/truba-vgp-50x3.5mm.html",
+    "unit": "пог. м",
+    "price": 450.0,
+    "category": "Труба"
+  },
+  {
+    "id": "234",
+    "name": "Труба ВГП 50х4 мм",
+    "url": "https://100met.ru/catalog/truba/truba-vodogazoprovodnaya-vgp/truba-vgp-50x4mm.html",
+    "unit": "пог. м",
+    "price": 550.0,
+    "category": "Труба"
+  },
+  {
+    "id": "235",
+    "name": "Труба электросварная 51х2 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-51x2mm.html",
+    "unit": "пог. м",
+    "price": 300.0,
+    "category": "Труба"
+  },
+  {
+    "id": "236",
+    "name": "Труба электросварная 51х2,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-51x2.5mm.html",
+    "unit": "пог. м",
+    "price": 350.0,
+    "category": "Труба"
+  },
+  {
+    "id": "237",
+    "name": "Труба электросварная 51х3 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-51x3mm.html",
+    "unit": "пог. м",
+    "price": 400.0,
+    "category": "Труба"
+  },
+  {
+    "id": "238",
+    "name": "Труба электросварная 57х2 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-57x2mm.html",
+    "unit": "пог. м",
+    "price": 200.0,
+    "category": "Труба"
+  },
+  {
+    "id": "239",
+    "name": "Труба электросварная 57х2,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-57x2.5mm.html",
+    "unit": "пог. м",
+    "price": 250.0,
+    "category": "Труба"
+  },
+  {
+    "id": "240",
+    "name": "Труба электросварная 57х3 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-57x3mm.html",
+    "unit": "пог. м",
+    "price": 220.0,
+    "category": "Труба"
+  },
+  {
+    "id": "241",
+    "name": "Труба электросварная 76х2 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-76x2mm.html",
+    "unit": "пог. м",
+    "price": 300.0,
+    "category": "Труба"
+  },
+  {
+    "id": "242",
+    "name": "Труба электросварная 76х2,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-76x2.5mm.html",
+    "unit": "пог. м",
+    "price": 330.0,
+    "category": "Труба"
+  },
+  {
+    "id": "243",
+    "name": "Труба электросварная 76х3 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-76x3mm.html",
+    "unit": "пог. м",
+    "price": 349.0,
+    "category": "Труба"
+  },
+  {
+    "id": "244",
+    "name": "Труба электросварная 76х3,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-76x3.5mm.html",
+    "unit": "пог. м",
+    "price": 450.0,
+    "category": "Труба"
+  },
+  {
+    "id": "245",
+    "name": "Труба электросварная 89х3 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-89x3mm.html",
+    "unit": "пог. м",
+    "price": 400.0,
+    "category": "Труба"
+  },
+  {
+    "id": "246",
+    "name": "Труба электросварная 89х3,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-89x3.5mm.html",
+    "unit": "пог. м",
+    "price": 590.0,
+    "category": "Труба"
+  },
+  {
+    "id": "247",
+    "name": "Труба электросварная 108х3 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-108x3mm.html",
+    "unit": "пог. м",
+    "price": 600.0,
+    "category": "Труба"
+  },
+  {
+    "id": "248",
+    "name": "Труба электросварная 108х3,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-108x3.5mm.html",
+    "unit": "пог. м",
+    "price": 570.0,
+    "category": "Труба"
+  },
+  {
+    "id": "249",
+    "name": "Труба электросварная 108х4 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-108x4mm.html",
+    "unit": "пог. м",
+    "price": 800.0,
+    "category": "Труба"
+  },
+  {
+    "id": "258",
+    "name": "Труба электросварная 108х5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-108x5mm.html",
+    "unit": "пог. м",
+    "price": 1100.0,
+    "category": "Труба"
+  },
+  {
+    "id": "250",
+    "name": "Труба электросварная 133х4 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-133x4mm.html",
+    "unit": "пог. м",
+    "price": 890.0,
+    "category": "Труба"
+  },
+  {
+    "id": "251",
+    "name": "Труба электросварная 133х4,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-133x4.5mm.html",
+    "unit": "пог. м",
+    "price": 1250.0,
+    "category": "Труба"
+  },
+  {
+    "id": "252",
+    "name": "Труба электросварная 159х4 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-159x4mm.html",
+    "unit": "пог. м",
+    "price": 1025.0,
+    "category": "Труба"
+  },
+  {
+    "id": "253",
+    "name": "Труба электросварная 159х4,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya159x4.5mm.html",
+    "unit": "пог. м",
+    "price": 1450.0,
+    "category": "Труба"
+  },
+  {
+    "id": "254",
+    "name": "Труба электросварная 219х5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-219x5mm.html",
+    "unit": "пог. м",
+    "price": 2300.0,
+    "category": "Труба"
+  },
+  {
+    "id": "255",
+    "name": "Труба электросварная 219х6 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-219x6mm.html",
+    "unit": "пог. м",
+    "price": 2900.0,
+    "category": "Труба"
+  },
+  {
+    "id": "256",
+    "name": "Труба электросварная 273х8 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-273x8mm.html",
+    "unit": "пог. м",
+    "price": 5300.0,
+    "category": "Труба"
+  },
+  {
+    "id": "257",
+    "name": "Труба электросварная 325х8 мм",
+    "url": "https://100met.ru/catalog/truba/truba-elektrosvarnaya/truba-elektrosvarnaya-325x8mm.html",
+    "unit": "пог. м",
+    "price": 6900.0,
+    "category": "Труба"
+  },
+  {
+    "id": "133",
+    "name": "Труба профильная оцинкованная: ОЦ 60х60х2,0 мм",
+    "url": "https://100met.ru/catalog/truba/truba-ocinkovannaya/60x60x2mm.html",
+    "unit": "пог. м",
+    "price": 400.0,
+    "category": "Труба"
+  },
+  {
+    "id": "134",
+    "name": "Труба профильная оцинкованная: ОЦ 50х50х2,0 мм",
+    "url": "https://100met.ru/catalog/truba/truba-ocinkovannaya/50x50x2mm.html",
+    "unit": "пог. м",
+    "price": 340.0,
+    "category": "Труба"
+  },
+  {
+    "id": "135",
+    "name": "Труба профильная оцинкованная: ОЦ 40х20х2,0 мм",
+    "url": "https://100met.ru/catalog/truba/truba-ocinkovannaya/40x20x2mm.html",
+    "unit": "пог. м",
+    "price": 170.0,
+    "category": "Труба"
+  },
+  {
+    "id": "136",
+    "name": "Труба профильная оцинкованная: ОЦ 20х20х2,0мм",
+    "url": "https://100met.ru/catalog/truba/truba-ocinkovannaya/20x20x2mm.html",
+    "unit": "пог. м",
+    "price": 120.0,
+    "category": "Труба"
+  },
+  {
+    "id": "259",
+    "name": "Труба оцинкованная 15х2,8 мм",
+    "url": "https://100met.ru/catalog/truba/truba-ocinkovannaya/truba-ocinkovannaya-15x2.8mm.html",
+    "unit": "пог. м",
+    "price": 210.0,
+    "category": "Труба"
+  },
+  {
+    "id": "260",
+    "name": "Труба оцинкованная 20х2,8 мм",
+    "url": "https://100met.ru/catalog/truba/truba-ocinkovannaya/truba-ocinkovannaya-20x2.8mm.html",
+    "unit": "пог. м",
+    "price": 280.0,
+    "category": "Труба"
+  },
+  {
+    "id": "261",
+    "name": "Труба оцинкованная 25х3,2 мм",
+    "url": "https://100met.ru/catalog/truba/truba-ocinkovannaya/truba-ocinkovannaya-25x3.2mm.html",
+    "unit": "пог. м",
+    "price": 350.0,
+    "category": "Труба"
+  },
+  {
+    "id": "262",
+    "name": "Труба оцинкованная 32х3,2 мм",
+    "url": "https://100met.ru/catalog/truba/truba-ocinkovannaya/truba-ocinkovannaya-32x3.2mm.html",
+    "unit": "пог. м",
+    "price": 400.0,
+    "category": "Труба"
+  },
+  {
+    "id": "263",
+    "name": "Труба оцинкованная 40х3,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-ocinkovannaya/truba-ocinkovannaya-40x3.5mm.html",
+    "unit": "пог. м",
+    "price": 550.0,
+    "category": "Труба"
+  },
+  {
+    "id": "264",
+    "name": "Труба оцинкованная 50х3,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-ocinkovannaya/truba-ocinkovannaya-50x3.5mm.html",
+    "unit": "пог. м",
+    "price": 600.0,
+    "category": "Труба"
+  },
+  {
+    "id": "265",
+    "name": "Труба оцинкованная 57х3,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-ocinkovannaya/truba-ocinkovannaya-57x3.5mm.html",
+    "unit": "пог. м",
+    "price": 650.0,
+    "category": "Труба"
+  },
+  {
+    "id": "266",
+    "name": "Труба оцинкованная 76х3,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-ocinkovannaya/truba-ocinkovannaya-76x3.5mm.html",
+    "unit": "пог. м",
+    "price": 850.0,
+    "category": "Труба"
+  },
+  {
+    "id": "267",
+    "name": "Труба оцинкованная 89х3,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-ocinkovannaya/truba-ocinkovannaya-89x3.5mm.html",
+    "unit": "пог. м",
+    "price": 950.0,
+    "category": "Труба"
+  },
+  {
+    "id": "268",
+    "name": "Труба оцинкованная 108х4 мм",
+    "url": "https://100met.ru/catalog/truba/truba-ocinkovannaya/truba-ocinkovannaya-108x4mm.html",
+    "unit": "пог. м",
+    "price": 1250.0,
+    "category": "Труба"
+  },
+  {
+    "id": "269",
+    "name": "Труба оцинкованная 133х4,5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-ocinkovannaya/truba-ocinkovannaya-133x4.5mm.html",
+    "unit": "пог. м",
+    "price": 2000.0,
+    "category": "Труба"
+  },
+  {
+    "id": "270",
+    "name": "Труба оцинкованная 159х5 мм",
+    "url": "https://100met.ru/catalog/truba/truba-ocinkovannaya/truba-ocinkovannaya-159x5mm.html",
+    "unit": "пог. м",
+    "price": 2700.0,
+    "category": "Труба"
+  },
+  {
+    "id": "271",
+    "name": "Уголок 25х25х3 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-25x25x3mm.html",
+    "unit": "пог. м",
+    "price": 95.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "272",
+    "name": "Уголок 25х25х4 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-25x25x4mm.html",
+    "unit": "пог. м",
+    "price": 130.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "273",
+    "name": "Уголок 32х32х3 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-32x32x3mm.html",
+    "unit": "пог. м",
+    "price": 115.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "274",
+    "name": "Уголок 32х32х4 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-32x32x4mm.html",
+    "unit": "пог. м",
+    "price": 159.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "275",
+    "name": "Уголок 35х35х3 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-35x35x3mm.html",
+    "unit": "пог. м",
+    "price": 159.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "276",
+    "name": "Уголок 35х35х4 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-35x35x4mm.html",
+    "unit": "пог. м",
+    "price": 170.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "277",
+    "name": "Уголок 40х40х3 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-40x40x3mm.html",
+    "unit": "пог. м",
+    "price": 139.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "278",
+    "name": "Уголок 40х40х4 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-40x40x4mm.html",
+    "unit": "пог. м",
+    "price": 189.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "279",
+    "name": "Уголок 45х45х3 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-45x45x3mm.html",
+    "unit": "пог. м",
+    "price": 200.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "280",
+    "name": "Уголок 45х45х4 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-45x45x4mm.html",
+    "unit": "пог. м",
+    "price": 215.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "282",
+    "name": "Уголок 50х50х4 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-50x50x4mm.html",
+    "unit": "пог. м",
+    "price": 219.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "283",
+    "name": "Уголок 50х50х5 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-50x50x5mm.html",
+    "unit": "пог. м",
+    "price": 279.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "284",
+    "name": "Уголок 63х63х4 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-63x63x4mm.html",
+    "unit": "пог. м",
+    "price": 270.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "285",
+    "name": "Уголок 63х63х5 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-63x63x5mm.html",
+    "unit": "пог. м",
+    "price": 350.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "286",
+    "name": "Уголок 75х75х5 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-75x75x5mm.html",
+    "unit": "пог. м",
+    "price": 439.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "776",
+    "name": "Уголок 75х75х7 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-75x75x7mm.html",
+    "unit": "пог. м",
+    "price": 650.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "777",
+    "name": "Уголок 90х90х6 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-90x90x6mm.html",
+    "unit": "пог. м",
+    "price": 559.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "287",
+    "name": "Уголок 100х100х7 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-100x100x7mm.html",
+    "unit": "пог. м",
+    "price": 749.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "288",
+    "name": "Уголок 100х100х8 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-100x100x8mm.html",
+    "unit": "пог. м",
+    "price": 880.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "289",
+    "name": "Уголок 100х100х10 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-100x100x10mm.html",
+    "unit": "пог. м",
+    "price": 1190.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "290",
+    "name": "Уголок 125х125х8 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-125x125x8mm.html",
+    "unit": "пог. м",
+    "price": 1090.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "291",
+    "name": "Уголок 125х125х10 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-125x125x10mm.html",
+    "unit": "пог. м",
+    "price": 1550.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "292",
+    "name": "Уголок 140х140х9 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-140x140x9mm.html",
+    "unit": "пог. м",
+    "price": 2850.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "293",
+    "name": "Уголок 160х160х10 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-160x160x10mm.html",
+    "unit": "пог. м",
+    "price": 3900.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "294",
+    "name": "Уголок 180х180х10 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-180x180x10mm.html",
+    "unit": "пог. м",
+    "price": 6000.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "295",
+    "name": "Уголок 200х200х12 мм",
+    "url": "https://100met.ru/catalog/ugolok/ugolok-ravnopolochnyij/ugolok-200x200x12mm.html",
+    "unit": "пог. м",
+    "price": 7700.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "296",
+    "name": "Уголок неравнополочный 63х40х5,0 мм",
+    "url": "https://100met.ru/catalog/ugolok/neravnopolochnyij/63x40x5mm.html",
+    "unit": "пог. м",
+    "price": 550.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "297",
+    "name": "Уголок неравнополочный 75х50х5,0 мм",
+    "url": "https://100met.ru/catalog/ugolok/neravnopolochnyij/75x50x5mm.html",
+    "unit": "пог. м",
+    "price": 650.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "298",
+    "name": "Уголок неравнополочный 100х63 6,0 мм",
+    "url": "https://100met.ru/catalog/ugolok/neravnopolochnyij/100x63x6mm.html",
+    "unit": "пог. м",
+    "price": 755.0,
+    "category": "Уголок"
+  },
+  {
+    "id": "299",
+    "name": "Швеллер 5 У",
+    "url": "https://100met.ru/catalog/shveller/shveller-5-u.html",
+    "unit": "пог. м",
+    "price": 520.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "300",
+    "name": "Швеллер 6,5 У",
+    "url": "https://100met.ru/catalog/shveller/shveller-6.5-u.html",
+    "unit": "пог. м",
+    "price": 450.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "301",
+    "name": "Швеллер 8 У",
+    "url": "https://100met.ru/catalog/shveller/shveller-8-u.html",
+    "unit": "пог. м",
+    "price": 600.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "302",
+    "name": "Швеллер 10 У",
+    "url": "https://100met.ru/catalog/shveller/shveller-10-u.html",
+    "unit": "пог. м",
+    "price": 650.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "303",
+    "name": "Швеллер 12 У",
+    "url": "https://100met.ru/catalog/shveller/shveller-12-u.html",
+    "unit": "пог. м",
+    "price": 840.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "304",
+    "name": "Швеллер 14 У",
+    "url": "https://100met.ru/catalog/shveller/shveller-14-u.html",
+    "unit": "пог. м",
+    "price": 900.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "305",
+    "name": "Швеллер 16 У",
+    "url": "https://100met.ru/catalog/shveller/shveller-16-u.html",
+    "unit": "пог. м",
+    "price": 1100.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "306",
+    "name": "Швеллер 18 У",
+    "url": "https://100met.ru/catalog/shveller/shveller-18-u.html",
+    "unit": "пог. м",
+    "price": 1450.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "307",
+    "name": "Швеллер 20 У",
+    "url": "https://100met.ru/catalog/shveller/shveller-20-u.html",
+    "unit": "пог. м",
+    "price": 2490.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "308",
+    "name": "Швеллер 22 У",
+    "url": "https://100met.ru/catalog/shveller/shveller-22-u.html",
+    "unit": "пог. м",
+    "price": 2750.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "309",
+    "name": "Швеллер 24 У",
+    "url": "https://100met.ru/catalog/shveller/shveller-24-u.html",
+    "unit": "пог. м",
+    "price": 3290.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "310",
+    "name": "Швеллер 27 У",
+    "url": "https://100met.ru/catalog/shveller/shveller-27-u.html",
+    "unit": "пог. м",
+    "price": 4190.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "311",
+    "name": "Швеллер 30 У",
+    "url": "https://100met.ru/catalog/shveller/shveller-30-u.html",
+    "unit": "пог. м",
+    "price": 5200.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "312",
+    "name": "Швеллер 40 У",
+    "url": "https://100met.ru/catalog/shveller/shveller-40-u.html",
+    "unit": "пог. м",
+    "price": 12900.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "313",
+    "name": "Швеллер 5 П",
+    "url": "https://100met.ru/catalog/shveller/shveller-5-p.html",
+    "unit": "пог. м",
+    "price": 520.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "314",
+    "name": "Швеллер 6,5 П",
+    "url": "https://100met.ru/catalog/shveller/shveller-6.5-p.html",
+    "unit": "пог. м",
+    "price": 450.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "315",
+    "name": "Швеллер 8 П",
+    "url": "https://100met.ru/catalog/shveller/shveller-8-p.html",
+    "unit": "пог. м",
+    "price": 600.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "316",
+    "name": "Швеллер 10 П",
+    "url": "https://100met.ru/catalog/shveller/shveller-10-p.html",
+    "unit": "пог. м",
+    "price": 650.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "317",
+    "name": "Швеллер 12 П",
+    "url": "https://100met.ru/catalog/shveller/shveller-12-p.html",
+    "unit": "пог. м",
+    "price": 840.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "318",
+    "name": "Швеллер 14 П",
+    "url": "https://100met.ru/catalog/shveller/shveller-14-p.html",
+    "unit": "пог. м",
+    "price": 900.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "319",
+    "name": "Швеллер 16 П",
+    "url": "https://100met.ru/catalog/shveller/shveller-16-p.html",
+    "unit": "пог. м",
+    "price": 1100.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "320",
+    "name": "Швеллер 18 П",
+    "url": "https://100met.ru/catalog/shveller/shveller-18-p.html",
+    "unit": "пог. м",
+    "price": 1450.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "321",
+    "name": "Швеллер 20 П",
+    "url": "https://100met.ru/catalog/shveller/shveller-20-p.html",
+    "unit": "пог. м",
+    "price": 2490.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "322",
+    "name": "Швеллер 22 П",
+    "url": "https://100met.ru/catalog/shveller/shveller-22-p.html",
+    "unit": "пог. м",
+    "price": 2750.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "323",
+    "name": "Швеллер 24 П",
+    "url": "https://100met.ru/catalog/shveller/shveller-24-p.html",
+    "unit": "пог. м",
+    "price": 3290.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "324",
+    "name": "Швеллер 27 П",
+    "url": "https://100met.ru/catalog/shveller/shveller-27-p.html",
+    "unit": "пог. м",
+    "price": 4190.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "325",
+    "name": "Швеллер 30 П",
+    "url": "https://100met.ru/catalog/shveller/shveller-30-p.html",
+    "unit": "пог. м",
+    "price": 5200.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "326",
+    "name": "Швеллер 40 П",
+    "url": "https://100met.ru/catalog/shveller/shveller-40-p.html",
+    "unit": "пог. м",
+    "price": 12900.0,
+    "category": "Швеллер"
+  },
+  {
+    "id": "343",
+    "name": "Полоса 12х6 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-12x6mm.html",
+    "unit": "пог. м",
+    "price": 80.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "344",
+    "name": "Полоса 16х8 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-16x8mm.html",
+    "unit": "пог. м",
+    "price": 120.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "345",
+    "name": "Полоса 20х3 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-20x3mm.html",
+    "unit": "пог. м",
+    "price": 60.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "346",
+    "name": "Полоса 20х4 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-20x4mm.html",
+    "unit": "пог. м",
+    "price": 70.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "347",
+    "name": "Полоса 20х5 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-20x5mm.html",
+    "unit": "пог. м",
+    "price": 100.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "370",
+    "name": "Полоса 20х10 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-20x10-mm.html",
+    "unit": "пог. м",
+    "price": 150.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "348",
+    "name": "Полоса 25х3 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-25x3mm.html",
+    "unit": "пог. м",
+    "price": 75.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "349",
+    "name": "Полоса 25х4 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-25x4mm.html",
+    "unit": "пог. м",
+    "price": 75.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "350",
+    "name": "Полоса 25х5 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-25x5mm.html",
+    "unit": "пог. м",
+    "price": 110.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "351",
+    "name": "Полоса 30х4 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-30x4mm.html",
+    "unit": "пог. м",
+    "price": 70.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "352",
+    "name": "Полоса 40х3 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-40x3mm.html",
+    "unit": "пог. м",
+    "price": 90.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "353",
+    "name": "Полоса 40х4 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-40x4mm.html",
+    "unit": "пог. м",
+    "price": 100.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "354",
+    "name": "Полоса 40х5 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-40x5mm.html",
+    "unit": "пог. м",
+    "price": 150.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "355",
+    "name": "Полоса 50х3 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-50x3mm.html",
+    "unit": "пог. м",
+    "price": 100.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "356",
+    "name": "Полоса 50х4 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-50x4mm.html",
+    "unit": "пог. м",
+    "price": 135.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "357",
+    "name": "Полоса 50х5 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-50x5mm.html",
+    "unit": "пог. м",
+    "price": 150.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "358",
+    "name": "Полоса 60х4 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-60x4mm.html",
+    "unit": "пог. м",
+    "price": 170.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "359",
+    "name": "Полоса 60х5 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-60x5mm.html",
+    "unit": "пог. м",
+    "price": 220.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "360",
+    "name": "Полоса 60х6 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-60x6mm.html",
+    "unit": "пог. м",
+    "price": 260.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "361",
+    "name": "Полоса 80х4 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-80x4mm.html",
+    "unit": "пог. м",
+    "price": 250.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "362",
+    "name": "Полоса 80х5 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-80x5mm.html",
+    "unit": "пог. м",
+    "price": 330.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "363",
+    "name": "Полоса 80х6 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-80x6mm.html",
+    "unit": "пог. м",
+    "price": 350.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "364",
+    "name": "Полоса 80х8 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-80x8mm.html",
+    "unit": "пог. м",
+    "price": 490.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "365",
+    "name": "Полоса 80х10 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-80x10mm.html",
+    "unit": "пог. м",
+    "price": 600.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "366",
+    "name": "Полоса 100х5 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-100x5mm.html",
+    "unit": "пог. м",
+    "price": 400.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "367",
+    "name": "Полоса 100х6 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-100x6mm.html",
+    "unit": "пог. м",
+    "price": 450.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "368",
+    "name": "Полоса 100х8 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-100x8mm.html",
+    "unit": "пог. м",
+    "price": 600.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "369",
+    "name": "Полоса 100х10 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-100x10mm.html",
+    "unit": "пог. м",
+    "price": 850.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "371",
+    "name": "Полоса 250х10 мм",
+    "url": "https://100met.ru/catalog/polosa/polosa-250x10-mm.html",
+    "unit": "пог. м",
+    "price": 1800.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "372",
+    "name": "Полоса 300х12 мм",
+    "url": "https://100met.ru/catalog/polosa/300x12mm.html",
+    "unit": "пог. м",
+    "price": 3150.0,
+    "category": "Полоса"
+  },
+  {
+    "id": "373",
+    "name": "Квадрат стальной 8х8 мм",
+    "url": "https://100met.ru/catalog/kvadrat-stalnoy/kvadrat-stalnoy-8x8mm.html",
+    "unit": "пог. м",
+    "price": 70.0,
+    "category": "Квадрат"
+  },
+  {
+    "id": "374",
+    "name": "Квадрат стальной 10х10 мм",
+    "url": "https://100met.ru/catalog/kvadrat-stalnoy/kvadrat-stalnoy-10x10mm.html",
+    "unit": "пог. м",
+    "price": 60.0,
+    "category": "Квадрат"
+  },
+  {
+    "id": "375",
+    "name": "Квадрат стальной 12х12 мм",
+    "url": "https://100met.ru/catalog/kvadrat-stalnoy/kvadrat-stalnoy-12x12mm.html",
+    "unit": "пог. м",
+    "price": 86.0,
+    "category": "Квадрат"
+  },
+  {
+    "id": "376",
+    "name": "Квадрат стальной 14х14 мм",
+    "url": "https://100met.ru/catalog/kvadrat-stalnoy/kvadrat-stalnoy-14x14mm.html",
+    "unit": "пог. м",
+    "price": 117.0,
+    "category": "Квадрат"
+  },
+  {
+    "id": "377",
+    "name": "Квадрат стальной 16х16 мм",
+    "url": "https://100met.ru/catalog/kvadrat-stalnoy/kvadrat-stalnoy-16x16mm.html",
+    "unit": "пог. м",
+    "price": 155.0,
+    "category": "Квадрат"
+  },
+  {
+    "id": "378",
+    "name": "Квадрат стальной 18х18 мм",
+    "url": "https://100met.ru/catalog/kvadrat-stalnoy/kvadrat-stalnoy-18x18mm.html",
+    "unit": "пог. м",
+    "price": 300.0,
+    "category": "Квадрат"
+  },
+  {
+    "id": "379",
+    "name": "Квадрат стальной 20х20 мм",
+    "url": "https://100met.ru/catalog/kvadrat-stalnoy/kvadrat-stalnoy-20x20mm.html",
+    "unit": "пог. м",
+    "price": 290.0,
+    "category": "Квадрат"
+  },
+  {
+    "id": "380",
+    "name": "Квадрат стальной 25х25 мм",
+    "url": "https://100met.ru/catalog/kvadrat-stalnoy/kvadrat-stalnoy-25x25mm.html",
+    "unit": "пог. м",
+    "price": 450.0,
+    "category": "Квадрат"
+  },
+  {
+    "id": "381",
+    "name": "Квадрат стальной 30х30 мм",
+    "url": "https://100met.ru/catalog/kvadrat-stalnoy/kvadrat-stalnoy-30x30mm.html",
+    "unit": "пог. м",
+    "price": 624.0,
+    "category": "Квадрат"
+  },
+  {
+    "id": "382",
+    "name": "Квадрат стальной 40х40 мм",
+    "url": "https://100met.ru/catalog/kvadrat-stalnoy/kvadrat-stalnoy-40x40mm.html",
+    "unit": "пог. м",
+    "price": 1200.0,
+    "category": "Квадрат"
+  },
+  {
+    "id": "383",
+    "name": "Лист стальной гладкий холоднокатаный 1250х2500х0,8 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-gladkiy/list-stalnoy-gladkiy-holodnokatanyy-1250x2500x0.8mm.html",
+    "unit": "шт.",
+    "price": 2250.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "384",
+    "name": "Лист стальной гладкий холоднокатаный 1250х2500х1 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-gladkiy/list-stalnoy-gladkiy-holodnokatanyy-1250x2500x1mm.html",
+    "unit": "шт.",
+    "price": 2000.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "385",
+    "name": "Лист стальной гладкий холоднокатаный 1250х2500х1,2 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-gladkiy/list-stalnoy-gladkiy-holodnokatanyy-1250x2500x1.2mm.html",
+    "unit": "шт.",
+    "price": 3200.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "386",
+    "name": "Лист стальной гладкий холоднокатаный 1250х2500х1,5 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-gladkiy/list-stalnoy-gladkiy-holodnokatanyy-1250x2500x1.5mm.html",
+    "unit": "шт.",
+    "price": 3360.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "387",
+    "name": "Лист стальной гладкий горячекатаный 1250х2500х1,5 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-gladkiy/list-stalnoy-gladkiy-goryachekatanyy-1250x2500x1.5mm.html",
+    "unit": "шт.",
+    "price": 3300.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "388",
+    "name": "Лист стальной гладкий горячекатаный 1250х2500х2 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-gladkiy/list-stalnoy-gladkiy-goryachekatanyy-1250x2500x2mm.html",
+    "unit": "шт.",
+    "price": 3600.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "389",
+    "name": "Лист стальной гладкий горячекатаный 1250х2500х3 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-gladkiy/list-stalnoy-gladkiy-goryachekatanyy-1250x2500x3mm.html",
+    "unit": "шт.",
+    "price": 5390.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "399",
+    "name": "Лист гладкий горячекатаный: 1500х6000х3,0 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-gladkiy/list-gladkij-goryachekatanyij-1500x6000x3mm.html",
+    "unit": "м2",
+    "price": 2600.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "390",
+    "name": "Лист стальной гладкий горячекатаный 1500х6000х4 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-gladkiy/list-stalnoy-gladkiy-goryachekatanyy-1500x6000x4mm.html",
+    "unit": "м2",
+    "price": 2090.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "391",
+    "name": "Лист стальной гладкий горячекатаный 1500х6000х5 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-gladkiy/list-stalnoy-gladkiy-goryachekatanyy-1500x6000x5mm.html",
+    "unit": "м2",
+    "price": 2800.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "392",
+    "name": "Лист стальной гладкий горячекатаный 1500х6000х6 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-gladkiy/list-stalnoy-gladkiy-goryachekatanyy-1500x6000x6mm.html",
+    "unit": "м2",
+    "price": 3290.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "393",
+    "name": "Лист стальной гладкий горячекатаный 1500х6000х8 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-gladkiy/list-stalnoy-gladkiy-goryachekatanyy-1500x6000x8mm.html",
+    "unit": "м2",
+    "price": 4090.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "394",
+    "name": "Лист стальной гладкий горячекатаный 1500х6000х10 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-gladkiy/list-stalnoy-gladkiy-goryachekatanyy-1500x6000x10mm.html",
+    "unit": "м2",
+    "price": 5090.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "395",
+    "name": "Лист стальной гладкий горячекатаный 1500х6000х12 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-gladkiy/list-stalnoy-gladkiy-goryachekatanyy-1500x6000x12mm.html",
+    "unit": "м2",
+    "price": 6500.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "396",
+    "name": "Лист стальной гладкий горячекатаный 1500х6000х14 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-gladkiy/list-stalnoy-gladkiy-goryachekatanyy-1500x6000x14mm.html",
+    "unit": "м2",
+    "price": 8000.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "397",
+    "name": "Лист стальной гладкий горячекатаный 1500х6000х16 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-gladkiy/list-stalnoy-gladkiy-goryachekatanyy-1500x6000x16mm.html",
+    "unit": "м2",
+    "price": 9060.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "398",
+    "name": "Лист стальной гладкий горячекатаный 1500х6000х20 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-gladkiy/list-stalnoy-gladkiy-goryachekatanyy-1500x6000x20mm.html",
+    "unit": "м2",
+    "price": 12500.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "400",
+    "name": "Лист стальной рифленый 1000х3000х2,5 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-riflenyy/list-stalnoy-riflenyy-1000x3000x2.5mm.html",
+    "unit": "шт.",
+    "price": 6360.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "401",
+    "name": "Лист стальной рифленый 1250х2500х3 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-riflenyy/list-stalnoy-riflenyy-1250x2500x3mm.html",
+    "unit": "шт.",
+    "price": 6650.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "407",
+    "name": "Лист стальной рифленый 1500х6000х3,0 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-riflenyy/list-stalnoj-reflennyij-1500x6000x3mm.html",
+    "unit": "м2",
+    "price": 2300.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "402",
+    "name": "Лист стальной рифленый 1500х6000х4 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-riflenyy/list-stalnoy-riflenyy-1500x6000x4mm.html",
+    "unit": "м2",
+    "price": 2556.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "403",
+    "name": "Лист стальной рифленый 1500х6000х5 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-riflenyy/list-stalnoy-riflenyy-1500x6000x5mm.html",
+    "unit": "м2",
+    "price": 3800.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "404",
+    "name": "Лист стальной рифленый 1500х6000х6 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-riflenyy/list-stalnoy-riflenyy-1500x6000x6mm.html",
+    "unit": "м2",
+    "price": 4900.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "405",
+    "name": "Лист стальной рифленый 1500х6000х8 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-riflenyy/list-stalnoy-riflenyy-1500x6000x8mm.html",
+    "unit": "м2",
+    "price": 5900.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "406",
+    "name": "Лист стальной рифленый 1500х6000х10 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-riflenyy/list-stalnoy-riflenyy-1500x6000x10mm.html",
+    "unit": "м2",
+    "price": 7000.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "408",
+    "name": "Лист стальной просечно-вытяжной ПВЛ-406 1Х2, 4 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-prosechno-vytyazhnoy-pvl/list-stalnoy-prosechno-vytyazhnoy-pvl-406-1x2-4mm.html",
+    "unit": "м2",
+    "price": 1090.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "409",
+    "name": "Лист стальной просечно-вытяжной ПВЛ-410 1х2,4, 4 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-prosechno-vytyazhnoy-pvl/list-stalnoy-prosechno-vytyazhnoy-pvl-410-1x2.4-4mm.html",
+    "unit": "м2",
+    "price": 1890.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "410",
+    "name": "Лист стальной просечно-вытяжной ПВЛ-408 1,2Х3, 4 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-prosechno-vytyazhnoy-pvl/list-stalnoy-prosechno-vytyazhnoy-pvl-408-1.2x3-4mm.html",
+    "unit": "м2",
+    "price": 1890.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "411",
+    "name": "Оцинкованный лист 1000х2000х0,35 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-ocinkovannyy/list-stalnoy-ocinkovannyy-1000x2000x0.35mm.html",
+    "unit": "шт.",
+    "price": 1250.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "412",
+    "name": "Оцинкованный лист 1000х2000х0,4 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-ocinkovannyy/list-stalnoy-ocinkovannyy-1000x2000x0.4mm.html",
+    "unit": "шт.",
+    "price": 1350.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "413",
+    "name": "Оцинкованный лист 1000х2000х0,45 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-ocinkovannyy/list-stalnoy-ocinkovannyy-1000x2000x0.45mm.html",
+    "unit": "шт.",
+    "price": 1400.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "414",
+    "name": "Оцинкованный лист 1000х2000х0,5 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-ocinkovannyy/list-stalnoy-ocinkovannyy-1000x2000x0.5mm.html",
+    "unit": "шт.",
+    "price": 1500.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "415",
+    "name": "Оцинкованный лист 1000х2000х0,55 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-ocinkovannyy/list-stalnoy-ocinkovannyy-1000x2000x0.55mm.html",
+    "unit": "шт.",
+    "price": 1600.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "416",
+    "name": "Оцинкованный лист 1000х2000х0,7 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-ocinkovannyy/list-stalnoy-ocinkovannyy-1000x2000x0.7mm.html",
+    "unit": "шт.",
+    "price": 2000.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "417",
+    "name": "Оцинкованный лист 1250х2500х0,35 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-ocinkovannyy/list-stalnoy-ocinkovannyy-1250x2500x0.35mm.html",
+    "unit": "шт.",
+    "price": 1250.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "418",
+    "name": "Оцинкованный лист 1250х2500х0,4 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-ocinkovannyy/list-stalnoy-ocinkovannyy-1250x2500x0.4mm.html",
+    "unit": "шт.",
+    "price": 1350.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "419",
+    "name": "Оцинкованный лист 1250х2500х0,45 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-ocinkovannyy/list-stalnoy-ocinkovannyy-1250x2500x0.45mm.html",
+    "unit": "шт.",
+    "price": 1550.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "420",
+    "name": "Оцинкованный лист 1250х2500х0,5 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-ocinkovannyy/list-stalnoy-ocinkovannyy-1250x2500x0.5mm.html",
+    "unit": "шт.",
+    "price": 1750.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "421",
+    "name": "Оцинкованный лист 1250х2500х0,55 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-ocinkovannyy/list-stalnoy-ocinkovannyy-1250x2500x0.55mm.html",
+    "unit": "шт.",
+    "price": 1750.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "422",
+    "name": "Оцинкованный лист 1250х2500х0,7 мм",
+    "url": "https://100met.ru/catalog/listovoy-prokat/list-stalnoy-ocinkovannyy/list-stalnoy-ocinkovannyy-1250x2500x0.7mm.html",
+    "unit": "шт.",
+    "price": 2100.0,
+    "category": "Листовой прокат"
+  },
+  {
+    "id": "423",
+    "name": "Сетка дорожная черная 100х100х2,5 мм (1,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-100x100x2.5mm-1.5x2.html",
+    "unit": "шт.",
+    "price": 180.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "438",
+    "name": "Сетка дорожная черная 100х100х2,5 мм (2х3)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-100x100x2.5mm-2x3.html",
+    "unit": "шт.",
+    "price": 360.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "453",
+    "name": "Сетка дорожная черная 100х100х2,5 мм (2х6)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-100x100x2.5mm-2x6.html",
+    "unit": "шт.",
+    "price": 720.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "424",
+    "name": "Сетка дорожная черная 100х100х3 мм (1,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-100x100x3mm-1.5x2.html",
+    "unit": "шт.",
+    "price": 195.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "439",
+    "name": "Сетка дорожная черная 100х100х3 мм (2х3)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-100x100x3mm-2x3.html",
+    "unit": "шт.",
+    "price": 390.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "454",
+    "name": "Сетка дорожная черная 100х100х3 мм (2х6)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-100x100x3mm-2x6.html",
+    "unit": "шт.",
+    "price": 780.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "425",
+    "name": "Сетка дорожная черная 100х100х3,5 мм (1,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-100x100x3.5mm-1.5x2.html",
+    "unit": "шт.",
+    "price": 330.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "440",
+    "name": "Сетка дорожная черная 100х100х3,5 мм (2х3)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-100x100x3.5mm-2x3.html",
+    "unit": "шт.",
+    "price": 660.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "455",
+    "name": "Сетка дорожная черная 100х100х3,5 мм (2х6)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-100x100x3.5mm-2x6.html",
+    "unit": "шт.",
+    "price": 1320.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "426",
+    "name": "Сетка дорожная черная 100х100х4 мм (1,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-100x100x4mm-1.5x2.html",
+    "unit": "шт.",
+    "price": 345.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "441",
+    "name": "Сетка дорожная черная 100х100х4 мм (2х3)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-100x100x4mm-2x3.html",
+    "unit": "шт.",
+    "price": 690.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "456",
+    "name": "Сетка дорожная черная 100х100х4 мм (2х6)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-100x100x4mm-2x6.html",
+    "unit": "шт.",
+    "price": 1380.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "427",
+    "name": "Сетка дорожная черная 100х100х5 мм (1,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-100x100x5mm-1.5x2.html",
+    "unit": "шт.",
+    "price": 495.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "442",
+    "name": "Сетка дорожная черная 100х100х5 мм (2х3)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-100x100x5mm-2x3.html",
+    "unit": "шт.",
+    "price": 990.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "457",
+    "name": "Сетка дорожная черная 100х100х5 мм (2х6)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-100x100x5mm-2x6.html",
+    "unit": "шт.",
+    "price": 1980.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "428",
+    "name": "Сетка дорожная черная 120х120х2,5 мм (1,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-120x120x2.5mm-1.5x2.html",
+    "unit": "шт.",
+    "price": 180.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "443",
+    "name": "Сетка дорожная черная 120х120х2,5 мм (2х3)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-120x120x2.5mm-2x3.html",
+    "unit": "шт.",
+    "price": 360.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "458",
+    "name": "Сетка дорожная черная 120х120х2,5 мм (2х6)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-120x120x2.5mm-2x6.html",
+    "unit": "шт.",
+    "price": 720.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "429",
+    "name": "Сетка дорожная черная 120х120х3 мм (1,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-120x120x3mm-1.5x2.html",
+    "unit": "шт.",
+    "price": 195.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "444",
+    "name": "Сетка дорожная черная 120х120х3 мм (2х3)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-120x120x3mm-2x3.html",
+    "unit": "шт.",
+    "price": 390.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "459",
+    "name": "Сетка дорожная черная 120х120х3 мм (2х6)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-120x120x3mm-2x6.html",
+    "unit": "шт.",
+    "price": 780.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "430",
+    "name": "Сетка дорожная черная 120х120х3,5 мм (1,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-120x120x3.5mm-1.5x2.html",
+    "unit": "шт.",
+    "price": 330.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "460",
+    "name": "Сетка дорожная черная 120х120х3,5 мм (2х6)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-120x120x3.5mm-2x6.html",
+    "unit": "шт.",
+    "price": 1320.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "445",
+    "name": "Сетка дорожная черная 120х120х3,5 мм (2х3)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-120x120x3.5mm-2x3.html",
+    "unit": "шт.",
+    "price": 660.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "431",
+    "name": "Сетка дорожная черная 120х120х4 мм (1,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-120x120x4mm-1.5x2.html",
+    "unit": "шт.",
+    "price": 345.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "446",
+    "name": "Сетка дорожная черная 120х120х4 мм (2х3)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-120x120x4mm-2x3.html",
+    "unit": "шт.",
+    "price": 690.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "461",
+    "name": "Сетка дорожная черная 120х120х4 мм (2х6)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-120x120x4mm-2x6.html",
+    "unit": "шт.",
+    "price": 1380.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "432",
+    "name": "Сетка дорожная черная 120х120х5 мм (1,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-120x120x5mm-1.5x2.html",
+    "unit": "шт.",
+    "price": 495.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "447",
+    "name": "Сетка дорожная черная 120х120х5 мм (2х3)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-120x120x5mm-2x3.html",
+    "unit": "шт.",
+    "price": 990.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "462",
+    "name": "Сетка дорожная черная 120х120х5 мм (2х6)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-120x120x5mm-2x6.html",
+    "unit": "шт.",
+    "price": 1980.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "433",
+    "name": "Сетка дорожная черная 150х150х2,5 мм (1,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-150x150x2.5mm-1.5x2.html",
+    "unit": "шт.",
+    "price": 165.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "448",
+    "name": "Сетка дорожная черная 150х150х2,5 мм (2х3)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-150x150x2.5mm-2x3.html",
+    "unit": "шт.",
+    "price": 330.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "463",
+    "name": "Сетка дорожная черная 150х150х2,5 мм (2х6)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-150x150x2.5mm-2x6.html",
+    "unit": "шт.",
+    "price": 660.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "434",
+    "name": "Сетка дорожная черная 150х150х3 мм (1,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-150x150x3mm-1.5x2.html",
+    "unit": "шт.",
+    "price": 180.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "449",
+    "name": "Сетка дорожная черная 150х150х3 мм (2х3)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-150x150x3mm-2x3.html",
+    "unit": "шт.",
+    "price": 360.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "464",
+    "name": "Сетка дорожная черная 150х150х3 мм (2х6)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-150x150x3mm-2x6.html",
+    "unit": "шт.",
+    "price": 720.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "435",
+    "name": "Сетка дорожная черная 150х150х3,5 мм (1,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-150x150x3.5mm-1.5x2.html",
+    "unit": "шт.",
+    "price": 240.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "465",
+    "name": "Сетка дорожная черная 150х150х3,5 мм (2х6)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-150x150x3.5mm-2x6.html",
+    "unit": "шт.",
+    "price": 960.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "450",
+    "name": "Сетка дорожная черная 150х150х3,5 мм (2х3)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-150x150x3.5mm-2x3.html",
+    "unit": "шт.",
+    "price": 540.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "436",
+    "name": "Сетка дорожная черная 150х150х4 мм (1,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-150x150x4mm-1.5x2.html",
+    "unit": "шт.",
+    "price": 255.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "451",
+    "name": "Сетка дорожная черная 150х150х4 мм (2х3)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-150x150x4mm-2x3.html",
+    "unit": "шт.",
+    "price": 510.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "466",
+    "name": "Сетка дорожная черная 150х150х4 мм (2х6)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-150x150x4mm-2x6.html",
+    "unit": "шт.",
+    "price": 1020.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "437",
+    "name": "Сетка дорожная черная 150х150х5 мм (1,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-150x150x5mm-1.5x2.html",
+    "unit": "шт.",
+    "price": 360.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "452",
+    "name": "Сетка дорожная черная 150х150х5 мм (2х3)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-150x150x5mm-2x3.html",
+    "unit": "шт.",
+    "price": 720.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "467",
+    "name": "Сетка дорожная черная 150х150х5 мм (2х6)",
+    "url": "https://100met.ru/catalog/setka/setka-dorozhnaya-v-kartah/setka-dorozhnaya-chernaya-150x150x5mm-2x6.html",
+    "unit": "шт.",
+    "price": 1440.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "468",
+    "name": "Сетка кладочная черная 50х50х2,5 мм (0,35х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-50x50x2.5mm-0.35x2.html",
+    "unit": "шт.",
+    "price": 77.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "469",
+    "name": "Сетка кладочная черная 50х50х3 мм (0,35х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-50x50x3mm-0.35x2.html",
+    "unit": "шт.",
+    "price": 77.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "470",
+    "name": "Сетка кладочная черная 50х50х3,5 мм (0,35х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-50x50x3.5mm-0.35x2.html",
+    "unit": "шт.",
+    "price": 84.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "471",
+    "name": "Сетка кладочная черная 50х50х4 мм (0,35х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-50x50x4mm-0.35x2.html",
+    "unit": "шт.",
+    "price": 100.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "472",
+    "name": "Сетка кладочная черная 50х50х5 мм (0,35х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-50x50x5mm-0.35x2.html",
+    "unit": "шт.",
+    "price": 175.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "473",
+    "name": "Сетка кладочная черная 55х55х2,5 мм (0,35х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-55x55x2.5mm-0.35x2.html",
+    "unit": "шт.",
+    "price": 77.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "474",
+    "name": "Сетка кладочная черная 55х55х3 мм (0,35х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-55x55x3mm-0.35x2.html",
+    "unit": "шт.",
+    "price": 77.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "475",
+    "name": "Сетка кладочная черная 55х55х3,5 мм (0,35х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-55x55x3.5mm-0.35x2.html",
+    "unit": "шт.",
+    "price": 100.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "476",
+    "name": "Сетка кладочная черная 55х55х4 мм (0,35х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-55x55x4mm-0.35x2.html",
+    "unit": "шт.",
+    "price": 110.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "477",
+    "name": "Сетка кладочная черная 55х55х5 мм (0,35х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-55x55x5mm-0.35x2.html",
+    "unit": "шт.",
+    "price": 175.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "478",
+    "name": "Сетка кладочная черная 60х60х2,5 мм (0,35х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-60x60x2.5mm-0.35x2.html",
+    "unit": "шт.",
+    "price": 77.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "479",
+    "name": "Сетка кладочная черная 60х60х3 мм (0,35х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-60x60x3mm-0.35x2.html",
+    "unit": "шт.",
+    "price": 77.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "480",
+    "name": "Сетка кладочная черная 60х60х3,5 мм (0,35х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-60x60x3.5mm-0.35x2.html",
+    "unit": "шт.",
+    "price": 84.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "481",
+    "name": "Сетка кладочная черная 60х60х4 мм (0,35х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-60x60x4mm-0.35x2.html",
+    "unit": "шт.",
+    "price": 88.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "482",
+    "name": "Сетка кладочная черная 60х60х5 мм (0,35х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-60x60x5mm-0.35x2.html",
+    "unit": "шт.",
+    "price": 126.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "483",
+    "name": "Сетка кладочная черная 50х50х2,5 мм (0,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-50x50x2.5mm-0.5x2.html",
+    "unit": "шт.",
+    "price": 110.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "484",
+    "name": "Сетка кладочная черная 50х50х3 мм (0,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-50x50x3mm-0.5x2.html",
+    "unit": "шт.",
+    "price": 110.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "485",
+    "name": "Сетка кладочная черная 50х50х3,5 мм (0,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-50x50x3.5mm-0.5x2.html",
+    "unit": "шт.",
+    "price": 150.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "486",
+    "name": "Сетка кладочная черная 50х50х4 мм (0,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-50x50x4mm-0.5x2.html",
+    "unit": "шт.",
+    "price": 150.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "487",
+    "name": "Сетка кладочная черная 50х50х5 мм (0,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-50x50x5mm-0.5x2.html",
+    "unit": "шт.",
+    "price": 250.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "488",
+    "name": "Сетка кладочная черная 55х55х2,5 мм (0,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-55x55x2.5mm-0.5x2.html",
+    "unit": "шт.",
+    "price": 110.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "489",
+    "name": "Сетка кладочная черная 55х55х3 мм (0,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-55x55x3mm-0.5x2.html",
+    "unit": "шт.",
+    "price": 110.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "490",
+    "name": "Сетка кладочная черная 55х55х3,5 мм (0,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-55x55x3.5mm-0.5x2.html",
+    "unit": "шт.",
+    "price": 150.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "491",
+    "name": "Сетка кладочная черная 55х55х4 мм (0,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-55x55x4mm-0.5x2.html",
+    "unit": "шт.",
+    "price": 150.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "492",
+    "name": "Сетка кладочная черная 55х55х5 мм (0,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-55x55x5mm-0.5x2.html",
+    "unit": "шт.",
+    "price": 250.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "493",
+    "name": "Сетка кладочная черная 60х60х2,5 мм (0,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-60x60x2.5mm-0.5x2.html",
+    "unit": "шт.",
+    "price": 110.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "494",
+    "name": "Сетка кладочная черная 60х60х3 мм (0,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-60x60x3mm-0.5x2.html",
+    "unit": "шт.",
+    "price": 110.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "495",
+    "name": "Сетка кладочная черная 60х60х3,5 мм (0,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-60x60x3.5mm-0.5x2.html",
+    "unit": "шт.",
+    "price": 150.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "496",
+    "name": "Сетка кладочная черная 60х60х4 мм (0,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-60x60x4mm-0.5x2.html",
+    "unit": "шт.",
+    "price": 150.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "497",
+    "name": "Сетка кладочная черная 60х60х5 мм (0,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-60x60x5mm-0.5x2.html",
+    "unit": "шт.",
+    "price": 250.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "498",
+    "name": "Сетка кладочная черная 50х50х2,5 мм (1х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-50x50x2.5mm-1x2.html",
+    "unit": "шт.",
+    "price": 220.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "499",
+    "name": "Сетка кладочная черная 50х50х3 мм (1х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-50x50x3mm-1x2.html",
+    "unit": "шт.",
+    "price": 220.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "500",
+    "name": "Сетка кладочная черная 50х50х3,5 мм (1х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-50x50x3.5mm-1x2.html",
+    "unit": "шт.",
+    "price": 300.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "501",
+    "name": "Сетка кладочная черная 50х50х4 мм (1х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-50x50x4mm-1x2.html",
+    "unit": "шт.",
+    "price": 300.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "502",
+    "name": "Сетка кладочная черная 50х50х5 мм (1х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-50x50x5mm-1x2.html",
+    "unit": "шт.",
+    "price": 500.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "503",
+    "name": "Сетка кладочная черная 55х55х2,5 мм (1х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-55x55x2.5mm-1x2.html",
+    "unit": "шт.",
+    "price": 220.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "504",
+    "name": "Сетка кладочная черная 55х55х3 мм (1х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-55x55x3mm-1x2.html",
+    "unit": "шт.",
+    "price": 220.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "505",
+    "name": "Сетка кладочная черная 55х55х3,5 мм (1х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-55x55x3.5mm-1x2.html",
+    "unit": "шт.",
+    "price": 300.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "506",
+    "name": "Сетка кладочная черная 55х55х4 мм (1х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-55x55x4mm-1x2.html",
+    "unit": "шт.",
+    "price": 300.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "507",
+    "name": "Сетка кладочная черная 55х55х5 мм (1х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-55x55x5mm-1x2.html",
+    "unit": "шт.",
+    "price": 500.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "508",
+    "name": "Сетка кладочная черная 60х60х2,5 мм (1х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-60x60x2.5mm-1x2.html",
+    "unit": "шт.",
+    "price": 220.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "509",
+    "name": "Сетка кладочная черная 60х60х3 мм (1х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-60x60x3mm-1x2.html",
+    "unit": "шт.",
+    "price": 220.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "510",
+    "name": "Сетка кладочная черная 60х60х3,5 мм (1х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-60x60x3.5mm-1x2.html",
+    "unit": "шт.",
+    "price": 300.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "511",
+    "name": "Сетка кладочная черная 60х60х4 мм (1х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-60x60x4mm-1x2.html",
+    "unit": "шт.",
+    "price": 300.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "512",
+    "name": "Сетка кладочная черная 60х60х5 мм (1х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-chernaya-60x60x5mm-1x2.html",
+    "unit": "шт.",
+    "price": 500.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "513",
+    "name": "Сетка кладочная оцинкованная 50х50х3 мм (0,35х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-ocinkovannaya-50x50x3mm-0.35x2.html",
+    "unit": "шт.",
+    "price": 150.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "514",
+    "name": "Сетка кладочная оцинкованная 50х50х4 мм (0,35х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-ocinkovannaya-50x50x4mm-0.35x2.html",
+    "unit": "шт.",
+    "price": 195.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "515",
+    "name": "Сетка кладочная оцинкованная 50х50х5 мм (0,35х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-ocinkovannaya-50x50x5mm-0.35x2.html",
+    "unit": "шт.",
+    "price": 250.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "516",
+    "name": "Сетка кладочная оцинкованная 50х50х3 мм (0,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-ocinkovannaya-50x50x3mm-0.5x2.html",
+    "unit": "шт.",
+    "price": 160.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "517",
+    "name": "Сетка кладочная оцинкованная 50х50х4 мм (0,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-ocinkovannaya-50x50x4mm-0.5x2.html",
+    "unit": "шт.",
+    "price": 220.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "518",
+    "name": "Сетка кладочная оцинкованная 50х50х5 мм (0,5х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-ocinkovannaya-50x50x5mm-0.5x2.html",
+    "unit": "шт.",
+    "price": 270.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "519",
+    "name": "Сетка кладочная оцинкованная 50х50х3 мм (1х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-ocinkovannaya-50x50x3mm-1x2.html",
+    "unit": "шт.",
+    "price": 320.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "520",
+    "name": "Сетка кладочная оцинкованная 50х50х4 мм (1х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-ocinkovannaya-50x50x4mm-1x2.html",
+    "unit": "шт.",
+    "price": 440.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "521",
+    "name": "Сетка кладочная оцинкованная 50х50х5 мм (1х2)",
+    "url": "https://100met.ru/catalog/setka/setka-kladochnaya-v-kartah/setka-kladochnaya-ocinkovannaya-50x50x5mm-1x2.html",
+    "unit": "шт.",
+    "price": 540.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "522",
+    "name": "Сетка рабица черная 10х10х1 мм (1х10)",
+    "url": "https://100met.ru/catalog/setka/setka-rabica-v-rulonah/setka-rabica-chernaya-10x10x1mm-1x10.html",
+    "unit": "шт.",
+    "price": 1500.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "523",
+    "name": "Сетка рабица черная (Китай) 10х10х1 мм (1х10)",
+    "url": "https://100met.ru/catalog/setka/setka-rabica-v-rulonah/setka-rabica-chernaya-kitay-10x10x1mm-1x10.html",
+    "unit": "шт.",
+    "price": 800.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "524",
+    "name": "Сетка рабица черная 20х20х1,4 мм (1,5х10)",
+    "url": "https://100met.ru/catalog/setka/setka-rabica-v-rulonah/setka-rabica-chernaya-20x20x1.4mm-1.5x10.html",
+    "unit": "шт.",
+    "price": 1000.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "525",
+    "name": "Сетка рабица оцинкованная 10х10х1 мм (1х10)",
+    "url": "https://100met.ru/catalog/setka/setka-rabica-v-rulonah/setka-rabica-ocinkovannaya-10x10x1mm-1x10.html",
+    "unit": "шт.",
+    "price": 2400.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "526",
+    "name": "Сетка рабица оцинкованная 15х15х1,2 мм (1х10)",
+    "url": "https://100met.ru/catalog/setka/setka-rabica-v-rulonah/setka-rabica-ocinkovannaya-15x15x1.2mm-1x10.html",
+    "unit": "шт.",
+    "price": 1800.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "527",
+    "name": "Сетка рабица оцинкованная 20х20х1,4 мм (1,5х10)",
+    "url": "https://100met.ru/catalog/setka/setka-rabica-v-rulonah/setka-rabica-ocinkovannaya-20x20x1.4mm-1.5x10.html",
+    "unit": "шт.",
+    "price": 2200.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "528",
+    "name": "Сетка рабица оцинкованная 55х55х1,6 мм (1,5х10)",
+    "url": "https://100met.ru/catalog/setka/setka-rabica-v-rulonah/setka-rabica-ocinkovannaya-55x55x1.6mm-1.5x10.html",
+    "unit": "шт.",
+    "price": 1200.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "529",
+    "name": "Сетка рабица оцинкованная 55х55х2,5 мм (1,5х10)",
+    "url": "https://100met.ru/catalog/setka/setka-rabica-v-rulonah/setka-rabica-ocinkovannaya-55x55x2.5mm-1.5x10.html",
+    "unit": "шт.",
+    "price": 2300.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "530",
+    "name": "Сетка рабица оцинкованная 55х55х1,6 мм (1,8х10)",
+    "url": "https://100met.ru/catalog/setka/setka-rabica-v-rulonah/setka-rabica-ocinkovannaya-55x55x1.6mm-1.8x10.html",
+    "unit": "шт.",
+    "price": 1250.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "531",
+    "name": "Сетка рабица оцинкованная 55х55х2,5 мм (1,8х10)",
+    "url": "https://100met.ru/catalog/setka/setka-rabica-v-rulonah/setka-rabica-ocinkovannaya-55x55x2.5mm-1.8x10.html",
+    "unit": "шт.",
+    "price": 2900.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "532",
+    "name": "Сетка рабица оцинкованная 55х55х1,6 мм (2х10)",
+    "url": "https://100met.ru/catalog/setka/setka-rabica-v-rulonah/setka-rabica-ocinkovannaya-55x55x1.6mm-2x10.html",
+    "unit": "шт.",
+    "price": 1400.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "533",
+    "name": "Сетка рабица оцинкованная 55х55х2,5 мм (2х10)",
+    "url": "https://100met.ru/catalog/setka/setka-rabica-v-rulonah/setka-rabica-ocinkovannaya-55x55x2.5mm-2x10.html",
+    "unit": "шт.",
+    "price": 3300.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "534",
+    "name": "Сетка сварная черная 25х25х1,6 мм (1х25)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-svarnaya-chernaya-25x25x1.6mm-1x25.html",
+    "unit": "шт.",
+    "price": 3750.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "535",
+    "name": "Сетка сварная черная 25х25х1,6 мм (1,5х25)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-svarnaya-chernaya-25x25x1.6mm-1.5x25.html",
+    "unit": "шт.",
+    "price": 4000.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "536",
+    "name": "Сетка сварная черная 25х25х1,6 мм (1,8х25)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-svarnaya-chernaya-25x25x1.6mm-1.8x25.html",
+    "unit": "шт.",
+    "price": 3150.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "537",
+    "name": "Сетка сварная черная 25х25х1,6 мм (2х25)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-svarnaya-chernaya-25x25x1.6mm-2x25.html",
+    "unit": "шт.",
+    "price": 3500.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "538",
+    "name": "Сетка сварная черная 50х50х1,6 мм (1,5х25)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-svarnaya-chernaya-50x50x1.6mm-1.5x25.html",
+    "unit": "шт.",
+    "price": 1000.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "539",
+    "name": "Сетка сварная черная 50х50х2,5 мм (1,5х15)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-svarnaya-chernaya-50x50x2.5mm-1.5x15.html",
+    "unit": "шт.",
+    "price": 1800.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "540",
+    "name": "Сетка сварная черная «Броня» 50х50х4 мм (1,5х15)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-svarnaya-chernaya-bronya-50x50x4mm-1.5x15.html",
+    "unit": "шт.",
+    "price": 4500.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "541",
+    "name": "Сетка сварная черная 50х50х2,5 мм (1,8х15)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-svarnaya-chernaya-50x50x2.5mm-1.8x15.html",
+    "unit": "шт.",
+    "price": 2160.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "542",
+    "name": "Сетка сварная черная 50х50х2,5 мм (2х15)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-svarnaya-chernaya-50x50x2.5mm-2x15.html",
+    "unit": "шт.",
+    "price": 2400.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "545",
+    "name": "Сетка сварная оцинкованная 25х25х1,6 мм (1,5х25)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-svarnaya-ocinkovannaya-25x25x1.6mm-1.5x25.html",
+    "unit": "шт.",
+    "price": 5600.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "543",
+    "name": "Сетка сварная оцинкованная 12,5х25х1,6 мм (1х50)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-svarnaya-ocinkovannaya-12.5x25x1.6mm-1x50.html",
+    "unit": "шт.",
+    "price": 7900.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "544",
+    "name": "Сетка сварная оцинкованная 25х25х1,6 мм (1х25)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-svarnaya-ocinkovannaya-25x25x1.6mm-1x25.html",
+    "unit": "шт.",
+    "price": 3700.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "546",
+    "name": "Сетка сварная оцинкованная 25х25х1,6 мм (1,8х25)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-svarnaya-ocinkovannaya-25x25x1.6mm-1.8x25.html",
+    "unit": "шт.",
+    "price": 6750.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "547",
+    "name": "Сетка сварная оцинкованная 25х25х1,6 мм (2х25)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-svarnaya-ocinkovannaya-25x25x1.6mm-2x25.html",
+    "unit": "шт.",
+    "price": 7500.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "548",
+    "name": "Сетка сварная оцинкованная 50х50х1,6 мм (1,5х25)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-svarnaya-ocinkovannaya-50x50x1.6mm-1.5x25.html",
+    "unit": "шт.",
+    "price": 2600.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "549",
+    "name": "Сетка сварная оцинкованная 50х50х2,5 мм (1,5х15)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-svarnaya-ocinkovannaya-50x50x2.5mm-1.5x15.html",
+    "unit": "шт.",
+    "price": 3900.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "550",
+    "name": "Сетка сварная оцинкованная 50х50х2,5 мм (1,8х15)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-svarnaya-ocinkovannaya-50x50x2.5mm-1.8x15.html",
+    "unit": "шт.",
+    "price": 4370.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "551",
+    "name": "Сетка сварная оцинкованная 50х50х2,5 мм (2х15)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-svarnaya-ocinkovannaya-50x50x2.5mm-2x15.html",
+    "unit": "шт.",
+    "price": 4900.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "552",
+    "name": "Сетка оцинкованная (Китай) 6х6х0,6 мм (1х15)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-ocinkovannaya-kitay-6x6h0.6mm-1x15.html",
+    "unit": "шт.",
+    "price": 1900.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "553",
+    "name": "Сетка оцинкованная (Китай) 10х10х0,7 мм (1х15)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-ocinkovannaya-kitay-10x10x0.7mm-1x15.html",
+    "unit": "шт.",
+    "price": 2000.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "554",
+    "name": "Сетка оцинкованная (Китай) 12,5х12,5х0,7 мм (1х15)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-ocinkovannaya-kitay-12.5x12.5x0.7mm-1x15.html",
+    "unit": "шт.",
+    "price": 1650.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "555",
+    "name": "Сетка оцинкованная (Китай) 20х20х0,8 мм (1х25)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-ocinkovannaya-kitay-20x20x0.8mm-1x25.html",
+    "unit": "шт.",
+    "price": 1800.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "556",
+    "name": "Сетка оцинкованная (Китай) 25х25х0,8 мм (1х25)",
+    "url": "https://100met.ru/catalog/setka/setka-svarnaya-v-rulonah/setka-ocinkovannaya-kitay-25x25x0.8mm-1x25.html",
+    "unit": "шт.",
+    "price": 1850.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "557",
+    "name": "Сетка штукатурная черная 5x5х0,7 мм (1х50)",
+    "url": "https://100met.ru/catalog/setka/setka-tkanaya-shtukaturnaya-v-rulonah/setka-shtukaturnaya-chernaya-5x5x0.7mm-1x50.html",
+    "unit": "шт.",
+    "price": 5500.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "558",
+    "name": "Сетка тканая черная 14х14х0,8 мм (1х80)",
+    "url": "https://100met.ru/catalog/setka/setka-tkanaya-shtukaturnaya-v-rulonah/setka-tkanaya-chernaya-14x14x0.8mm-1x80.html",
+    "unit": "шт.",
+    "price": 2960.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "559",
+    "name": "Сетка штукатурная черная 10x10х1 мм (1х80)",
+    "url": "https://100met.ru/catalog/setka/setka-tkanaya-shtukaturnaya-v-rulonah/setka-shtukaturnaya-chernaya-10x10x1mm-1x80.html",
+    "unit": "шт.",
+    "price": 2900.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "560",
+    "name": "Сетка штукатурная оцинкованная 10x10х1 мм (1х80)",
+    "url": "https://100met.ru/catalog/setka/setka-tkanaya-shtukaturnaya-v-rulonah/setka-shtukaturnaya-ocinkovannaya-10x10x1mm-1x80.html",
+    "unit": "шт.",
+    "price": 4000.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "561",
+    "name": "Сетка тканая оцинкованная 14х14х0,8 мм (1х80)",
+    "url": "https://100met.ru/catalog/setka/setka-tkanaya-shtukaturnaya-v-rulonah/setka-tkanaya-ocinkovannaya-14x14x0.8mm-1x80.html",
+    "unit": "шт.",
+    "price": 3800.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "562",
+    "name": "Сетка ПВХ 25х25х2 мм (1х50)",
+    "url": "https://100met.ru/catalog/setka/setka-s-pvh-pokrytiem-v-rulonah/setka-pvh-25x25x2mm-1x50.html",
+    "unit": "шт.",
+    "price": 15000.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "563",
+    "name": "Сетка ПВХ 50х50х2 мм (1,5х20)",
+    "url": "https://100met.ru/catalog/setka/setka-s-pvh-pokrytiem-v-rulonah/setka-pvh-50x50x2mm-1.5x20.html",
+    "unit": "шт.",
+    "price": 6500.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "564",
+    "name": "Сетка ПВХ 50х50х2 мм (1,8х20)",
+    "url": "https://100met.ru/catalog/setka/setka-s-pvh-pokrytiem-v-rulonah/setka-pvh-50x50x2mm-1.8x20.html",
+    "unit": "шт.",
+    "price": 7400.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "565",
+    "name": "Сетка ПВХ 50х50х2 мм (2х20)",
+    "url": "https://100met.ru/catalog/setka/setka-s-pvh-pokrytiem-v-rulonah/setka-pvh-50x50x2mm-2x20.html",
+    "unit": "шт.",
+    "price": 8200.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "566",
+    "name": "Сетка ПВХ 100х50х2 мм (1,5х20)",
+    "url": "https://100met.ru/catalog/setka/setka-s-pvh-pokrytiem-v-rulonah/setka-pvh-100x50x2mm-1.5x20.html",
+    "unit": "шт.",
+    "price": 5500.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "567",
+    "name": "Сетка ПВХ 100х50х2 мм (1,8х20)",
+    "url": "https://100met.ru/catalog/setka/setka-s-pvh-pokrytiem-v-rulonah/setka-pvh-100x50x2mm-1.8x20.html",
+    "unit": "шт.",
+    "price": 5900.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "568",
+    "name": "Сетка ПВХ 100х50х2 мм (2х20)",
+    "url": "https://100met.ru/catalog/setka/setka-s-pvh-pokrytiem-v-rulonah/setka-pvh-100x50x2mm-2x20.html",
+    "unit": "шт.",
+    "price": 6500.0,
+    "category": "Сетка"
+  },
+  {
+    "id": "327",
+    "name": "Балка двутавровая 10 Б1",
+    "url": "https://100met.ru/catalog/balka-dvutavrovaya/balka-dvutavrovaya-10-b1.html",
+    "unit": "пог. м",
+    "price": 1150.0,
+    "category": "Балка двутавровая"
+  },
+  {
+    "id": "328",
+    "name": "Балка двутавровая 12 Б1",
+    "url": "https://100met.ru/catalog/balka-dvutavrovaya/balka-dvutavrovaya-12-b1.html",
+    "unit": "пог. м",
+    "price": 1200.0,
+    "category": "Балка двутавровая"
+  },
+  {
+    "id": "329",
+    "name": "Балка двутавровая 14 Б1",
+    "url": "https://100met.ru/catalog/balka-dvutavrovaya/balka-dvutavrovaya-14-b1.html",
+    "unit": "пог. м",
+    "price": 1350.0,
+    "category": "Балка двутавровая"
+  },
+  {
+    "id": "330",
+    "name": "Балка двутавровая 16 Б1",
+    "url": "https://100met.ru/catalog/balka-dvutavrovaya/balka-dvutavrovaya-16-b1.html",
+    "unit": "пог. м",
+    "price": 1550.0,
+    "category": "Балка двутавровая"
+  },
+  {
+    "id": "331",
+    "name": "Балка двутавровая 18 Б1",
+    "url": "https://100met.ru/catalog/balka-dvutavrovaya/balka-dvutavrovaya-18-b1.html",
+    "unit": "пог. м",
+    "price": 2050.0,
+    "category": "Балка двутавровая"
+  },
+  {
+    "id": "332",
+    "name": "Балка двутавровая 20 Б1",
+    "url": "https://100met.ru/catalog/balka-dvutavrovaya/balka-dvutavrovaya-20-b1.html",
+    "unit": "пог. м",
+    "price": 2450.0,
+    "category": "Балка двутавровая"
+  },
+  {
+    "id": "333",
+    "name": "Балка двутавровая 25 Б1",
+    "url": "https://100met.ru/catalog/balka-dvutavrovaya/balka-dvutavrovaya-25-b1.html",
+    "unit": "пог. м",
+    "price": 2800.0,
+    "category": "Балка двутавровая"
+  },
+  {
+    "id": "334",
+    "name": "Балка двутавровая 35 Б1",
+    "url": "https://100met.ru/catalog/balka-dvutavrovaya/balka-dvutavrovaya-35-b1.html",
+    "unit": "пог. м",
+    "price": 4200.0,
+    "category": "Балка двутавровая"
+  },
+  {
+    "id": "335",
+    "name": "Балка двутавровая 10",
+    "url": "https://100met.ru/catalog/balka-dvutavrovaya/balka-dvutavrovaya-10.html",
+    "unit": "пог. м",
+    "price": 1300.0,
+    "category": "Балка двутавровая"
+  },
+  {
+    "id": "336",
+    "name": "Балка двутавровая 12",
+    "url": "https://100met.ru/catalog/balka-dvutavrovaya/balka-dvutavrovaya-12.html",
+    "unit": "пог. м",
+    "price": 1390.0,
+    "category": "Балка двутавровая"
+  },
+  {
+    "id": "337",
+    "name": "Балка двутавровая 14",
+    "url": "https://100met.ru/catalog/balka-dvutavrovaya/balka-dvutavrovaya-14.html",
+    "unit": "пог. м",
+    "price": 1750.0,
+    "category": "Балка двутавровая"
+  },
+  {
+    "id": "338",
+    "name": "Балка двутавровая 16",
+    "url": "https://100met.ru/catalog/balka-dvutavrovaya/balka-dvutavrovaya-16.html",
+    "unit": "пог. м",
+    "price": 2090.0,
+    "category": "Балка двутавровая"
+  },
+  {
+    "id": "339",
+    "name": "Балка двутавровая 18",
+    "url": "https://100met.ru/catalog/balka-dvutavrovaya/balka-dvutavrovaya-18.html",
+    "unit": "пог. м",
+    "price": 2300.0,
+    "category": "Балка двутавровая"
+  },
+  {
+    "id": "340",
+    "name": "Балка двутавровая 20",
+    "url": "https://100met.ru/catalog/balka-dvutavrovaya/balka-dvutavrovaya-20.html",
+    "unit": "пог. м",
+    "price": 2600.0,
+    "category": "Балка двутавровая"
+  },
+  {
+    "id": "341",
+    "name": "Балка двутавровая 30",
+    "url": "https://100met.ru/catalog/balka-dvutavrovaya/balka-dvutavrovaya-30.html",
+    "unit": "пог. м",
+    "price": 3400.0,
+    "category": "Балка двутавровая"
+  },
+  {
+    "id": "342",
+    "name": "Балка двутавровая 40",
+    "url": "https://100met.ru/catalog/balka-dvutavrovaya/balka-dvutavrovaya-40.html",
+    "unit": "пог. м",
+    "price": 7500.0,
+    "category": "Балка двутавровая"
+  },
+  {
+    "id": "569",
+    "name": "Проволока вязальная 1,2 мм",
+    "url": "https://100met.ru/catalog/provoloka-vyazalnaya/provoloka-vyazalnaya-1.2mm.html",
+    "unit": "кг",
+    "price": 100.0,
+    "category": "Проволока вязальная"
+  },
+  {
+    "id": "570",
+    "name": "Проволока вязальная 2 мм",
+    "url": "https://100met.ru/catalog/provoloka-vyazalnaya/provoloka-vyazalnaya-2mm.html",
+    "unit": "кг",
+    "price": 120.0,
+    "category": "Проволока вязальная"
+  },
+  {
+    "id": "571",
+    "name": "Проволока вязальная 3 мм",
+    "url": "https://100met.ru/catalog/provoloka-vyazalnaya/provoloka-vyazalnaya-3mm.html",
+    "unit": "кг",
+    "price": 100.0,
+    "category": "Проволока вязальная"
+  },
+  {
+    "id": "572",
+    "name": "Проволока вязальная 4 мм",
+    "url": "https://100met.ru/catalog/provoloka-vyazalnaya/provoloka-vyazalnaya-4mm.html",
+    "unit": "кг",
+    "price": 100.0,
+    "category": "Проволока вязальная"
+  },
+  {
+    "id": "573",
+    "name": "Проволока вязальная 5 мм",
+    "url": "https://100met.ru/catalog/provoloka-vyazalnaya/provoloka-vyazalnaya-5mm.html",
+    "unit": "кг",
+    "price": 110.0,
+    "category": "Проволока вязальная"
+  },
+  {
+    "id": "574",
+    "name": "Профнастил С-8 вишневый 0,35 мм (Ral 3005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-8-vishnevyy-0.35mm-ral-3005.html",
+    "unit": "пог. м",
+    "price": 518.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "575",
+    "name": "Профнастил С-8 вишневый 0,4 мм (Ral 3005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-8-vishnevyy-0.4mm-ral-3005.html",
+    "unit": "пог. м",
+    "price": 546.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "576",
+    "name": "Профнастил С-8 вишневый 0,45 мм (Ral 3005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-8-vishnevyy-0.45mm-ral-3005.html",
+    "unit": "пог. м",
+    "price": 595.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "577",
+    "name": "Профнастил С-20 вишневый 0,35 мм (Ral 3005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-20-vishnevyy-0.35mm-ral-3005.html",
+    "unit": "пог. м",
+    "price": 518.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "578",
+    "name": "Профнастил С-20 вишневый 0,4 мм (Ral 3005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-20-vishnevyy-0.4mm-ral-3005.html",
+    "unit": "пог. м",
+    "price": 546.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "579",
+    "name": "Профнастил С-20 вишневый 0,45 мм (Ral 3005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-20-vishnevyy-0.45mm-ral-3005.html",
+    "unit": "пог. м",
+    "price": 595.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "580",
+    "name": "Профнастил С-21 вишневый 0,35 мм (Ral 3005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-21-vishnevyy-0.35mm-ral-3005.html",
+    "unit": "пог. м",
+    "price": 518.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "581",
+    "name": "Профнастил С-21 вишневый 0,4 мм (Ral 3005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-21-vishnevyy-0.4mm-ral-3005.html",
+    "unit": "пог. м",
+    "price": 546.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "582",
+    "name": "Профнастил С-21 вишневый 0,45 мм (Ral 3005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-21-vishnevyy-0.45mm-ral-3005.html",
+    "unit": "пог. м",
+    "price": 595.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "583",
+    "name": "Профнастил С-8 зеленый 0,35 мм (Ral 6005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-8-zelenyy-0.35mm-ral-6005.html",
+    "unit": "пог. м",
+    "price": 518.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "584",
+    "name": "Профнастил С-8 зеленый 0,4 мм (Ral 6005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-8-zelenyy-0.4mm-ral-6005.html",
+    "unit": "пог. м",
+    "price": 546.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "585",
+    "name": "Профнастил С-8 зеленый 0,45 мм (Ral 6005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-8-zelenyy-0.45mm-ral-6005.html",
+    "unit": "пог. м",
+    "price": 595.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "586",
+    "name": "Профнастил С-20 зеленый 0,35 мм (Ral 6005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-20-zelenyy-0.35mm-ral-6005.html",
+    "unit": "пог. м",
+    "price": 518.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "587",
+    "name": "Профнастил С-20 зеленый 0,4 мм (Ral 6005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-20-zelenyy-0.4mm-ral-6005.html",
+    "unit": "пог. м",
+    "price": 546.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "588",
+    "name": "Профнастил С-20 зеленый 0,45 мм (Ral 6005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-20-zelenyy-0.45mm-ral-6005.html",
+    "unit": "пог. м",
+    "price": 595.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "589",
+    "name": "Профнастил С-21 зеленый 0,35 мм (Ral 6005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-21-zelenyy-0.35mm-ral-6005.html",
+    "unit": "пог. м",
+    "price": 518.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "591",
+    "name": "Профнастил С-21 зеленый 0,45 мм (Ral 6005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-21-zelenyy-0.45mm-ral-6005.html",
+    "unit": "пог. м",
+    "price": 595.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "590",
+    "name": "Профнастил С-21 зеленый 0,4 мм (Ral 6005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-21-zelenyy-0.4mm-ral-6005.html",
+    "unit": "пог. м",
+    "price": 546.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "592",
+    "name": "Профнастил С-8 коричневый 0,35 мм (Ral 8017)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-8-korichnevyy-0.35mm-ral-8017.html",
+    "unit": "пог. м",
+    "price": 518.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "593",
+    "name": "Профнастил С-8 коричневый 0,4 мм (Ral 8017)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-8-korichnevyy-0.4mm-ral-8017.html",
+    "unit": "пог. м",
+    "price": 546.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "594",
+    "name": "Профнастил С-8 коричневый 0,45 мм (Ral 8017)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-8-korichnevyy-0.45mm-ral-8017.html",
+    "unit": "пог. м",
+    "price": 595.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "595",
+    "name": "Профнастил С-20 коричневый 0,35 мм (Ral 8017)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-20-korichnevyy-0.35mm-ral-8017.html",
+    "unit": "пог. м",
+    "price": 518.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "596",
+    "name": "Профнастил С-20 коричневый 0,4 мм (Ral 8017)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-20-korichnevyy-0.4mm-ral-8017.html",
+    "unit": "пог. м",
+    "price": 546.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "597",
+    "name": "Профнастил С-20 коричневый 0,45 мм (Ral 8017)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-20-korichnevyy-0.45mm-ral-8017.html",
+    "unit": "пог. м",
+    "price": 595.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "598",
+    "name": "Профнастил С-21 коричневый 0,35 мм (Ral 8017)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-21-korichnevyy-0.35mm-ral-8017.html",
+    "unit": "пог. м",
+    "price": 518.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "599",
+    "name": "Профнастил С-21 коричневый 0,4 мм (Ral 8017)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-21-korichnevyy-0.4mm-ral-8017.html",
+    "unit": "пог. м",
+    "price": 546.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "600",
+    "name": "Профнастил С-21 коричневый 0,45 мм (Ral 8017)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-21-korichnevyy-0.45mm-ral-8017.html",
+    "unit": "пог. м",
+    "price": 595.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "601",
+    "name": "Профнастил С-8 синий 0,35 мм (Ral 5005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-8-siniy-0.35mm-ral-5005.html",
+    "unit": "пог. м",
+    "price": 518.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "602",
+    "name": "Профнастил С-8 синий 0,4 мм (Ral 5005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-8-siniy-0.4mm-ral-5005.html",
+    "unit": "пог. м",
+    "price": 546.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "603",
+    "name": "Профнастил С-8 синий 0,45 мм (Ral 5005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-8-siniy-0.45mm-ral-5005.html",
+    "unit": "пог. м",
+    "price": 595.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "604",
+    "name": "Профнастил С-20 синий 0,35 мм (Ral 5005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-20-siniy-0.35mm-ral-5005.html",
+    "unit": "пог. м",
+    "price": 518.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "605",
+    "name": "Профнастил С-20 синий 0,4 мм (Ral 5005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-20-siniy-0.4mm-ral-5005.html",
+    "unit": "пог. м",
+    "price": 546.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "606",
+    "name": "Профнастил С-20 синий 0,45 мм (Ral 5005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-20-siniy-0.45mm-ral-5005.html",
+    "unit": "пог. м",
+    "price": 595.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "607",
+    "name": "Профнастил С-21 синий 0,35 мм (Ral 5005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-21-siniy-0.35mm-ral-5005.html",
+    "unit": "пог. м",
+    "price": 518.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "608",
+    "name": "Профнастил С-21 синий 0,4 мм (Ral 5005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-21-siniy-0.4mm-ral-5005.html",
+    "unit": "пог. м",
+    "price": 546.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "609",
+    "name": "Профнастил С-21 синий 0,45 мм (Ral 5005)",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-s-pokrytiem/profnastil-s-21-siniy-0.45mm-ral-5005.html",
+    "unit": "пог. м",
+    "price": 595.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "610",
+    "name": "Профнастил С-8 оцинкованный 0,35 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-s-8-ocinkovannyy-0.35mm.html",
+    "unit": "пог. м",
+    "price": 495.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "611",
+    "name": "Профнастил С-8 оцинкованный 0,4 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-s-8-ocinkovannyy-0.4mm.html",
+    "unit": "пог. м",
+    "price": 505.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "612",
+    "name": "Профнастил С-8 оцинкованный 0,45 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-s-8-ocinkovannyy-0.45mm.html",
+    "unit": "пог. м",
+    "price": 537.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "613",
+    "name": "Профнастил С-8 оцинкованный 0,5 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-s-8-ocinkovannyy-0.5mm.html",
+    "unit": "пог. м",
+    "price": 581.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "614",
+    "name": "Профнастил С-8 оцинкованный 0,55 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-s-8-ocinkovannyy-0.55mm.html",
+    "unit": "пог. м",
+    "price": 625.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "615",
+    "name": "Профнастил С-8 оцинкованный 0,7 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-s-8-ocinkovannyy-0.7mm.html",
+    "unit": "пог. м",
+    "price": 773.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "616",
+    "name": "Профнастил С-20 оцинкованный 0,35 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-s-20-ocinkovannyy-0.35mm.html",
+    "unit": "пог. м",
+    "price": 495.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "617",
+    "name": "Профнастил С-20 оцинкованный 0,4 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-s-20-ocinkovannyy-0.4mm.html",
+    "unit": "пог. м",
+    "price": 505.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "618",
+    "name": "Профнастил С-20 оцинкованный 0,45 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-s-20-ocinkovannyy-0.45mm.html",
+    "unit": "пог. м",
+    "price": 537.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "619",
+    "name": "Профнастил С-20 оцинкованный 0,5 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-s-20-ocinkovannyy-0.5mm.html",
+    "unit": "пог. м",
+    "price": 581.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "620",
+    "name": "Профнастил С-20 оцинкованный 0,55 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-s-20-ocinkovannyy-0.55mm.html",
+    "unit": "пог. м",
+    "price": 625.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "621",
+    "name": "Профнастил С-20 оцинкованный 0,7 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-s-20-ocinkovannyy-0.7mm.html",
+    "unit": "пог. м",
+    "price": 773.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "622",
+    "name": "Профнастил С-21 оцинкованный 0,35 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-s-21-ocinkovannyy-0.35mm.html",
+    "unit": "пог. м",
+    "price": 495.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "623",
+    "name": "Профнастил С-21 оцинкованный 0,4 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-s-21-ocinkovannyy-0.4mm.html",
+    "unit": "пог. м",
+    "price": 505.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "624",
+    "name": "Профнастил С-21 оцинкованный 0,45 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-s-21-ocinkovannyy-0.45mm.html",
+    "unit": "пог. м",
+    "price": 537.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "625",
+    "name": "Профнастил С-21 оцинкованный 0,5 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-s-21-ocinkovannyy-0.5mm.html",
+    "unit": "пог. м",
+    "price": 581.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "626",
+    "name": "Профнастил С-21 оцинкованный 0,55 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-s-21-ocinkovannyy-0.55mm.html",
+    "unit": "пог. м",
+    "price": 625.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "627",
+    "name": "Профнастил С-21 оцинкованный 0,7 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-s-21-ocinkovannyy-0.7mm.html",
+    "unit": "пог. м",
+    "price": 773.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "628",
+    "name": "Профнастил НС-35 оцинкованный 0,45 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-ns-35-ocinkovannyy-0.45mm.html",
+    "unit": "пог. м",
+    "price": 495.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "629",
+    "name": "Профнастил НС-35 оцинкованный 0,5 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-ns-35-ocinkovannyy-0.5mm.html",
+    "unit": "пог. м",
+    "price": 581.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "630",
+    "name": "Профнастил НС-35 оцинкованный 0,55 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-ns-35-ocinkovannyy-0.55mm.html",
+    "unit": "пог. м",
+    "price": 625.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "631",
+    "name": "Профнастил НС-35 оцинкованный 0,7 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-ns-35-ocinkovannyy-0.7mm.html",
+    "unit": "пог. м",
+    "price": 773.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "632",
+    "name": "Профнастил Н-60 оцинкованный 0,45 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-n-60-ocinkovannyy-0.45mm.html",
+    "unit": "пог. м",
+    "price": 537.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "633",
+    "name": "Профнастил Н-60 оцинкованный 0,5 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-n-60-ocinkovannyy-0.5mm.html",
+    "unit": "пог. м",
+    "price": 581.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "634",
+    "name": "Профнастил Н-60 оцинкованный 0,55 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-n-60-ocinkovannyy-0.55mm.html",
+    "unit": "пог. м",
+    "price": 625.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "635",
+    "name": "Профнастил Н-60 оцинкованный 0,7 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-n-60-ocinkovannyy-0.7mm.html",
+    "unit": "пог. м",
+    "price": 773.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "636",
+    "name": "Профнастил Н-75 оцинкованный 0,45 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-n-75-ocinkovannyy-0.45mm.html",
+    "unit": "пог. м",
+    "price": 537.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "638",
+    "name": "Профнастил Н-75 оцинкованный 0,55 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-n-75-ocinkovannyy-0.55mm.html",
+    "unit": "пог. м",
+    "price": 625.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "637",
+    "name": "Профнастил Н-75 оцинкованный 0,5 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-n-75-ocinkovannyy-0.5mm.html",
+    "unit": "пог. м",
+    "price": 581.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "639",
+    "name": "Профнастил Н-75 оцинкованный 0,7 мм",
+    "url": "https://100met.ru/catalog/profnastil/profnastil-ocinkovannyy/profnastil-n-75-ocinkovannyy-0.7mm.html",
+    "unit": "пог. м",
+    "price": 773.0,
+    "category": "Профнастил"
+  },
+  {
+    "id": "640",
+    "name": "Свая винтовая d-57 / 200 / 1500",
+    "url": "https://100met.ru/catalog/vintovyie-svai/svaya-vintovaya-d57-200-1500.html",
+    "unit": "шт.",
+    "price": 790.0,
+    "category": "Винтовые сваи"
+  },
+  {
+    "id": "641",
+    "name": "Свая винтовая d-57 / 200 / 2000",
+    "url": "https://100met.ru/catalog/vintovyie-svai/svaya-vintovaya-d57-200-2000.html",
+    "unit": "шт.",
+    "price": 1050.0,
+    "category": "Винтовые сваи"
+  },
+  {
+    "id": "642",
+    "name": "Свая винтовая d-57 / 200 / 2500",
+    "url": "https://100met.ru/catalog/vintovyie-svai/svaya-vintovaya-d57-200-2500.html",
+    "unit": "шт.",
+    "price": 1250.0,
+    "category": "Винтовые сваи"
+  },
+  {
+    "id": "651",
+    "name": "Свая винтовая d-76 / 250 / 1500",
+    "url": "https://100met.ru/catalog/vintovyie-svai/svaya-vintovaya-d-76-250-1500.html",
+    "unit": "шт.",
+    "price": 1060.0,
+    "category": "Винтовые сваи"
+  },
+  {
+    "id": "643",
+    "name": "Свая винтовая d-76 / 250 / 2000",
+    "url": "https://100met.ru/catalog/vintovyie-svai/svaya-vintovaya-d76-250-2000.html",
+    "unit": "шт.",
+    "price": 1450.0,
+    "category": "Винтовые сваи"
+  },
+  {
+    "id": "644",
+    "name": "Свая винтовая d-76 / 250 / 2500",
+    "url": "https://100met.ru/catalog/vintovyie-svai/svaya-vintovaya-d76-250-2500.html",
+    "unit": "шт.",
+    "price": 1800.0,
+    "category": "Винтовые сваи"
+  },
+  {
+    "id": "645",
+    "name": "Свая винтовая d-76 / 250 / 3000",
+    "url": "https://100met.ru/catalog/vintovyie-svai/svaya-vintovaya-d76-250-3000.html",
+    "unit": "шт.",
+    "price": 2100.0,
+    "category": "Винтовые сваи"
+  },
+  {
+    "id": "646",
+    "name": "Свая винтовая d-89 / 300 / 2000",
+    "url": "https://100met.ru/catalog/vintovyie-svai/svaya-vintovaya-d89-300-2000.html",
+    "unit": "шт.",
+    "price": 1850.0,
+    "category": "Винтовые сваи"
+  },
+  {
+    "id": "647",
+    "name": "Свая винтовая d-89 / 300 / 2500",
+    "url": "https://100met.ru/catalog/vintovyie-svai/svaya-vintovaya-d89-300-2500.html",
+    "unit": "шт.",
+    "price": 2200.0,
+    "category": "Винтовые сваи"
+  },
+  {
+    "id": "652",
+    "name": "Свая винтовая d-89 / 300 / 3000",
+    "url": "https://100met.ru/catalog/vintovyie-svai/svaya-vintovaya-d-89-300-3000.html",
+    "unit": "шт.",
+    "price": 2690.0,
+    "category": "Винтовые сваи"
+  },
+  {
+    "id": "648",
+    "name": "Свая винтовая d-108 / 300 / 2000",
+    "url": "https://100met.ru/catalog/vintovyie-svai/svaya-vintovaya-d108-300-2000.html",
+    "unit": "шт.",
+    "price": 2300.0,
+    "category": "Винтовые сваи"
+  },
+  {
+    "id": "649",
+    "name": "Свая винтовая d-108 / 300 / 2500",
+    "url": "https://100met.ru/catalog/vintovyie-svai/svaya-vintovaya-d108-300-2500.html",
+    "unit": "шт.",
+    "price": 2890.0,
+    "category": "Винтовые сваи"
+  },
+  {
+    "id": "653",
+    "name": "Свая винтовая d-108 / 300 / 3000",
+    "url": "https://100met.ru/catalog/vintovyie-svai/svaya-vintovaya-d-108-300-3000.html",
+    "unit": "шт.",
+    "price": 3490.0,
+    "category": "Винтовые сваи"
+  },
+  {
+    "id": "650",
+    "name": "Оголовок сваи 150х150 мм",
+    "url": "https://100met.ru/catalog/vintovyie-svai/ogolovok-svai-150x150-mm.html",
+    "unit": "шт.",
+    "price": 220.0,
+    "category": "Винтовые сваи"
+  },
+  {
+    "id": "654",
+    "name": "Отвод стальной Ø 15",
+    "url": "https://100met.ru/catalog/otvodyi-stalnyie/otvod-stalnoj-15mm.html",
+    "unit": "шт.",
+    "price": 30.0,
+    "category": "Отводы стальные"
+  },
+  {
+    "id": "655",
+    "name": "Отвод стальной Ø 20",
+    "url": "https://100met.ru/catalog/otvodyi-stalnyie/otvod-stalnoj-20mm.html",
+    "unit": "шт.",
+    "price": 35.0,
+    "category": "Отводы стальные"
+  },
+  {
+    "id": "656",
+    "name": "Отвод стальной Ø 25",
+    "url": "https://100met.ru/catalog/otvodyi-stalnyie/otvod-stalnoj-25mm.html",
+    "unit": "шт.",
+    "price": 40.0,
+    "category": "Отводы стальные"
+  },
+  {
+    "id": "657",
+    "name": "Отвод стальной Ø 32",
+    "url": "https://100met.ru/catalog/otvodyi-stalnyie/otvod-stalnoj-32mm.html",
+    "unit": "шт.",
+    "price": 50.0,
+    "category": "Отводы стальные"
+  },
+  {
+    "id": "658",
+    "name": "Отвод стальной Ø 40",
+    "url": "https://100met.ru/catalog/otvodyi-stalnyie/otvod-stalnoj-40mm.html",
+    "unit": "шт.",
+    "price": 60.0,
+    "category": "Отводы стальные"
+  },
+  {
+    "id": "659",
+    "name": "Отвод стальной Ø 57",
+    "url": "https://100met.ru/catalog/otvodyi-stalnyie/otvod-stalnoj-57mm.html",
+    "unit": "шт.",
+    "price": 110.0,
+    "category": "Отводы стальные"
+  },
+  {
+    "id": "660",
+    "name": "Отвод стальной Ø 76",
+    "url": "https://100met.ru/catalog/otvodyi-stalnyie/otvod-stalnoj-76mm.html",
+    "unit": "шт.",
+    "price": 135.0,
+    "category": "Отводы стальные"
+  },
+  {
+    "id": "661",
+    "name": "Отвод стальной Ø 89",
+    "url": "https://100met.ru/catalog/otvodyi-stalnyie/otvod-stalnoj-89mm.html",
+    "unit": "шт.",
+    "price": 165.0,
+    "category": "Отводы стальные"
+  },
+  {
+    "id": "662",
+    "name": "Отвод стальной Ø 102",
+    "url": "https://100met.ru/catalog/otvodyi-stalnyie/otvod-stalnoj-102mm.html",
+    "unit": "шт.",
+    "price": 230.0,
+    "category": "Отводы стальные"
+  },
+  {
+    "id": "663",
+    "name": "Отвод стальной оцинкованный Ø 15",
+    "url": "https://100met.ru/catalog/otvodyi-stalnyie/otvod-stalnoj-oczinkovannyij-15mm.html",
+    "unit": "шт.",
+    "price": 40.0,
+    "category": "Отводы стальные"
+  },
+  {
+    "id": "664",
+    "name": "Отвод стальной оцинкованный Ø 20",
+    "url": "https://100met.ru/catalog/otvodyi-stalnyie/otvod-stalnoj-oczinkovannyij-20mm.html",
+    "unit": "шт.",
+    "price": 60.0,
+    "category": "Отводы стальные"
+  },
+  {
+    "id": "665",
+    "name": "Отвод стальной оцинкованный Ø 25",
+    "url": "https://100met.ru/catalog/otvodyi-stalnyie/otvod-stalnoj-oczinkovannyij-25mm.html",
+    "unit": "шт.",
+    "price": 80.0,
+    "category": "Отводы стальные"
+  },
+  {
+    "id": "666",
+    "name": "Отвод стальной оцинкованный Ø 32",
+    "url": "https://100met.ru/catalog/otvodyi-stalnyie/otvod-stalnoj-oczinkovannyij-32mm.html",
+    "unit": "шт.",
+    "price": 100.0,
+    "category": "Отводы стальные"
+  },
+  {
+    "id": "667",
+    "name": "Отвод стальной оцинкованный Ø 40",
+    "url": "https://100met.ru/catalog/otvodyi-stalnyie/otvod-stalnoj-oczinkovannyij-40mm.html",
+    "unit": "шт.",
+    "price": 120.0,
+    "category": "Отводы стальные"
+  },
+  {
+    "id": "668",
+    "name": "Отвод стальной оцинкованный Ø 57",
+    "url": "https://100met.ru/catalog/otvodyi-stalnyie/otvod-stalnoj-oczinkovannyij-57mm.html",
+    "unit": "шт.",
+    "price": 180.0,
+    "category": "Отводы стальные"
+  },
+  {
+    "id": "669",
+    "name": "Отвод стальной оцинкованный Ø 76",
+    "url": "https://100met.ru/catalog/otvodyi-stalnyie/otvod-stalnoj-oczinkovannyij-76mm.html",
+    "unit": "шт.",
+    "price": 350.0,
+    "category": "Отводы стальные"
+  },
+  {
+    "id": "670",
+    "name": "Отвод стальной оцинкованный Ø 89",
+    "url": "https://100met.ru/catalog/otvodyi-stalnyie/otvod-stalnoj-oczinkovannyij-89mm.html",
+    "unit": "шт.",
+    "price": 400.0,
+    "category": "Отводы стальные"
+  },
+  {
+    "id": "671",
+    "name": "Отвод стальной оцинкованный Ø 102",
+    "url": "https://100met.ru/catalog/otvodyi-stalnyie/otvod-stalnoj-oczinkovannyij-o-102.html",
+    "unit": "шт.",
+    "price": 480.0,
+    "category": "Отводы стальные"
+  }
+]
