@@ -1,0 +1,33 @@
+workflows:
+  ios-build:
+    name: WELDPRICE iOS Build
+    max_build_duration: 120
+    instance_type: mac_mini_m1
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: 'main'
+          include: true
+    scripts:
+      - name: Get Flutter packages
+        script: |
+          flutter pub get
+      - name: CocoaPods installation
+        script: |
+          cd ios && pod install --repo-update
+      - name: Build iOS App (Unsigned)
+        script: |
+          flutter build ios --release --no-codesign
+      - name: Package IPA (Unsigned)
+        script: |
+          mkdir -p Payload
+          mv build/ios/iphoneos/Runner.app Payload
+          zip -r3 WELDPRICE.ipa Payload
+          rm -rf Payload
+    artifacts:
+      - WELDPRICE.ipa
