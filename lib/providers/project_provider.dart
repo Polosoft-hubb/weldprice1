@@ -110,7 +110,7 @@ class ProjectProvider extends ChangeNotifier {
     final newProj = ProjectModel(
       name: name,
       createdAt: DateTime.now(),
-      complexity: 2.0,
+      complexity: 2.5,
       items: const [],
     );
     final created = await _dbHelper.createProject(newProj);

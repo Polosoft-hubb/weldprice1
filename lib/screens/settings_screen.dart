@@ -64,7 +64,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                final double? price = double.tryParse(textController.text.trim());
+                final double? price = double.tryParse(textController.text.replaceAll(',', '.').trim());
                 if (price != null && price >= 0) {
                   Provider.of<ProjectProvider>(context, listen: false)
                       .updateMaterialPrice(mat.id, price);
@@ -184,7 +184,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     final unit = isCustomUnit 
                         ? customUnitController.text.trim() 
                         : selectedUnit;
-                    final double? price = double.tryParse(priceController.text.trim());
+                    final double? price = double.tryParse(priceController.text.replaceAll(',', '.').trim());
 
                     if (name.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(

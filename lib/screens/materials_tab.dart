@@ -50,7 +50,7 @@ class MaterialsTab extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                final double? qty = double.tryParse(textController.text.trim());
+                final double? qty = double.tryParse(textController.text.replaceAll(',', '.').trim());
                 final provider = Provider.of<ProjectProvider>(context, listen: false);
                 Navigator.of(ctx).pop();
                 if (qty != null && qty > 0 && item.id != null) {
@@ -283,7 +283,7 @@ class MaterialsTab extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                final double? qty = double.tryParse(textController.text.trim());
+                final double? qty = double.tryParse(textController.text.replaceAll(',', '.').trim());
                 Navigator.of(dialogCtx).pop();
                 if (qty != null && qty > 0) {
                   provider.addMaterialToProject(mat, qty);

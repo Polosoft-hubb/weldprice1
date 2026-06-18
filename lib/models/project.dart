@@ -17,7 +17,7 @@ class ProjectModel {
   ProjectModel({
     this.id,
     required this.name,
-    this.complexity = 2.0,
+    this.complexity = 2.5,
     required this.createdAt,
     this.items = const [],
     this.isPaintingEnabled = false,
@@ -37,6 +37,15 @@ class ProjectModel {
 
   double get consumablesCost {
     return workCost * 0.05;
+  }
+
+  double get totalPaintingArea {
+    return items.fold(0.0, (sum, item) {
+      final area = item.paintingArea > 0
+          ? item.paintingArea
+          : ProjectItemModel.estimateAreaFromName(item.name, item.unit);
+      return sum + (item.quantity * area);
+    });
   }
 
   double get totalPaintWeight {
@@ -67,7 +76,7 @@ class ProjectModel {
     return ProjectModel(
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] ?? '',
-      complexity: (json['complexity'] as num?)?.toDouble() ?? 2.0,
+      complexity: (json['complexity'] as num?)?.toDouble() ?? 2.5,
       createdAt: json['created_at'] != null 
           ? DateTime.parse(json['created_at']) 
           : DateTime.now(),

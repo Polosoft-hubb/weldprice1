@@ -218,7 +218,7 @@ class _EstimateTabState extends State<EstimateTab> {
                                             contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                           ),
                                           onChanged: (val) {
-                                            final double? parsedVal = double.tryParse(val);
+                                            final double? parsedVal = double.tryParse(val.replaceAll(',', '.'));
                                             if (parsedVal != null && parsedVal > 0) {
                                               provider.updateComplexity(parsedVal);
                                             }
@@ -256,7 +256,7 @@ class _EstimateTabState extends State<EstimateTab> {
                         _buildDetailRow(
                           title: 'Стоимость покраски',
                           value: _formatCurrency(project.totalPaintingCost),
-                          subtitle: 'Расход краски: ${project.totalPaintWeight.toStringAsFixed(2)} кг\nНеобходимо: ${project.cansNeeded} бан. по ${project.paintCanWeight.toString().replaceAll(RegExp(r"\.0$"), "")} кг',
+                          subtitle: 'Общая площадь: ${project.totalPaintingArea.toStringAsFixed(2)} м²\nРасход краски: ${project.totalPaintWeight.toStringAsFixed(2)} кг\nНеобходимо: ${project.cansNeeded} бан. по ${project.paintCanWeight.toString().replaceAll(RegExp(r"\.0$"), "")} кг',
                           icon: Icons.format_paint_outlined,
                         ),
                       ],

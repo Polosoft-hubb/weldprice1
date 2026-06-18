@@ -141,7 +141,7 @@ class _PaintingTabState extends State<PaintingTab> {
                                     labelStyle: const TextStyle(fontSize: 11, color: Colors.grey),
                                   ),
                                   onChanged: (val) {
-                                    final price = double.tryParse(val.trim()) ?? 0.0;
+                                    final price = double.tryParse(val.replaceAll(',', '.').trim()) ?? 0.0;
                                     provider.updatePaintingSettings(price: price);
                                   },
                                 ),
@@ -158,7 +158,7 @@ class _PaintingTabState extends State<PaintingTab> {
                                     labelStyle: const TextStyle(fontSize: 11, color: Colors.grey),
                                   ),
                                   onChanged: (val) {
-                                    final weight = double.tryParse(val.trim()) ?? 1.0;
+                                    final weight = double.tryParse(val.replaceAll(',', '.').trim()) ?? 1.0;
                                     provider.updatePaintingSettings(canWeight: weight);
                                   },
                                 ),
@@ -175,7 +175,7 @@ class _PaintingTabState extends State<PaintingTab> {
                                     labelStyle: const TextStyle(fontSize: 11, color: Colors.grey),
                                   ),
                                   onChanged: (val) {
-                                    final cons = double.tryParse(val.trim()) ?? 0.2;
+                                    final cons = double.tryParse(val.replaceAll(',', '.').trim()) ?? 0.2;
                                     provider.updatePaintingSettings(consumption: cons);
                                   },
                                 ),
@@ -199,8 +199,13 @@ class _PaintingTabState extends State<PaintingTab> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Всего краски: ${project.totalPaintWeight.toStringAsFixed(2)} кг',
+                                        'Общая площадь: ${project.totalPaintingArea.toStringAsFixed(2)} м²',
                                         style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        'Всего краски: ${project.totalPaintWeight.toStringAsFixed(2)} кг',
+                                        style: const TextStyle(color: Colors.grey, fontSize: 11),
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
@@ -318,7 +323,7 @@ class _PaintingTabState extends State<PaintingTab> {
                                           floatingLabelBehavior: FloatingLabelBehavior.always,
                                         ),
                                         onChanged: (val) {
-                                          final area = double.tryParse(val.trim()) ?? 0.0;
+                                          final area = double.tryParse(val.replaceAll(',', '.').trim()) ?? 0.0;
                                           provider.updateItemPaintingArea(item.id!, area);
                                         },
                                       ),
@@ -336,7 +341,7 @@ class _PaintingTabState extends State<PaintingTab> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Общая площадь: ${totalArea.toStringAsFixed(2)} м²${item.paintingArea == 0 ? " (авто)" : ""}',
+                                            'Общая площадь: ${totalArea.toStringAsFixed(2)} м²',
                                             style: const TextStyle(color: Colors.grey, fontSize: 11),
                                           ),
                                           Text(
