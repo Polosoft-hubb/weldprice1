@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../providers/project_provider.dart';
 
 class EstimateTab extends StatefulWidget {
@@ -369,21 +370,114 @@ class _EstimateTabState extends State<EstimateTab> {
     
     final shareText = sb.toString();
     final messenger = ScaffoldMessenger.of(context);
-    
-    // 1. Try native sharing FIRST (must be immediate to maintain user activation / gesture)
-    Share.share(shareText, subject: 'Смета проекта ${project.name}').then((_) {
-      // Also copy to clipboard for convenience
-      Clipboard.setData(ClipboardData(text: shareText));
-    }).catchError((e) {
-      // 2. Fallback to clipboard if native sharing is not supported (e.g. on desktop)
-      Clipboard.setData(ClipboardData(text: shareText)).then((_) {
-        messenger.showSnackBar(
-          const SnackBar(
-            content: Text('Смета скопирована в буфер обмена! Вставьте её в WhatsApp или Telegram.'),
-            backgroundColor: Color(0xFFFF4081),
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF1E1E1E),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                  child: Text(
+                    'Поделиться сметой',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                ListTile(
+                  leading: const CircleAvatar(
+                    backgroundColor: Color(0xFF25D366),
+                    child: Icon(Icons.chat, color: Colors.white),
+                  ),
+                  title: const Text('Поделиться в WhatsApp', style: TextStyle(color: Colors.white)),
+                  onTap: () async {
+                    Navigator.pop(context);
+                    final url = 'https://api.whatsapp.com/send?text=${Uri.encodeComponent(shareText)}';
+                    final uri = Uri.parse(url);
+                    if (await canLaunchUrl(uri)) {
+                      await launchUrl(uri, mode: LaunchMode.externalApplication);
+                    } else {
+                      messenger.showSnackBar(
+                        const SnackBar(content: Text('Не удалось запустить WhatsApp')),
+                      );
+                    }
+                  },
+                ),
+                ListTile(
+                  leading: const CircleAvatar(
+                    backgroundColor: Color(0xFF0088cc),
+                    child: Icon(Icons.send, color: Colors.white),
+                  ),
+                  title: const Text('Поделиться в Telegram', style: TextStyle(color: Colors.white)),
+                  onTap: () async {
+                    Navigator.pop(context);
+                    final url = 'https://t.me/share/url?url=&text=${Uri.encodeComponent(shareText)}';
+                    final uri = Uri.parse(url);
+                    if (await canLaunchUrl(uri)) {
+                      await launchUrl(uri, mode: LaunchMode.externalApplication);
+                    } else {
+                      messenger.showSnackBar(
+                        const SnackBar(content: Text('Не удалось запустить Telegram')),
+                      );
+                    }
+                  },
+                ),
+                ListTile(
+                  leading: const CircleAvatar(
+                    backgroundColor: Color(0xFFFF4081),
+                    child: Icon(Icons.copy, color: Colors.white),
+                  ),
+                  title: const Text('Скопировать в буфер обмена', style: TextStyle(color: Colors.white)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Clipboard.setData(ClipboardData(text: shareText)).then((_) {
+                      messenger.showSnackBar(
+                        const SnackBar(
+                          content: Text('Смета скопирована в буфер обмена!'),
+                          backgroundColor: Color(0xFFFF4081),
+                        ),
+                      );
+                    });
+                  },
+                ),
+                ListTile(
+                  leading: const CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    child: Icon(Icons.share, color: Colors.white),
+                  ),
+                  title: const Text('Другие способы (системное меню)', style: TextStyle(color: Colors.white)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Share.share(shareText, subject: 'Смета проекта ${project.name}').catchError((e) {
+                      Clipboard.setData(ClipboardData(text: shareText)).then((_) {
+                        messenger.showSnackBar(
+                          const SnackBar(
+                            content: Text('Смета скопирована в буфер обмена!'),
+                            backgroundColor: Color(0xFFFF4081),
+                          ),
+                        );
+                      });
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
         );
-      });
-    });
+      },
+    );
   }
 }
