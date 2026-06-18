@@ -7,12 +7,22 @@ class ProjectModel {
   final DateTime createdAt;
   final List<ProjectItemModel> items;
 
+  // Painting settings
+  final bool isPaintingEnabled;
+  final double paintPrice;
+  final double paintConsumption; // in kg/m2 or l/m2
+  final double paintingWorkPrice; // labor cost per m2
+
   ProjectModel({
     this.id,
     required this.name,
     this.complexity = 2.0,
     required this.createdAt,
     this.items = const [],
+    this.isPaintingEnabled = false,
+    this.paintPrice = 0.0,
+    this.paintConsumption = 0.2,
+    this.paintingWorkPrice = 200.0,
   });
 
   double get materialsCost {
@@ -27,8 +37,20 @@ class ProjectModel {
     return workCost * 0.05;
   }
 
+  double get totalPaintingCost {
+    if (!isPaintingEnabled) return 0.0;
+    return items.fold(0.0, (sum, item) {
+      final totalArea = item.quantity * item.paintingArea;
+      final paintNeeded = totalArea * paintConsumption;
+      final paintCost = paintNeeded * paintPrice;
+      final workCostVal = totalArea * paintingWorkPrice;
+      return sum + paintCost + workCostVal;
+    });
+  }
+
   double get totalPrice {
-    return materialsCost + workCost + consumablesCost;
+    final base = materialsCost + workCost + consumablesCost;
+    return isPaintingEnabled ? base + totalPaintingCost : base;
   }
 
   factory ProjectModel.fromJson(Map<String, dynamic> json, {List<ProjectItemModel> items = const []}) {
@@ -40,6 +62,10 @@ class ProjectModel {
           ? DateTime.parse(json['created_at']) 
           : DateTime.now(),
       items: items,
+      isPaintingEnabled: (json['is_painting_enabled'] as num?)?.toInt() == 1,
+      paintPrice: (json['paint_price'] as num?)?.toDouble() ?? 0.0,
+      paintConsumption: (json['paint_consumption'] as num?)?.toDouble() ?? 0.2,
+      paintingWorkPrice: (json['painting_work_price'] as num?)?.toDouble() ?? 200.0,
     );
   }
 
@@ -49,6 +75,10 @@ class ProjectModel {
       'name': name,
       'complexity': complexity,
       'created_at': createdAt.toIso8601String(),
+      'is_painting_enabled': isPaintingEnabled ? 1 : 0,
+      'paint_price': paintPrice,
+      'paint_consumption': paintConsumption,
+      'painting_work_price': paintingWorkPrice,
     };
   }
 
@@ -58,6 +88,10 @@ class ProjectModel {
     double? complexity,
     DateTime? createdAt,
     List<ProjectItemModel>? items,
+    bool? isPaintingEnabled,
+    double? paintPrice,
+    double? paintConsumption,
+    double? paintingWorkPrice,
   }) {
     return ProjectModel(
       id: id ?? this.id,
@@ -65,6 +99,10 @@ class ProjectModel {
       complexity: complexity ?? this.complexity,
       createdAt: createdAt ?? this.createdAt,
       items: items ?? this.items,
+      isPaintingEnabled: isPaintingEnabled ?? this.isPaintingEnabled,
+      paintPrice: paintPrice ?? this.paintPrice,
+      paintConsumption: paintConsumption ?? this.paintConsumption,
+      paintingWorkPrice: paintingWorkPrice ?? this.paintingWorkPrice,
     );
   }
 }

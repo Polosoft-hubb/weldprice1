@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/project_provider.dart';
 import 'estimate_tab.dart';
 import 'materials_tab.dart';
+import 'painting_tab.dart';
 import 'settings_screen.dart';
 
 class ProjectDetailsScreen extends StatefulWidget {
@@ -18,7 +19,8 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   final List<Widget> _tabs = const [
     EstimateTab(),
     MaterialsTab(),
-    SettingsScreen(), // Editable base prices specific to this project
+    PaintingTab(),
+    SettingsScreen(),
   ];
 
   @override
@@ -70,6 +72,11 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                 icon: Icon(Icons.inventory_2_outlined),
                 activeIcon: Icon(Icons.inventory_2),
                 label: 'Материалы',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.format_paint_outlined),
+                activeIcon: Icon(Icons.format_paint),
+                label: 'Покраска',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.price_change_outlined),

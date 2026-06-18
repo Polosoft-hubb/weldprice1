@@ -158,6 +158,42 @@ class ProjectProvider extends ChangeNotifier {
     await selectProject(projectId);
   }
 
+  Future<void> updateItemPaintingArea(int itemId, double area) async {
+    if (_selectedProject == null || _selectedProject!.id == null) return;
+    final projectId = (_selectedProject!.id as num).toInt();
+    
+    await _dbHelper.updateProjectItemPaintingArea(itemId, area);
+    
+    await loadProjects();
+    await selectProject(projectId);
+  }
+
+  Future<void> updatePaintingSettings({
+    bool? enabled,
+    double? price,
+    double? consumption,
+    double? workPrice,
+  }) async {
+    if (_selectedProject == null || _selectedProject!.id == null) return;
+    final projectId = (_selectedProject!.id as num).toInt();
+
+    final currentEnabled = enabled ?? _selectedProject!.isPaintingEnabled;
+    final currentPrice = price ?? _selectedProject!.paintPrice;
+    final currentConsumption = consumption ?? _selectedProject!.paintConsumption;
+    final currentWorkPrice = workPrice ?? _selectedProject!.paintingWorkPrice;
+
+    await _dbHelper.updateProjectPaintingSettings(
+      projectId,
+      enabled: currentEnabled,
+      price: currentPrice,
+      consumption: currentConsumption,
+      workPrice: currentWorkPrice,
+    );
+
+    await loadProjects();
+    await selectProject(projectId);
+  }
+
   Future<void> removeItemFromProject(int itemId) async {
     if (_selectedProject == null || _selectedProject!.id == null) return;
     final projectId = (_selectedProject!.id as num).toInt();

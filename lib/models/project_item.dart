@@ -6,6 +6,7 @@ class ProjectItemModel {
   final double quantity;
   final String unit;
   final double price;
+  final double paintingArea;
 
   ProjectItemModel({
     this.id,
@@ -15,6 +16,7 @@ class ProjectItemModel {
     required this.quantity,
     required this.unit,
     required this.price,
+    this.paintingArea = 0.0,
   });
 
   double get totalPrice => quantity * price;
@@ -28,6 +30,7 @@ class ProjectItemModel {
       quantity: (json['quantity'] as num?)?.toDouble() ?? 0.0,
       unit: json['unit'] ?? 'пог. м',
       price: (json['price'] as num?)?.toDouble() ?? 0.0,
+      paintingArea: (json['painting_area'] as num?)?.toDouble() ?? 0.0,
     );
   }
 
@@ -40,6 +43,7 @@ class ProjectItemModel {
       'quantity': quantity,
       'unit': unit,
       'price': price,
+      'painting_area': paintingArea,
     };
   }
 
@@ -51,6 +55,7 @@ class ProjectItemModel {
     double? quantity,
     String? unit,
     double? price,
+    double? paintingArea,
   }) {
     return ProjectItemModel(
       id: id ?? this.id,
@@ -60,6 +65,7 @@ class ProjectItemModel {
       quantity: quantity ?? this.quantity,
       unit: unit ?? this.unit,
       price: price ?? this.price,
+      paintingArea: paintingArea ?? this.paintingArea,
     );
   }
 }

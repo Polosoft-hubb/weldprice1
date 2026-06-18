@@ -33,14 +33,28 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: _createDB,
       onConfigure: _onConfigure,
+      onUpgrade: _onUpgrade,
     );
   }
 
   Future _onConfigure(Database db) async {
     await db.execute('PRAGMA foreign_keys = ON');
+  }
+
+  Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      // Add painting columns to projects table
+      await db.execute('ALTER TABLE projects ADD COLUMN is_painting_enabled INTEGER DEFAULT 0');
+      await db.execute('ALTER TABLE projects ADD COLUMN paint_price REAL DEFAULT 0.0');
+      await db.execute('ALTER TABLE projects ADD COLUMN paint_consumption REAL DEFAULT 0.2');
+      await db.execute('ALTER TABLE projects ADD COLUMN painting_work_price REAL DEFAULT 200.0');
+
+      // Add painting columns to project_items table
+      await db.execute('ALTER TABLE project_items ADD COLUMN painting_area REAL DEFAULT 0.0');
+    }
   }
 
   Future _createDB(Database db, int version) async {
@@ -67,7 +81,11 @@ class DatabaseHelper {
         id $integerPrimaryKey,
         name $textType,
         complexity $doubleType,
-        created_at $textType
+        created_at $textType,
+        is_painting_enabled INTEGER DEFAULT 0,
+        paint_price REAL DEFAULT 0.0,
+        paint_consumption REAL DEFAULT 0.2,
+        painting_work_price REAL DEFAULT 200.0
       )
     ''');
 
@@ -96,6 +114,7 @@ class DatabaseHelper {
         quantity $doubleType,
         unit $textType,
         price $doubleType,
+        painting_area REAL DEFAULT 0.0,
         FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE
       )
     ''');
@@ -602,5 +621,55 @@ class DatabaseHelper {
 
     final db = await instance.database;
     return await db.delete('project_items', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> updateProjectItemPaintingArea(int itemId, double area) async {
+    if (kIsWeb) {
+      await _initWebData();
+      final index = _webProjectItems!.indexWhere((element) => (element.id as num).toInt() == itemId);
+      if (index != -1) {
+        _webProjectItems![index] = _webProjectItems![index].copyWith(paintingArea: area);
+        await _saveWebProjectItems();
+        return 1;
+      }
+      return 0;
+    }
+    final db = await instance.database;
+    return await db.update(
+      'project_items',
+      {'painting_area': area},
+      where: 'id = ?',
+      whereArgs: [itemId],
+    );
+  }
+
+  Future<int> updateProjectPaintingSettings(int projectId, {required bool enabled, required double price, required double consumption, required double workPrice}) async {
+    if (kIsWeb) {
+      await _initWebData();
+      final index = _webProjects!.indexWhere((element) => (element.id as num).toInt() == projectId);
+      if (index != -1) {
+        _webProjects![index] = _webProjects![index].copyWith(
+          isPaintingEnabled: enabled,
+          paintPrice: price,
+          paintConsumption: consumption,
+          paintingWorkPrice: workPrice,
+        );
+        await _saveWebProjects();
+        return 1;
+      }
+      return 0;
+    }
+    final db = await instance.database;
+    return await db.update(
+      'projects',
+      {
+        'is_painting_enabled': enabled ? 1 : 0,
+        'paint_price': price,
+        'paint_consumption': consumption,
+        'painting_work_price': workPrice,
+      },
+      where: 'id = ?',
+      whereArgs: [projectId],
+    );
   }
 }

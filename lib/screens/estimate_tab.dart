@@ -99,13 +99,19 @@ class _EstimateTabState extends State<EstimateTab> {
                       color: Colors.black12,
                     ),
                     const SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Wrap(
+                      spacing: 16,
+                      runSpacing: 6,
                       children: [
                         Text(
                           'Материалы: ${_formatCurrency(project.materialsCost)}',
                           style: const TextStyle(fontSize: 13, color: Colors.black54, fontWeight: FontWeight.bold),
                         ),
+                        if (project.isPaintingEnabled)
+                          Text(
+                            'Покраска: ${_formatCurrency(project.totalPaintingCost)}',
+                            style: const TextStyle(fontSize: 13, color: Colors.black54, fontWeight: FontWeight.bold),
+                          ),
                         Text(
                           'Работа: ${_formatCurrency(project.workCost)}',
                           style: const TextStyle(fontSize: 13, color: Colors.black54, fontWeight: FontWeight.bold),
@@ -245,6 +251,15 @@ class _EstimateTabState extends State<EstimateTab> {
                         subtitle: '5% от работы (диски, электроды, проволока)',
                         icon: Icons.electric_bolt_outlined,
                       ),
+                      if (project.isPaintingEnabled) ...[
+                        const Divider(height: 24, color: Colors.grey),
+                        _buildDetailRow(
+                          title: 'Стоимость покраски',
+                          value: _formatCurrency(project.totalPaintingCost),
+                          subtitle: 'Краска + работа по площади деталей',
+                          icon: Icons.format_paint_outlined,
+                        ),
+                      ],
                     ],
                   ),
                 ),
