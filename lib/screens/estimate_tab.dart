@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 import '../providers/project_provider.dart';
 
 class EstimateTab extends StatefulWidget {
@@ -74,14 +76,28 @@ class _EstimateTabState extends State<EstimateTab> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'ИТОГОВАЯ ЦЕНА ДЛЯ КЛИЕНТА',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                        letterSpacing: 1.2,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'ИТОГОВАЯ ЦЕНА ДЛЯ КЛИЕНТА',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                            letterSpacing: 1.2,
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.share_outlined, color: Colors.black87),
+                          tooltip: 'Поделиться сметой',
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          onPressed: () {
+                            _shareEstimate(context, project);
+                          },
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 10),
                     Text(
@@ -312,5 +328,67 @@ class _EstimateTabState extends State<EstimateTab> {
         ),
       ],
     );
+  }
+
+  void _shareEstimate(BuildContext context, dynamic project) async {
+    final df = DateFormat('dd.MM.yyyy HH:mm');
+    final dateStr = df.format(project.createdAt);
+    
+    final sb = StringBuffer();
+    sb.writeln('📋 СМЕТА ПРОЕКТА: ${project.name}');
+    sb.writeln('Дата создания: $dateStr');
+    sb.writeln();
+    sb.writeln('💵 ИТОГО К ОПЛАТЕ: ${_formatCurrency(project.totalPrice)}');
+    sb.writeln();
+    sb.writeln('🛠️ Детализация расчета:');
+    sb.writeln('----------------------------------------');
+    sb.writeln('🔹 Материалы: ${_formatCurrency(project.materialsCost)}');
+    sb.writeln('🔹 Работа: ${_formatCurrency(project.workCost)}');
+    sb.writeln('   (коэффициент сложности: x${project.complexity.toStringAsFixed(1)})');
+    sb.writeln('🔹 Расходные материалы (5%): ${_formatCurrency(project.consumablesCost)}');
+    if (project.isPaintingEnabled) {
+      sb.writeln('🔹 Покраска (краска): ${_formatCurrency(project.totalPaintingCost)}');
+      sb.writeln('   - Общая площадь: ${project.totalPaintingArea.toStringAsFixed(2)} м²');
+      sb.writeln('   - Расход краски: ${project.totalPaintWeight.toStringAsFixed(2)} кг');
+      sb.writeln('   - Нужно купить: ${project.cansNeeded} бан. по ${project.paintCanWeight.toString().replaceAll(RegExp(r"\.0$"), "")} кг');
+    }
+    sb.writeln('----------------------------------------');
+    sb.writeln();
+    
+    if (project.items.isNotEmpty) {
+      sb.writeln('📦 Спецификация материалов:');
+      for (final item in project.items) {
+        sb.writeln('• ${item.name}');
+        sb.writeln('  Количество: ${item.quantity.toStringAsFixed(1)} ${item.unit} × ${_formatCurrency(item.price)} = ${_formatCurrency(item.totalPrice)}');
+      }
+      sb.writeln('----------------------------------------');
+      sb.writeln();
+    }
+    
+    sb.writeln('Расчет выполнен в приложении WELDPRICE.');
+    
+    final shareText = sb.toString();
+    final messenger = ScaffoldMessenger.of(context);
+    
+    // 1. Copy to clipboard
+    await Clipboard.setData(ClipboardData(text: shareText));
+    
+    // 2. Try native sharing
+    try {
+      await Share.share(shareText, subject: 'Смета проекта ${project.name}');
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text('Смета скопирована и отправлена!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text('Смета скопирована в буфер обмена! Вставьте её в WhatsApp или Telegram.'),
+          backgroundColor: Color(0xFFFF4081),
+        ),
+      );
+    }
   }
 }
