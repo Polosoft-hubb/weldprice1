@@ -13,6 +13,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   final TextEditingController _searchController = TextEditingController();
+  String _selectedCategory = 'Все';
 
   String _formatCurrency(double val) {
     final formatter = NumberFormat.currency(
@@ -237,7 +238,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ProjectProvider>(context, listen: false).filterMaterials('');
+      Provider.of<ProjectProvider>(context, listen: false).filterMaterials('', category: _selectedCategory);
     });
   }
 
@@ -341,22 +342,73 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   decoration: InputDecoration(
                     hintText: 'Поиск материалов в базе...',
                     prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                    suffixIcon: _searchController.text.isNotEmpty
+                    suffixIcon: _searchController.text.isNotEmpty || _selectedCategory != 'Все'
                         ? IconButton(
                             icon: const Icon(Icons.clear, color: Colors.grey),
                             onPressed: () {
                               _searchController.clear();
-                              provider.filterMaterials('');
+                              setState(() {
+                                _selectedCategory = 'Все';
+                              });
+                              provider.filterMaterials('', category: 'Все');
                             },
                           )
                         : null,
                   ),
                   onChanged: (val) {
-                    provider.filterMaterials(val);
+                    provider.filterMaterials(val, category: _selectedCategory);
                     setState(() {});
                   },
                 ),
               ),
+
+              // CATEGORIES CHIPS
+              (() {
+                final categories = ['Все', ...provider.projectMaterials
+                    .map((m) => m.category)
+                    .where((cat) => cat.isNotEmpty)
+                    .toSet()
+                    .toList()
+                    ..sort()];
+
+                return Container(
+                  height: 40,
+                  margin: const EdgeInsets.only(bottom: 8),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    itemCount: categories.length,
+                    itemBuilder: (chipCtx, chipIdx) {
+                      final cat = categories[chipIdx];
+                      final isSelected = cat == _selectedCategory;
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: ChoiceChip(
+                          label: Text(cat),
+                          selected: isSelected,
+                          showCheckmark: false,
+                          onSelected: (selected) {
+                            setState(() {
+                              _selectedCategory = cat;
+                            });
+                            provider.filterMaterials(_searchController.text, category: _selectedCategory);
+                          },
+                          selectedColor: const Color(0xFFFF4081),
+                          backgroundColor: const Color(0xFF262626),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide.none,
+                          ),
+                          labelStyle: TextStyle(
+                            color: isSelected ? Colors.black : Colors.white,
+                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              })(),
 
               // MATERIALS LIST
               Expanded(

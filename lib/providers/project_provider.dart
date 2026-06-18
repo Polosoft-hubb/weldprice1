@@ -57,16 +57,22 @@ class ProjectProvider extends ChangeNotifier {
   }
 
   // Search materials
-  void filterMaterials(String query) {
-    if (query.isEmpty) {
-      _searchResults = List.from(_projectMaterials);
-    } else {
-      _searchResults = _projectMaterials
-          .where((m) =>
-              m.name.toLowerCase().contains(query.toLowerCase()) ||
-              m.category.toLowerCase().contains(query.toLowerCase()))
-          .toList();
+  void filterMaterials(String query, {String category = 'Все'}) {
+    List<MaterialModel> temp = List.from(_projectMaterials);
+    
+    // Apply category filter if it is not 'Все'
+    if (category != 'Все') {
+      temp = temp.where((m) => m.category == category).toList();
     }
+    
+    // Apply search query filter if it is not empty
+    if (query.isNotEmpty) {
+      temp = temp.where((m) =>
+          m.name.toLowerCase().contains(query.toLowerCase()) ||
+          m.category.toLowerCase().contains(query.toLowerCase())).toList();
+    }
+    
+    _searchResults = temp;
     notifyListeners();
   }
 

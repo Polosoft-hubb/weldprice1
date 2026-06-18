@@ -71,6 +71,7 @@ class MaterialsTab extends StatelessWidget {
 
   void _showAddMaterialBottomSheet(BuildContext parentContext) {
     final searchController = TextEditingController();
+    String selectedCategory = 'Все';
     
     // Reset search filter first
     final provider = Provider.of<ProjectProvider>(parentContext, listen: false);
@@ -84,108 +85,161 @@ class MaterialsTab extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (bottomSheetCtx) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(bottomSheetCtx).viewInsets.bottom,
-            left: 16,
-            right: 16,
-            top: 20,
-          ),
-          child: SizedBox(
-            height: MediaQuery.of(parentContext).size.height * 0.75,
-            child: Column(
-              children: [
-                // Handle/Bar
-                Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade700,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Добавить материал',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                
-                // Search Field
-                TextField(
-                  controller: searchController,
-                  autofocus: true,
-                  decoration: InputDecoration(
-                    hintText: 'Поиск (например: труба, арматура)',
-                    prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.clear, color: Colors.grey),
-                      onPressed: () {
-                        searchController.clear();
-                        provider.filterMaterials('');
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            // Get sorted list of categories
+            final categories = ['Все', ...provider.projectMaterials
+                .map((m) => m.category)
+                .where((cat) => cat.isNotEmpty)
+                .toSet()
+                .toList()
+                ..sort()];
+
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(bottomSheetCtx).viewInsets.bottom,
+                left: 16,
+                right: 16,
+                top: 20,
+              ),
+              child: SizedBox(
+                height: MediaQuery.of(parentContext).size.height * 0.75,
+                child: Column(
+                  children: [
+                    // Handle/Bar
+                    Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade700,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Добавить материал',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    
+                    // Search Field
+                    TextField(
+                      controller: searchController,
+                      autofocus: true,
+                      decoration: InputDecoration(
+                        hintText: 'Поиск (например: труба, арматура)',
+                        prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.clear, color: Colors.grey),
+                          onPressed: () {
+                            searchController.clear();
+                            setState(() {
+                              selectedCategory = 'Все';
+                            });
+                            provider.filterMaterials('', category: 'Все');
+                          },
+                        ),
+                      ),
+                      onChanged: (val) {
+                        provider.filterMaterials(val, category: selectedCategory);
                       },
                     ),
-                  ),
-                  onChanged: (val) {
-                    provider.filterMaterials(val);
-                  },
-                ),
-                const SizedBox(height: 16),
-                
-                // Results List
-                Expanded(
-                  child: Consumer<ProjectProvider>(
-                    builder: (consumerCtx, currentProvider, child) {
-                      if (currentProvider.searchResults.isEmpty) {
-                        return const Center(
-                          child: Text(
-                            'Материалы не найдены',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        );
-                      }
-                      
-                      return ListView.builder(
-                        itemCount: currentProvider.searchResults.length,
-                        itemBuilder: (itemCtx, index) {
-                          final mat = currentProvider.searchResults[index];
-                          return Card(
-                            color: const Color(0xFF262626),
-                            margin: const EdgeInsets.symmetric(vertical: 4),
-                            child: ListTile(
-                              title: Text(
-                                mat.name,
-                                style: const TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              subtitle: Text(
-                                '${mat.category} • ${mat.unit}',
-                                style: const TextStyle(color: Colors.grey, fontSize: 12),
-                              ),
-                              trailing: Text(
-                                _formatCurrency(mat.price),
-                                style: const TextStyle(
-                                  color: Color(0xFFFF4081),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              onTap: () {
-                                Navigator.of(bottomSheetCtx).pop(); // Close bottom sheet
-                                _showQuantityInputDialog(parentContext, currentProvider, mat);
+                    const SizedBox(height: 12),
+
+                    // Categories List
+                    SizedBox(
+                      height: 40,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: categories.length,
+                        itemBuilder: (chipCtx, chipIdx) {
+                          final cat = categories[chipIdx];
+                          final isSelected = cat == selectedCategory;
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: ChoiceChip(
+                              label: Text(cat),
+                              selected: isSelected,
+                              showCheckmark: false,
+                              onSelected: (selected) {
+                                setState(() {
+                                  selectedCategory = cat;
+                                });
+                                provider.filterMaterials(searchController.text, category: selectedCategory);
                               },
+                              selectedColor: const Color(0xFFFF4081),
+                              backgroundColor: const Color(0xFF262626),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                                side: BorderSide.none,
+                              ),
+                              labelStyle: TextStyle(
+                                color: isSelected ? Colors.black : Colors.white,
+                                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                              ),
                             ),
                           );
                         },
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    
+                    // Results List
+                    Expanded(
+                      child: Consumer<ProjectProvider>(
+                        builder: (consumerCtx, currentProvider, child) {
+                          if (currentProvider.searchResults.isEmpty) {
+                            return const Center(
+                              child: Text(
+                                'Материалы не найдены',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            );
+                          }
+                          
+                          return ListView.builder(
+                            itemCount: currentProvider.searchResults.length,
+                            itemBuilder: (itemCtx, index) {
+                              final mat = currentProvider.searchResults[index];
+                              return Card(
+                                color: const Color(0xFF262626),
+                                margin: const EdgeInsets.symmetric(vertical: 4),
+                                child: ListTile(
+                                  title: Text(
+                                    mat.name,
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  subtitle: Text(
+                                    '${mat.category} • ${mat.unit}',
+                                    style: const TextStyle(color: Colors.grey, fontSize: 12),
+                                  ),
+                                  trailing: Text(
+                                    _formatCurrency(mat.price),
+                                    style: const TextStyle(
+                                      color: Color(0xFFFF4081),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    Navigator.of(bottomSheetCtx).pop(); // Close bottom sheet
+                                    _showQuantityInputDialog(parentContext, currentProvider, mat);
+                                  },
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
       },
     );
