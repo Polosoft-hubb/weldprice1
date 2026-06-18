@@ -337,30 +337,38 @@ class _EstimateTabState extends State<EstimateTab> {
     final dateStr = df.format(project.createdAt);
     
     final sb = StringBuffer();
-    sb.writeln('📋 СМЕТА ПРОЕКТА: ${project.name}');
+    sb.writeln('СМЕТА ПРОЕКТА: ${project.name}');
     sb.writeln('Дата создания: $dateStr');
     sb.writeln();
-    sb.writeln('💵 ИТОГО К ОПЛАТЕ: ${_formatCurrency(project.totalPrice)}');
+    sb.writeln('ИТОГО К ОПЛАТЕ: ${_formatCurrency(project.totalPrice)}');
     sb.writeln();
-    sb.writeln('🛠️ Детализация расчета:');
+    
+    sb.writeln('Детализация расчета:');
     sb.writeln('----------------------------------------');
-    sb.writeln('🔹 Материалы: ${_formatCurrency(project.materialsCost)}');
-    sb.writeln('🔹 Работа: ${_formatCurrency(project.workCost)}');
-    sb.writeln('   (коэффициент сложности: x${project.complexity.toStringAsFixed(1)})');
-    sb.writeln('🔹 Расходные материалы (5%): ${_formatCurrency(project.consumablesCost)}');
+    sb.writeln('  Материалы: ${_formatCurrency(project.materialsCost)}');
+    sb.writeln('  Работа: ${_formatCurrency(project.workCost)}');
+    sb.writeln('  Расходные материалы (5%): ${_formatCurrency(project.consumablesCost)}');
     if (project.isPaintingEnabled) {
-      sb.writeln('🔹 Покраска (краска): ${_formatCurrency(project.totalPaintingCost)}');
-      sb.writeln('   - Общая площадь: ${project.totalPaintingArea.toStringAsFixed(2)} м²');
-      sb.writeln('   - Расход краски: ${project.totalPaintWeight.toStringAsFixed(2)} кг');
-      sb.writeln('   - Нужно купить: ${project.cansNeeded} бан. по ${project.paintCanWeight.toString().replaceAll(RegExp(r"\.0$"), "")} кг');
+      sb.writeln('  Покраска: ${_formatCurrency(project.totalPaintingCost)}');
     }
     sb.writeln('----------------------------------------');
     sb.writeln();
     
+    if (project.isPaintingEnabled) {
+      sb.writeln('Детализация покраски:');
+      sb.writeln('----------------------------------------');
+      sb.writeln('  Общая площадь покраски: ${project.totalPaintingArea.toStringAsFixed(2)} м²');
+      sb.writeln('  Расход краски: ${project.totalPaintWeight.toStringAsFixed(2)} кг');
+      sb.writeln('  Необходимое количество: ${project.cansNeeded} бан. по ${project.paintCanWeight.toString().replaceAll(RegExp(r"\.0$"), "")} кг');
+      sb.writeln('----------------------------------------');
+      sb.writeln();
+    }
+    
     if (project.items.isNotEmpty) {
-      sb.writeln('📦 Спецификация материалов:');
+      sb.writeln('Спецификация материалов:');
+      sb.writeln('----------------------------------------');
       for (final item in project.items) {
-        sb.writeln('• ${item.name}');
+        sb.writeln('- ${item.name}');
         sb.writeln('  Количество: ${item.quantity.toStringAsFixed(1)} ${item.unit} × ${_formatCurrency(item.price)} = ${_formatCurrency(item.totalPrice)}');
       }
       sb.writeln('----------------------------------------');
