@@ -295,7 +295,7 @@ class _PaintingTabState extends State<PaintingTab> {
                                           ),
                                           const SizedBox(height: 4),
                                           Text(
-                                            'Количество: ${item.quantity.toStringAsFixed(1)} ${item.unit} × ${_formatCurrency(item.price)}',
+                                            'Количество: ${item.quantity.toStringAsFixed(1)} ${item.unit}',
                                             style: const TextStyle(color: Colors.grey, fontSize: 12),
                                           ),
                                         ],
