@@ -89,7 +89,7 @@ class ProjectItemModel {
         if (nameLower.contains('полоса')) {
           return (2 * dim1) / 1000.0;
         } else if (nameLower.contains('лист') || nameLower.contains('профлист') || nameLower.contains('профнастил') || nameLower.contains('плита')) {
-          return (dim1 * dim2) / 1000000.0;
+          return (2 * dim1 * dim2) / 1000000.0;
         } else if (nameLower.contains('труба') && !nameLower.contains('профил')) {
           return (3.14159 * dim1) / 1000.0;
         } else {
