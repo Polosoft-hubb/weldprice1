@@ -67,9 +67,23 @@ class ProjectProvider extends ChangeNotifier {
     
     // Apply search query filter if it is not empty
     if (query.isNotEmpty) {
-      temp = temp.where((m) =>
-          m.name.toLowerCase().contains(query.toLowerCase()) ||
-          m.category.toLowerCase().contains(query.toLowerCase())).toList();
+      // Split the search query into lowercase non-empty words/tokens
+      final tokens = query
+          .toLowerCase()
+          .split(RegExp(r'\s+'))
+          .where((token) => token.isNotEmpty)
+          .toList();
+
+      if (tokens.isNotEmpty) {
+        temp = temp.where((m) {
+          final nameLower = m.name.toLowerCase();
+          final categoryLower = m.category.toLowerCase();
+          
+          // Verify that EVERY token matches either the name or the category
+          return tokens.every((token) =>
+              nameLower.contains(token) || categoryLower.contains(token));
+        }).toList();
+      }
     }
     
     _searchResults = temp;
