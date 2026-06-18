@@ -140,6 +140,7 @@ class ProjectProvider extends ChangeNotifier {
       quantity: quantity,
       unit: material.unit,
       price: material.price,
+      paintingArea: ProjectItemModel.estimateAreaFromName(material.name, material.unit),
     );
 
     await _dbHelper.addProjectItem(item);

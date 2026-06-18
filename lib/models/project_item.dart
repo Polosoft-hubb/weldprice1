@@ -68,4 +68,46 @@ class ProjectItemModel {
       paintingArea: paintingArea ?? this.paintingArea,
     );
   }
+
+  static double estimateAreaFromName(String name, String unit) {
+    final nameLower = name.toLowerCase();
+    
+    // Check for two dimensions: e.g. 40х40х2, 60x40, 50*50
+    final regTwoDims = RegExp(r'(\d+)\s*[xхXХ*]\s*(\d+)');
+    final matchTwo = regTwoDims.firstMatch(name);
+    
+    if (matchTwo != null) {
+      final double dim1 = double.tryParse(matchTwo.group(1) ?? '') ?? 0.0;
+      final double dim2 = double.tryParse(matchTwo.group(2) ?? '') ?? 0.0;
+      
+      if (dim1 > 0 && dim2 > 0) {
+        if (nameLower.contains('полоса')) {
+          return (2 * dim1) / 1000.0;
+        } else if (nameLower.contains('труба') && !nameLower.contains('профил')) {
+          return (3.14159 * dim1) / 1000.0;
+        } else {
+          // Profile pipe (square/rectangular) or Angle (уголок)
+          return (2 * (dim1 + dim2)) / 1000.0;
+        }
+      }
+    }
+    
+    // Check for one dimension: e.g. Арматура 12 мм, Катанка d8, Швеллер 10
+    final regOneDim = RegExp(r'(?:d|диаметр|Ду)?\s*(\d+)\s*(?:мм|м)?', caseSensitive: false);
+    final matchOne = regOneDim.firstMatch(name);
+    if (matchOne != null) {
+      final double dim = double.tryParse(matchOne.group(1) ?? '') ?? 0.0;
+      if (dim > 0) {
+        if (nameLower.contains('швеллер')) {
+          return (4 * dim * 10) / 1000.0;
+        } else if (nameLower.contains('двутавр') || nameLower.contains('балка')) {
+          return (6 * dim * 10) / 1000.0;
+        } else {
+          return (3.14159 * dim) / 1000.0;
+        }
+      }
+    }
+
+    return 0.0;
+  }
 }

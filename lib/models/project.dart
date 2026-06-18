@@ -40,11 +40,13 @@ class ProjectModel {
   double get totalPaintingCost {
     if (!isPaintingEnabled) return 0.0;
     return items.fold(0.0, (sum, item) {
-      final totalArea = item.quantity * item.paintingArea;
+      final area = item.paintingArea > 0
+          ? item.paintingArea
+          : ProjectItemModel.estimateAreaFromName(item.name, item.unit);
+      final totalArea = item.quantity * area;
       final paintNeeded = totalArea * paintConsumption;
       final paintCost = paintNeeded * paintPrice;
-      final workCostVal = totalArea * paintingWorkPrice;
-      return sum + paintCost + workCostVal;
+      return sum + paintCost;
     });
   }
 

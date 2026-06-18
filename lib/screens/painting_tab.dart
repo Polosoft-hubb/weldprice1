@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../providers/project_provider.dart';
+import '../models/project_item.dart';
 
 class PaintingTab extends StatefulWidget {
   const PaintingTab({super.key});
@@ -13,7 +14,6 @@ class PaintingTab extends StatefulWidget {
 class _PaintingTabState extends State<PaintingTab> {
   late TextEditingController _paintPriceController;
   late TextEditingController _paintConsumptionController;
-  late TextEditingController _paintingWorkPriceController;
   
   final Map<int, TextEditingController> _itemControllers = {};
   int? _lastProjectId;
@@ -23,14 +23,12 @@ class _PaintingTabState extends State<PaintingTab> {
     super.initState();
     _paintPriceController = TextEditingController();
     _paintConsumptionController = TextEditingController();
-    _paintingWorkPriceController = TextEditingController();
   }
 
   @override
   void dispose() {
     _paintPriceController.dispose();
     _paintConsumptionController.dispose();
-    _paintingWorkPriceController.dispose();
     for (final c in _itemControllers.values) {
       c.dispose();
     }
@@ -61,7 +59,6 @@ class _PaintingTabState extends State<PaintingTab> {
           _lastProjectId = currentProjId;
           _paintPriceController.text = project.paintPrice == 0 ? '' : project.paintPrice.toString();
           _paintConsumptionController.text = project.paintConsumption.toString();
-          _paintingWorkPriceController.text = project.paintingWorkPrice.toString();
           
           for (final c in _itemControllers.values) {
             c.dispose();
@@ -98,7 +95,7 @@ class _PaintingTabState extends State<PaintingTab> {
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),
                           ),
                           subtitle: const Text(
-                            'Добавить стоимость работ и материалов покраски к смете проекта',
+                            'Добавить стоимость материалов покраски к смете проекта',
                             style: TextStyle(fontSize: 11, color: Colors.grey),
                           ),
                           activeColor: const Color(0xFFFF4081),
@@ -123,7 +120,7 @@ class _PaintingTabState extends State<PaintingTab> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Параметры расчета покраски',
+                            'Параметры расхода и цены краски',
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white),
                           ),
                           const SizedBox(height: 16),
@@ -163,21 +160,6 @@ class _PaintingTabState extends State<PaintingTab> {
                                 ),
                               ),
                             ],
-                          ),
-                          const SizedBox(height: 12),
-                          TextField(
-                            controller: _paintingWorkPriceController,
-                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                            decoration: InputDecoration(
-                              labelText: 'Стоимость работы по покраске (₽/м²)',
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                              labelStyle: const TextStyle(fontSize: 12, color: Colors.grey),
-                            ),
-                            onChanged: (val) {
-                              final workPrice = double.tryParse(val.trim()) ?? 0.0;
-                              provider.updatePaintingSettings(workPrice: workPrice);
-                            },
                           ),
                         ],
                       ),
@@ -223,11 +205,12 @@ class _PaintingTabState extends State<PaintingTab> {
                       itemCount: project.items.length,
                       itemBuilder: (context, index) {
                         final item = project.items[index];
-                        final double totalArea = item.quantity * item.paintingArea;
+                        final double estimatedArea = ProjectItemModel.estimateAreaFromName(item.name, item.unit);
+                        final double activeArea = item.paintingArea > 0 ? item.paintingArea : estimatedArea;
+                        final double totalArea = item.quantity * activeArea;
                         final double paintNeeded = totalArea * project.paintConsumption;
                         final double paintCost = paintNeeded * project.paintPrice;
-                        final double workCost = totalArea * project.paintingWorkPrice;
-                        final double totalPaintingCost = paintCost + workCost;
+                        final double totalPaintingCost = paintCost;
 
                         return Card(
                           color: const Color(0xFF262626),
@@ -259,17 +242,19 @@ class _PaintingTabState extends State<PaintingTab> {
                                     ),
                                     const SizedBox(width: 12),
                                     SizedBox(
-                                      width: 120,
+                                      width: 130,
                                       child: TextField(
                                         controller: _itemControllers[item.id],
                                         keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                         textAlign: TextAlign.right,
                                         decoration: InputDecoration(
                                           labelText: 'Площадь 1 ед.',
+                                          hintText: estimatedArea > 0 ? estimatedArea.toStringAsFixed(2) : '0.00',
                                           suffixText: ' м²',
                                           contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                                           labelStyle: const TextStyle(fontSize: 11, color: Colors.grey),
+                                          floatingLabelBehavior: FloatingLabelBehavior.always,
                                         ),
                                         onChanged: (val) {
                                           final area = double.tryParse(val.trim()) ?? 0.0;
@@ -279,7 +264,7 @@ class _PaintingTabState extends State<PaintingTab> {
                                     ),
                                   ],
                                 ),
-                                if (item.paintingArea > 0) ...[
+                                if (activeArea > 0) ...[
                                   const SizedBox(height: 12),
                                   const Divider(height: 1, color: Colors.grey),
                                   const SizedBox(height: 8),
@@ -290,7 +275,7 @@ class _PaintingTabState extends State<PaintingTab> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Общая площадь: ${totalArea.toStringAsFixed(2)} м²',
+                                            'Общая площадь: ${totalArea.toStringAsFixed(2)} м²${item.paintingArea == 0 ? " (авто)" : ""}',
                                             style: const TextStyle(color: Colors.grey, fontSize: 11),
                                           ),
                                           Text(
@@ -300,7 +285,7 @@ class _PaintingTabState extends State<PaintingTab> {
                                         ],
                                       ),
                                       Text(
-                                        'Покраска: ${_formatCurrency(totalPaintingCost)}',
+                                        'Краска: ${_formatCurrency(totalPaintingCost)}',
                                         style: const TextStyle(
                                           color: Color(0xFFFF4081),
                                           fontWeight: FontWeight.bold,

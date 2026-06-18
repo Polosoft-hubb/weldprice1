@@ -256,7 +256,7 @@ class _EstimateTabState extends State<EstimateTab> {
                         _buildDetailRow(
                           title: 'Стоимость покраски',
                           value: _formatCurrency(project.totalPaintingCost),
-                          subtitle: 'Краска + работа по площади деталей',
+                          subtitle: 'Только стоимость краски',
                           icon: Icons.format_paint_outlined,
                         ),
                       ],
