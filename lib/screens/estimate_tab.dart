@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import '../providers/project_provider.dart';
+import '../utils/share_helper.dart';
 
 class EstimateTab extends StatefulWidget {
   const EstimateTab({super.key});
@@ -370,17 +372,34 @@ class _EstimateTabState extends State<EstimateTab> {
     final shareText = sb.toString();
     final messenger = ScaffoldMessenger.of(context);
 
-    // Call Share.share directly to open the native system share menu (e.g. iPhone share sheet)
-    Share.share(shareText, subject: 'Смета проекта ${project.name}').catchError((e) {
-      // Fallback: copy to clipboard if native sharing fails
-      Clipboard.setData(ClipboardData(text: shareText)).then((_) {
-        messenger.showSnackBar(
-          const SnackBar(
-            content: Text('Смета скопирована в буфер обмена! Вставьте её в нужное приложение.'),
-            backgroundColor: Color(0xFFFF4081),
-          ),
-        );
+    // On Web, call shareEstimateWeb synchronously to avoid asynchronous MethodChannel gaps that cause Safari to block it.
+    if (kIsWeb) {
+      try {
+        shareEstimateWeb(shareText, 'Смета проекта ${project.name}');
+      } catch (e) {
+        // Fallback: copy to clipboard if sharing throws/fails (e.g. on desktop Chrome/Firefox)
+        Clipboard.setData(ClipboardData(text: shareText)).then((_) {
+          messenger.showSnackBar(
+            const SnackBar(
+              content: Text('Смета скопирована в буфер обмена! Вставьте её в нужное приложение.'),
+              backgroundColor: Color(0xFFFF4081),
+            ),
+          );
+        });
+      }
+    } else {
+      // Call Share.share directly to open the native system share menu (e.g. iPhone share sheet) on native Android/iOS app
+      Share.share(shareText, subject: 'Смета проекта ${project.name}').catchError((e) {
+        // Fallback: copy to clipboard if native sharing fails
+        Clipboard.setData(ClipboardData(text: shareText)).then((_) {
+          messenger.showSnackBar(
+            const SnackBar(
+              content: Text('Смета скопирована в буфер обмена! Вставьте её в нужное приложение.'),
+              backgroundColor: Color(0xFFFF4081),
+            ),
+          );
+        });
       });
-    });
+    }
   }
 }
