@@ -71,6 +71,11 @@ class ProjectItemModel {
 
   static double estimateAreaFromName(String name, String unit) {
     final nameLower = name.toLowerCase();
+    final unitLower = unit.toLowerCase();
+    
+    if (unitLower == 'кв. м' || unitLower == 'кв.м' || unitLower == 'м2' || unitLower == 'м²') {
+      return 1.0;
+    }
     
     // Check for two dimensions: e.g. 40х40х2, 60x40, 50*50
     final regTwoDims = RegExp(r'(\d+)\s*[xхXХ*]\s*(\d+)');
@@ -83,6 +88,8 @@ class ProjectItemModel {
       if (dim1 > 0 && dim2 > 0) {
         if (nameLower.contains('полоса')) {
           return (2 * dim1) / 1000.0;
+        } else if (nameLower.contains('лист') || nameLower.contains('профлист') || nameLower.contains('профнастил') || nameLower.contains('плита')) {
+          return (dim1 * dim2) / 1000000.0;
         } else if (nameLower.contains('труба') && !nameLower.contains('профил')) {
           return (3.14159 * dim1) / 1000.0;
         } else {
