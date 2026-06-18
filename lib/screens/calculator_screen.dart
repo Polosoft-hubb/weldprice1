@@ -407,8 +407,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               children: [
                 calcButton('C', color: Colors.redAccent, textColor: Colors.white, onPressed: _stdPressClear),
                 calcButton('⌫', color: const Color(0xFF3C3C3C), textColor: Colors.white, onPressed: _stdPressBackspace),
-                calcButton('+/-', color: const Color(0xFF3C3C3C), textColor: Colors.white, onPressed: _stdPressNegate),
                 calcButton('%', color: const Color(0xFF3C3C3C), textColor: Colors.white, onPressed: _stdPressPercent),
+                calcButton('/', color: const Color(0xFFFF4081).withOpacity(0.15), textColor: const Color(0xFFFF4081), onPressed: () => _stdPressOperator('/')),
               ],
             ),
             Row(
@@ -416,7 +416,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 calcButton('7', onPressed: () => _stdPressDigit('7')),
                 calcButton('8', onPressed: () => _stdPressDigit('8')),
                 calcButton('9', onPressed: () => _stdPressDigit('9')),
-                calcButton('/', color: const Color(0xFFFF4081).withOpacity(0.15), textColor: const Color(0xFFFF4081), onPressed: () => _stdPressOperator('/')),
+                calcButton('*', color: const Color(0xFFFF4081).withOpacity(0.15), textColor: const Color(0xFFFF4081), onPressed: () => _stdPressOperator('*')),
               ],
             ),
             Row(
@@ -424,7 +424,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 calcButton('4', onPressed: () => _stdPressDigit('4')),
                 calcButton('5', onPressed: () => _stdPressDigit('5')),
                 calcButton('6', onPressed: () => _stdPressDigit('6')),
-                calcButton('*', color: const Color(0xFFFF4081).withOpacity(0.15), textColor: const Color(0xFFFF4081), onPressed: () => _stdPressOperator('*')),
+                calcButton('-', color: const Color(0xFFFF4081).withOpacity(0.15), textColor: const Color(0xFFFF4081), onPressed: () => _stdPressOperator('-')),
               ],
             ),
             Row(
@@ -432,15 +432,15 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 calcButton('1', onPressed: () => _stdPressDigit('1')),
                 calcButton('2', onPressed: () => _stdPressDigit('2')),
                 calcButton('3', onPressed: () => _stdPressDigit('3')),
-                calcButton('-', color: const Color(0xFFFF4081).withOpacity(0.15), textColor: const Color(0xFFFF4081), onPressed: () => _stdPressOperator('-')),
+                calcButton('+', color: const Color(0xFFFF4081).withOpacity(0.15), textColor: const Color(0xFFFF4081), onPressed: () => _stdPressOperator('+')),
               ],
             ),
             Row(
               children: [
+                calcButton('+/-', color: const Color(0xFF3C3C3C), textColor: Colors.white, onPressed: _stdPressNegate),
                 calcButton('0', onPressed: () => _stdPressDigit('0')),
                 calcButton('.', onPressed: _stdPressDecimal),
                 calcButton('=', color: const Color(0xFFFF4081), textColor: Colors.black, onPressed: _stdPressEqual),
-                calcButton('+', color: const Color(0xFFFF4081).withOpacity(0.15), textColor: const Color(0xFFFF4081), onPressed: () => _stdPressOperator('+')),
               ],
             ),
           ],
