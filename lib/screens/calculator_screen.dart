@@ -199,7 +199,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   final TextEditingController _rpDiameterController = TextEditingController();
   final TextEditingController _rpWallController = TextEditingController();
   final TextEditingController _rpLengthController = TextEditingController();
-  double _rpCapacityLiters = 0.0;
+  double _rpCapacityM3 = 0.0;
 
   void _calcRoundPipe() {
     final dMm = double.tryParse(_rpDiameterController.text.replaceAll(',', '.')) ?? 0.0;
@@ -214,7 +214,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     final areaIn = rIn > 0 ? pi * rIn * rIn : 0.0;
 
     setState(() {
-      _rpCapacityLiters = areaIn * l * 1000.0;
+      _rpCapacityM3 = areaIn * l;
     });
   }
 
@@ -223,7 +223,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   final TextEditingController _recHeightController = TextEditingController();
   final TextEditingController _recWallController = TextEditingController();
   final TextEditingController _recLengthController = TextEditingController();
-  double _recCapacityLiters = 0.0;
+  double _recCapacityM3 = 0.0;
 
   void _calcRectPipe() {
     final wMm = double.tryParse(_recWidthController.text.replaceAll(',', '.')) ?? 0.0;
@@ -241,7 +241,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     final areaIn = (wIn > 0 && hIn > 0) ? wIn * hIn : 0.0;
 
     setState(() {
-      _recCapacityLiters = areaIn * l * 1000.0;
+      _recCapacityM3 = areaIn * l;
     });
   }
 
@@ -655,7 +655,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         _buildResultCard(
           title: 'Результаты расчета трубы',
           outputs: [
-            'Внутренний объем: ${_rpCapacityLiters.toStringAsFixed(2)} л',
+            'Внутренний объем: ${_rpCapacityM3.toStringAsFixed(5)} м³',
           ],
         ),
       ],
@@ -723,7 +723,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         _buildResultCard(
           title: 'Результаты расчета трубы',
           outputs: [
-            'Внутренний объем: ${_recCapacityLiters.toStringAsFixed(2)} л',
+            'Внутренний объем: ${_recCapacityM3.toStringAsFixed(5)} м³',
           ],
         ),
       ],
