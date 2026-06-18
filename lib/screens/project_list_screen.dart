@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../providers/project_provider.dart';
 import '../models/project.dart';
 import 'project_details_screen.dart';
+import 'calculator_screen.dart';
 
 
 class ProjectListScreen extends StatelessWidget {
@@ -109,6 +110,18 @@ class ProjectListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('WELDPRICE'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.calculate_outlined),
+            tooltip: 'Калькулятор',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const CalculatorScreen()),
+              );
+            },
+          ),
+          const SizedBox(width: 8),
+        ],
       ),
       body: Consumer<ProjectProvider>(
         builder: (context, provider, child) {
