@@ -330,7 +330,7 @@ class _EstimateTabState extends State<EstimateTab> {
     );
   }
 
-  void _shareEstimate(BuildContext context, dynamic project) async {
+  void _shareEstimate(BuildContext context, dynamic project) {
     final df = DateFormat('dd.MM.yyyy HH:mm');
     final dateStr = df.format(project.createdAt);
     
@@ -371,20 +371,19 @@ class _EstimateTabState extends State<EstimateTab> {
     final messenger = ScaffoldMessenger.of(context);
     
     // 1. Try native sharing FIRST (must be immediate to maintain user activation / gesture)
-    try {
-      await Share.share(shareText, subject: 'Смета проекта ${project.name}');
-      
+    Share.share(shareText, subject: 'Смета проекта ${project.name}').then((_) {
       // Also copy to clipboard for convenience
-      await Clipboard.setData(ClipboardData(text: shareText));
-    } catch (e) {
+      Clipboard.setData(ClipboardData(text: shareText));
+    }).catchError((e) {
       // 2. Fallback to clipboard if native sharing is not supported (e.g. on desktop)
-      await Clipboard.setData(ClipboardData(text: shareText));
-      messenger.showSnackBar(
-        const SnackBar(
-          content: Text('Смета скопирована в буфер обмена! Вставьте её в WhatsApp или Telegram.'),
-          backgroundColor: Color(0xFFFF4081),
-        ),
-      );
-    }
+      Clipboard.setData(ClipboardData(text: shareText)).then((_) {
+        messenger.showSnackBar(
+          const SnackBar(
+            content: Text('Смета скопирована в буфер обмена! Вставьте её в WhatsApp или Telegram.'),
+            backgroundColor: Color(0xFFFF4081),
+          ),
+        );
+      });
+    });
   }
 }
