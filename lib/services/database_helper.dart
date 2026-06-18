@@ -33,7 +33,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 2,
+      version: 3,
       onCreate: _createDB,
       onConfigure: _onConfigure,
       onUpgrade: _onUpgrade,
@@ -54,6 +54,10 @@ class DatabaseHelper {
 
       // Add painting columns to project_items table
       await db.execute('ALTER TABLE project_items ADD COLUMN painting_area REAL DEFAULT 0.0');
+    }
+    if (oldVersion < 3) {
+      // Add paint_can_weight column to projects table
+      await db.execute('ALTER TABLE projects ADD COLUMN paint_can_weight REAL DEFAULT 1.0');
     }
   }
 
@@ -85,7 +89,8 @@ class DatabaseHelper {
         is_painting_enabled INTEGER DEFAULT 0,
         paint_price REAL DEFAULT 0.0,
         paint_consumption REAL DEFAULT 0.2,
-        painting_work_price REAL DEFAULT 200.0
+        painting_work_price REAL DEFAULT 200.0,
+        paint_can_weight REAL DEFAULT 1.0
       )
     ''');
 
@@ -643,7 +648,7 @@ class DatabaseHelper {
     );
   }
 
-  Future<int> updateProjectPaintingSettings(int projectId, {required bool enabled, required double price, required double consumption, required double workPrice}) async {
+  Future<int> updateProjectPaintingSettings(int projectId, {required bool enabled, required double price, required double consumption, required double workPrice, required double canWeight}) async {
     if (kIsWeb) {
       await _initWebData();
       final index = _webProjects!.indexWhere((element) => (element.id as num).toInt() == projectId);
@@ -653,6 +658,7 @@ class DatabaseHelper {
           paintPrice: price,
           paintConsumption: consumption,
           paintingWorkPrice: workPrice,
+          paintCanWeight: canWeight,
         );
         await _saveWebProjects();
         return 1;
@@ -667,6 +673,7 @@ class DatabaseHelper {
         'paint_price': price,
         'paint_consumption': consumption,
         'painting_work_price': workPrice,
+        'paint_can_weight': canWeight,
       },
       where: 'id = ?',
       whereArgs: [projectId],

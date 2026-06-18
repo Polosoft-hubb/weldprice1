@@ -256,7 +256,7 @@ class _EstimateTabState extends State<EstimateTab> {
                         _buildDetailRow(
                           title: 'Стоимость покраски',
                           value: _formatCurrency(project.totalPaintingCost),
-                          subtitle: 'Только стоимость краски',
+                          subtitle: 'Расход краски: ${project.totalPaintWeight.toStringAsFixed(2)} кг\nНеобходимо: ${project.cansNeeded} бан. по ${project.paintCanWeight.toString().replaceAll(RegExp(r"\.0$"), "")} кг',
                           icon: Icons.format_paint_outlined,
                         ),
                       ],

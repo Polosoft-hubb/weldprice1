@@ -13,6 +13,7 @@ class PaintingTab extends StatefulWidget {
 
 class _PaintingTabState extends State<PaintingTab> {
   late TextEditingController _paintPriceController;
+  late TextEditingController _paintCanWeightController;
   late TextEditingController _paintConsumptionController;
   
   final Map<int, TextEditingController> _itemControllers = {};
@@ -22,12 +23,14 @@ class _PaintingTabState extends State<PaintingTab> {
   void initState() {
     super.initState();
     _paintPriceController = TextEditingController();
+    _paintCanWeightController = TextEditingController();
     _paintConsumptionController = TextEditingController();
   }
 
   @override
   void dispose() {
     _paintPriceController.dispose();
+    _paintCanWeightController.dispose();
     _paintConsumptionController.dispose();
     for (final c in _itemControllers.values) {
       c.dispose();
@@ -58,6 +61,7 @@ class _PaintingTabState extends State<PaintingTab> {
         if (_lastProjectId != currentProjId) {
           _lastProjectId = currentProjId;
           _paintPriceController.text = project.paintPrice == 0 ? '' : project.paintPrice.toString();
+          _paintCanWeightController.text = project.paintCanWeight.toString();
           _paintConsumptionController.text = project.paintConsumption.toString();
           
           for (final c in _itemControllers.values) {
@@ -131,10 +135,10 @@ class _PaintingTabState extends State<PaintingTab> {
                                   controller: _paintPriceController,
                                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                   decoration: InputDecoration(
-                                    labelText: 'Цена краски (₽/кг)',
+                                    labelText: 'Цена банки (₽)',
                                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                                    labelStyle: const TextStyle(fontSize: 12, color: Colors.grey),
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                                    labelStyle: const TextStyle(fontSize: 11, color: Colors.grey),
                                   ),
                                   onChanged: (val) {
                                     final price = double.tryParse(val.trim()) ?? 0.0;
@@ -142,7 +146,24 @@ class _PaintingTabState extends State<PaintingTab> {
                                   },
                                 ),
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: TextField(
+                                  controller: _paintCanWeightController,
+                                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                  decoration: InputDecoration(
+                                    labelText: 'Вес банки (кг)',
+                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                                    labelStyle: const TextStyle(fontSize: 11, color: Colors.grey),
+                                  ),
+                                  onChanged: (val) {
+                                    final weight = double.tryParse(val.trim()) ?? 1.0;
+                                    provider.updatePaintingSettings(canWeight: weight);
+                                  },
+                                ),
+                              ),
+                              const SizedBox(width: 8),
                               Expanded(
                                 child: TextField(
                                   controller: _paintConsumptionController,
@@ -150,8 +171,8 @@ class _PaintingTabState extends State<PaintingTab> {
                                   decoration: InputDecoration(
                                     labelText: 'Расход (кг/м²)',
                                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                                    labelStyle: const TextStyle(fontSize: 12, color: Colors.grey),
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                                    labelStyle: const TextStyle(fontSize: 11, color: Colors.grey),
                                   ),
                                   onChanged: (val) {
                                     final cons = double.tryParse(val.trim()) ?? 0.2;
@@ -161,6 +182,45 @@ class _PaintingTabState extends State<PaintingTab> {
                               ),
                             ],
                           ),
+                          if (project.totalPaintWeight > 0) ...[
+                            const SizedBox(height: 16),
+                            const Divider(height: 1, color: Colors.grey),
+                            const SizedBox(height: 12),
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF262626),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Всего краски: ${project.totalPaintWeight.toStringAsFixed(2)} кг',
+                                        style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        'Нужно купить: ${project.cansNeeded} бан. по ${project.paintCanWeight} кг',
+                                        style: const TextStyle(color: Colors.grey, fontSize: 11),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    _formatCurrency(project.totalPaintingCost),
+                                    style: const TextStyle(
+                                      color: Color(0xFFFF4081),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                     ),

@@ -9,9 +9,10 @@ class ProjectModel {
 
   // Painting settings
   final bool isPaintingEnabled;
-  final double paintPrice;
-  final double paintConsumption; // in kg/m2 or l/m2
-  final double paintingWorkPrice; // labor cost per m2
+  final double paintPrice;         // Now represents the price of 1 can
+  final double paintConsumption;   // in kg/m2 or l/m2
+  final double paintingWorkPrice;
+  final double paintCanWeight;     // in kg
 
   ProjectModel({
     this.id,
@@ -23,6 +24,7 @@ class ProjectModel {
     this.paintPrice = 0.0,
     this.paintConsumption = 0.2,
     this.paintingWorkPrice = 200.0,
+    this.paintCanWeight = 1.0,
   });
 
   double get materialsCost {
@@ -37,17 +39,23 @@ class ProjectModel {
     return workCost * 0.05;
   }
 
-  double get totalPaintingCost {
-    if (!isPaintingEnabled) return 0.0;
+  double get totalPaintWeight {
     return items.fold(0.0, (sum, item) {
       final area = item.paintingArea > 0
           ? item.paintingArea
           : ProjectItemModel.estimateAreaFromName(item.name, item.unit);
-      final totalArea = item.quantity * area;
-      final paintNeeded = totalArea * paintConsumption;
-      final paintCost = paintNeeded * paintPrice;
-      return sum + paintCost;
+      return sum + (item.quantity * area * paintConsumption);
     });
+  }
+
+  int get cansNeeded {
+    if (paintCanWeight <= 0) return 0;
+    return (totalPaintWeight / paintCanWeight).ceil();
+  }
+
+  double get totalPaintingCost {
+    if (!isPaintingEnabled) return 0.0;
+    return cansNeeded * paintPrice;
   }
 
   double get totalPrice {
@@ -68,6 +76,7 @@ class ProjectModel {
       paintPrice: (json['paint_price'] as num?)?.toDouble() ?? 0.0,
       paintConsumption: (json['paint_consumption'] as num?)?.toDouble() ?? 0.2,
       paintingWorkPrice: (json['painting_work_price'] as num?)?.toDouble() ?? 200.0,
+      paintCanWeight: (json['paint_can_weight'] as num?)?.toDouble() ?? 1.0,
     );
   }
 
@@ -81,6 +90,7 @@ class ProjectModel {
       'paint_price': paintPrice,
       'paint_consumption': paintConsumption,
       'painting_work_price': paintingWorkPrice,
+      'paint_can_weight': paintCanWeight,
     };
   }
 
@@ -94,6 +104,7 @@ class ProjectModel {
     double? paintPrice,
     double? paintConsumption,
     double? paintingWorkPrice,
+    double? paintCanWeight,
   }) {
     return ProjectModel(
       id: id ?? this.id,
@@ -105,6 +116,7 @@ class ProjectModel {
       paintPrice: paintPrice ?? this.paintPrice,
       paintConsumption: paintConsumption ?? this.paintConsumption,
       paintingWorkPrice: paintingWorkPrice ?? this.paintingWorkPrice,
+      paintCanWeight: paintCanWeight ?? this.paintCanWeight,
     );
   }
 }

@@ -188,6 +188,7 @@ class ProjectProvider extends ChangeNotifier {
     double? price,
     double? consumption,
     double? workPrice,
+    double? canWeight,
   }) async {
     if (_selectedProject == null || _selectedProject!.id == null) return;
     final projectId = (_selectedProject!.id as num).toInt();
@@ -196,6 +197,7 @@ class ProjectProvider extends ChangeNotifier {
     final currentPrice = price ?? _selectedProject!.paintPrice;
     final currentConsumption = consumption ?? _selectedProject!.paintConsumption;
     final currentWorkPrice = workPrice ?? _selectedProject!.paintingWorkPrice;
+    final currentCanWeight = canWeight ?? _selectedProject!.paintCanWeight;
 
     await _dbHelper.updateProjectPaintingSettings(
       projectId,
@@ -203,6 +205,7 @@ class ProjectProvider extends ChangeNotifier {
       price: currentPrice,
       consumption: currentConsumption,
       workPrice: currentWorkPrice,
+      canWeight: currentCanWeight,
     );
 
     await loadProjects();
