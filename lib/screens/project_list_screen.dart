@@ -112,7 +112,8 @@ class ProjectListScreen extends StatelessWidget {
         title: const Text('WELDPRICE'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.calculate_outlined),
+            icon: const Icon(Icons.calculate_outlined, size: 32),
+            iconSize: 32,
             tooltip: 'Калькулятор',
             onPressed: () {
               Navigator.of(context).push(

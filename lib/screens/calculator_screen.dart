@@ -344,7 +344,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
   // 1. Standard Calculator Layout
   Widget _buildStandardCalculator() {
-    Widget calcButton(String text, {Color? color, Color? textColor, VoidCallback? onPressed}) {
+    Widget calcButton(dynamic label, {Color? color, Color? textColor, VoidCallback? onPressed}) {
       return Expanded(
         child: Padding(
           padding: const EdgeInsets.all(4.0),
@@ -358,7 +358,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 padding: EdgeInsets.zero,
               ),
-              child: Text(text, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              child: label is Widget
+                  ? label
+                  : Text(label.toString(), style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
             ),
           ),
         ),
@@ -406,7 +408,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             Row(
               children: [
                 calcButton('C', color: Colors.redAccent, textColor: Colors.white, onPressed: _stdPressClear),
-                calcButton('⌫', color: const Color(0xFF3C3C3C), textColor: Colors.white, onPressed: _stdPressBackspace),
+                calcButton(const Icon(Icons.backspace_outlined, size: 22), color: const Color(0xFF3C3C3C), textColor: Colors.white, onPressed: _stdPressBackspace),
                 calcButton('%', color: const Color(0xFF3C3C3C), textColor: Colors.white, onPressed: _stdPressPercent),
                 calcButton('/', color: const Color(0xFFFF4081).withOpacity(0.15), textColor: const Color(0xFFFF4081), onPressed: () => _stdPressOperator('/')),
               ],
