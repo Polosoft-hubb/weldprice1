@@ -370,19 +370,15 @@ class _EstimateTabState extends State<EstimateTab> {
     final shareText = sb.toString();
     final messenger = ScaffoldMessenger.of(context);
     
-    // 1. Copy to clipboard
-    await Clipboard.setData(ClipboardData(text: shareText));
-    
-    // 2. Try native sharing
+    // 1. Try native sharing FIRST (must be immediate to maintain user activation / gesture)
     try {
       await Share.share(shareText, subject: 'Смета проекта ${project.name}');
-      messenger.showSnackBar(
-        const SnackBar(
-          content: Text('Смета скопирована и отправлена!'),
-          backgroundColor: Colors.green,
-        ),
-      );
+      
+      // Also copy to clipboard for convenience
+      await Clipboard.setData(ClipboardData(text: shareText));
     } catch (e) {
+      // 2. Fallback to clipboard if native sharing is not supported (e.g. on desktop)
+      await Clipboard.setData(ClipboardData(text: shareText));
       messenger.showSnackBar(
         const SnackBar(
           content: Text('Смета скопирована в буфер обмена! Вставьте её в WhatsApp или Telegram.'),
