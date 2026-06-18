@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform, TargetPlatform;
 import '../providers/project_provider.dart';
 import '../utils/share_helper.dart';
 
@@ -372,21 +372,28 @@ class _EstimateTabState extends State<EstimateTab> {
     final shareText = sb.toString();
     final messenger = ScaffoldMessenger.of(context);
 
-    // On Web, call shareEstimateWeb synchronously to avoid asynchronous MethodChannel gaps that cause Safari to block it.
+    // On Web, call shareEstimateWeb synchronously only on mobile devices to open the native Share Sheet.
+    // On desktop PC browsers, directly copy to clipboard to bypass the clunky OS-level sharing screen.
     if (kIsWeb) {
-      try {
-        shareEstimateWeb(shareText, 'Смета проекта ${project.name}');
-      } catch (e) {
-        // Fallback: copy to clipboard if sharing throws/fails (e.g. on desktop Chrome/Firefox)
-        Clipboard.setData(ClipboardData(text: shareText)).then((_) {
-          messenger.showSnackBar(
-            const SnackBar(
-              content: Text('Смета скопирована в буфер обмена! Вставьте её в нужное приложение.'),
-              backgroundColor: Color(0xFFFF4081),
-            ),
-          );
-        });
+      final isMobile = defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.android;
+      if (isMobile) {
+        try {
+          shareEstimateWeb(shareText, 'Смета проекта ${project.name}');
+          return;
+        } catch (e) {
+          // Fallback if sharing fails
+        }
       }
+      
+      // Fallback/Desktop: copy to clipboard
+      Clipboard.setData(ClipboardData(text: shareText)).then((_) {
+        messenger.showSnackBar(
+          const SnackBar(
+            content: Text('Смета скопирована в буфер обмена! Вставьте её в нужное приложение.'),
+            backgroundColor: Color(0xFFFF4081),
+          ),
+        );
+      });
     } else {
       // Call Share.share directly to open the native system share menu (e.g. iPhone share sheet) on native Android/iOS app
       Share.share(shareText, subject: 'Смета проекта ${project.name}').catchError((e) {
