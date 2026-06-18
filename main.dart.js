@@ -27168,23 +27168,26 @@ _.x=i
 _.y=j},
 a9C:function a9C(){},
 a9D:function a9D(a){this.a=a},
-asf(a,b){var s,r,q,p,o,n,m=a.toLowerCase(),l=A.dX("(\\d+)\\s*[x\u0445X\u0425*]\\s*(\\d+)",!0,!1).mz(a)
-if(l!=null){s=l.b
-r=s[1]
-q=A.fv(r==null?"":r)
-if(q==null)q=0
-s=s[2]
-p=A.fv(s==null?"":s)
+asf(a,b){var s,r,q,p,o,n,m,l=a.toLowerCase(),k=b.toLowerCase()
+if(k==="\u043a\u0432. \u043c"||k==="\u043a\u0432.\u043c"||k==="\u043c2"||k==="\u043c\xb2")return 1
+s=A.dX("(\\d+)\\s*[x\u0445X\u0425*]\\s*(\\d+)",!0,!1).mz(a)
+if(s!=null){r=s.b
+q=r[1]
+p=A.fv(q==null?"":q)
 if(p==null)p=0
-if(q>0&&p>0)if(B.d.n(m,"\u043f\u043e\u043b\u043e\u0441\u0430"))return 2*q/1000
-else if(B.d.n(m,"\u0442\u0440\u0443\u0431\u0430")&&!B.d.n(m,"\u043f\u0440\u043e\u0444\u0438\u043b"))return 3.14159*q/1000
-else return 2*(q+p)/1000}o=A.dX("(?:d|\u0434\u0438\u0430\u043c\u0435\u0442\u0440|\u0414\u0443)?\\s*(\\d+)\\s*(?:\u043c\u043c|\u043c)?",!1,!1).mz(a)
-if(o!=null){s=o.b[1]
-n=A.fv(s==null?"":s)
-if(n==null)n=0
-if(n>0)if(B.d.n(m,"\u0448\u0432\u0435\u043b\u043b\u0435\u0440"))return 4*n*10/1000
-else if(B.d.n(m,"\u0434\u0432\u0443\u0442\u0430\u0432\u0440")||B.d.n(m,"\u0431\u0430\u043b\u043a\u0430"))return 6*n*10/1000
-else return 3.14159*n/1000}return 0},
+r=r[2]
+o=A.fv(r==null?"":r)
+if(o==null)o=0
+if(p>0&&o>0)if(B.d.n(l,"\u043f\u043e\u043b\u043e\u0441\u0430"))return 2*p/1000
+else if(B.d.n(l,"\u043b\u0438\u0441\u0442")||B.d.n(l,"\u043f\u0440\u043e\u0444\u043b\u0438\u0441\u0442")||B.d.n(l,"\u043f\u0440\u043e\u0444\u043d\u0430\u0441\u0442\u0438\u043b")||B.d.n(l,"\u043f\u043b\u0438\u0442\u0430"))return p*o/1e6
+else if(B.d.n(l,"\u0442\u0440\u0443\u0431\u0430")&&!B.d.n(l,"\u043f\u0440\u043e\u0444\u0438\u043b"))return 3.14159*p/1000
+else return 2*(p+o)/1000}n=A.dX("(?:d|\u0434\u0438\u0430\u043c\u0435\u0442\u0440|\u0414\u0443)?\\s*(\\d+)\\s*(?:\u043c\u043c|\u043c)?",!1,!1).mz(a)
+if(n!=null){r=n.b[1]
+m=A.fv(r==null?"":r)
+if(m==null)m=0
+if(m>0)if(B.d.n(l,"\u0448\u0432\u0435\u043b\u043b\u0435\u0440"))return 4*m*10/1000
+else if(B.d.n(l,"\u0434\u0432\u0443\u0442\u0430\u0432\u0440")||B.d.n(l,"\u0431\u0430\u043b\u043a\u0430"))return 6*m*10/1000
+else return 3.14159*m/1000}return 0},
 ec:function ec(a,b,c,d,e,f,g,h){var _=this
 _.a=a
 _.b=b
