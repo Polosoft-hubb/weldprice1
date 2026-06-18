@@ -22,6 +22,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
   // --- Standard Calculator State ---
   String _stdDisplay = '0';
+  String _stdHistory = '';
   double? _firstOperand;
   String? _operator;
   bool _shouldResetDisplay = false;
@@ -53,9 +54,53 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   void _stdPressClear() {
     setState(() {
       _stdDisplay = '0';
+      _stdHistory = '';
       _firstOperand = null;
       _operator = null;
       _shouldResetDisplay = false;
+    });
+  }
+
+  void _stdPressBackspace() {
+    setState(() {
+      if (_shouldResetDisplay) {
+        _stdDisplay = '0';
+        _shouldResetDisplay = false;
+        return;
+      }
+      if (_stdDisplay.length > 1) {
+        _stdDisplay = _stdDisplay.substring(0, _stdDisplay.length - 1);
+        if (_stdDisplay == '-') {
+          _stdDisplay = '0';
+        }
+      } else {
+        _stdDisplay = '0';
+      }
+    });
+  }
+
+  void _stdPressNegate() {
+    setState(() {
+      if (_stdDisplay == '0') return;
+      if (_stdDisplay.startsWith('-')) {
+        _stdDisplay = _stdDisplay.substring(1);
+      } else {
+        _stdDisplay = '-$_stdDisplay';
+      }
+    });
+  }
+
+  void _stdPressPercent() {
+    setState(() {
+      final double? val = double.tryParse(_stdDisplay);
+      if (val != null) {
+        final result = val / 100.0;
+        if (result == result.toInt()) {
+          _stdDisplay = result.toInt().toString();
+        } else {
+          _stdDisplay = result.toStringAsFixed(8).replaceAll(RegExp(r'\.?0+$'), '');
+        }
+      }
     });
   }
 
@@ -63,8 +108,14 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     setState(() {
       final double? value = double.tryParse(_stdDisplay);
       if (value != null) {
-        _firstOperand = value;
+        if (_firstOperand != null && _operator != null && !_shouldResetDisplay) {
+          _stdPressEqual();
+          _firstOperand = double.tryParse(_stdDisplay);
+        } else {
+          _firstOperand = value;
+        }
         _operator = op;
+        _stdHistory = '$_stdDisplay $op';
         _shouldResetDisplay = true;
       }
     });
@@ -91,11 +142,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             break;
         }
         
-        // Format result nicely: remove training .0 if integer
+        _stdHistory = '$_firstOperand $_operator $secondOperand =';
+        
         if (result == result.toInt()) {
           _stdDisplay = result.toInt().toString();
         } else {
-          // Limit decimal digits to 6 for standard display
           _stdDisplay = result.toStringAsFixed(6).replaceAll(RegExp(r'\.?0+$'), '');
         }
         _firstOperand = null;
@@ -149,29 +200,21 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   final TextEditingController _rpWallController = TextEditingController();
   final TextEditingController _rpLengthController = TextEditingController();
   double _rpCapacityLiters = 0.0;
-  double _rpCapacityM3 = 0.0;
-  double _rpWeightKg = 0.0;
 
   void _calcRoundPipe() {
     final dMm = double.tryParse(_rpDiameterController.text.replaceAll(',', '.')) ?? 0.0;
     final tMm = double.tryParse(_rpWallController.text.replaceAll(',', '.')) ?? 0.0;
     final lM = double.tryParse(_rpLengthController.text.replaceAll(',', '.')) ?? 0.0;
 
-    final d = dMm / 1000.0; // convert to meters
+    final d = dMm / 1000.0;
     final t = tMm / 1000.0;
     final l = lM;
 
-    final rOut = d / 2.0;
     final rIn = (d - 2.0 * t) / 2.0;
-
-    final areaOut = pi * rOut * rOut;
     final areaIn = rIn > 0 ? pi * rIn * rIn : 0.0;
-    final areaMetal = areaOut - areaIn;
 
     setState(() {
-      _rpCapacityM3 = areaIn * l;
-      _rpCapacityLiters = _rpCapacityM3 * 1000.0;
-      _rpWeightKg = areaMetal * l * 7850.0; // steel density = 7850 kg/m3
+      _rpCapacityLiters = areaIn * l * 1000.0;
     });
   }
 
@@ -181,8 +224,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   final TextEditingController _recWallController = TextEditingController();
   final TextEditingController _recLengthController = TextEditingController();
   double _recCapacityLiters = 0.0;
-  double _recCapacityM3 = 0.0;
-  double _recWeightKg = 0.0;
 
   void _calcRectPipe() {
     final wMm = double.tryParse(_recWidthController.text.replaceAll(',', '.')) ?? 0.0;
@@ -195,16 +236,12 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     final t = tMm / 1000.0;
     final l = lM;
 
-    final areaOut = w * h;
     final wIn = w - 2.0 * t;
     final hIn = h - 2.0 * t;
     final areaIn = (wIn > 0 && hIn > 0) ? wIn * hIn : 0.0;
-    final areaMetal = areaOut - areaIn;
 
     setState(() {
-      _recCapacityM3 = areaIn * l;
-      _recCapacityLiters = _recCapacityM3 * 1000.0;
-      _recWeightKg = areaMetal * l * 7850.0;
+      _recCapacityLiters = areaIn * l * 1000.0;
     });
   }
 
@@ -330,23 +367,36 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
     return Column(
       children: [
-        // Display
+        // Display with active operation visible
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           decoration: BoxDecoration(
             color: const Color(0xFF1E1E1E),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: Colors.white10),
           ),
-          alignment: Alignment.centerRight,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            reverse: true,
-            child: Text(
-              _stdDisplay,
-              style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: Colors.white, fontFamily: 'monospace'),
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                reverse: true,
+                child: Text(
+                  _stdHistory,
+                  style: const TextStyle(fontSize: 18, color: Colors.grey, fontFamily: 'monospace'),
+                ),
+              ),
+              const SizedBox(height: 8),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                reverse: true,
+                child: Text(
+                  _stdDisplay,
+                  style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: Colors.white, fontFamily: 'monospace'),
+                ),
+              ),
+            ],
           ),
         ),
         const SizedBox(height: 16),
@@ -356,9 +406,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             Row(
               children: [
                 calcButton('C', color: Colors.redAccent, textColor: Colors.white, onPressed: _stdPressClear),
-                calcButton('/', color: const Color(0xFFFF4081).withOpacity(0.15), textColor: const Color(0xFFFF4081), onPressed: () => _stdPressOperator('/')),
-                calcButton('*', color: const Color(0xFFFF4081).withOpacity(0.15), textColor: const Color(0xFFFF4081), onPressed: () => _stdPressOperator('*')),
-                calcButton('-', color: const Color(0xFFFF4081).withOpacity(0.15), textColor: const Color(0xFFFF4081), onPressed: () => _stdPressOperator('-')),
+                calcButton('⌫', color: const Color(0xFF3C3C3C), textColor: Colors.white, onPressed: _stdPressBackspace),
+                calcButton('+/-', color: const Color(0xFF3C3C3C), textColor: Colors.white, onPressed: _stdPressNegate),
+                calcButton('%', color: const Color(0xFF3C3C3C), textColor: Colors.white, onPressed: _stdPressPercent),
               ],
             ),
             Row(
@@ -366,7 +416,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 calcButton('7', onPressed: () => _stdPressDigit('7')),
                 calcButton('8', onPressed: () => _stdPressDigit('8')),
                 calcButton('9', onPressed: () => _stdPressDigit('9')),
-                calcButton('+', color: const Color(0xFFFF4081).withOpacity(0.15), textColor: const Color(0xFFFF4081), onPressed: () => _stdPressOperator('+')),
+                calcButton('/', color: const Color(0xFFFF4081).withOpacity(0.15), textColor: const Color(0xFFFF4081), onPressed: () => _stdPressOperator('/')),
               ],
             ),
             Row(
@@ -374,7 +424,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 calcButton('4', onPressed: () => _stdPressDigit('4')),
                 calcButton('5', onPressed: () => _stdPressDigit('5')),
                 calcButton('6', onPressed: () => _stdPressDigit('6')),
-                calcButton('=', color: const Color(0xFFFF4081), textColor: Colors.black, onPressed: _stdPressEqual),
+                calcButton('*', color: const Color(0xFFFF4081).withOpacity(0.15), textColor: const Color(0xFFFF4081), onPressed: () => _stdPressOperator('*')),
               ],
             ),
             Row(
@@ -382,15 +432,15 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 calcButton('1', onPressed: () => _stdPressDigit('1')),
                 calcButton('2', onPressed: () => _stdPressDigit('2')),
                 calcButton('3', onPressed: () => _stdPressDigit('3')),
-                calcButton('0', onPressed: () => _stdPressDigit('0')),
+                calcButton('-', color: const Color(0xFFFF4081).withOpacity(0.15), textColor: const Color(0xFFFF4081), onPressed: () => _stdPressOperator('-')),
               ],
             ),
             Row(
               children: [
+                calcButton('0', onPressed: () => _stdPressDigit('0')),
                 calcButton('.', onPressed: _stdPressDecimal),
-                const Expanded(child: SizedBox()), // spacer to keep alignment
-                const Expanded(child: SizedBox()),
-                const Expanded(child: SizedBox()),
+                calcButton('=', color: const Color(0xFFFF4081), textColor: Colors.black, onPressed: _stdPressEqual),
+                calcButton('+', color: const Color(0xFFFF4081).withOpacity(0.15), textColor: const Color(0xFFFF4081), onPressed: () => _stdPressOperator('+')),
               ],
             ),
           ],
@@ -413,7 +463,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           controller: _diagSideAController,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           decoration: const InputDecoration(
-            labelText: 'Сторона А (мм)',
+            labelText: 'Длина (мм)',
             hintText: 'например, 3000',
           ),
           onChanged: (_) => _calcDiagonal(),
@@ -423,7 +473,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           controller: _diagSideBController,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           decoration: const InputDecoration(
-            labelText: 'Сторона B (мм)',
+            labelText: 'Ширина (мм)',
             hintText: 'например, 4000',
           ),
           onChanged: (_) => _calcDiagonal(),
@@ -432,8 +482,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         _buildResultCard(
           title: 'Диагональ прямоугольника',
           outputs: [
-            'В миллиметрах: ${_diagResultMm.toStringAsFixed(1)} мм',
-            'В метрах: ${(_diagResultMm / 1000.0).toStringAsFixed(3)} м',
+            '${_diagResultMm.toStringAsFixed(1)} мм',
+            '${(_diagResultMm / 1000.0).toStringAsFixed(3)} м',
           ],
         ),
       ],
@@ -493,8 +543,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         _buildResultCard(
           title: 'Площадь круга',
           outputs: [
-            'В кв. миллиметрах: ${_circleAreaMm2.toStringAsFixed(1)} мм²',
-            'В кв. метрах: ${(_circleAreaMm2 / 1000000.0).toStringAsFixed(5)} м²',
+            '${_circleAreaMm2.toStringAsFixed(1)} мм²',
+            '${(_circleAreaMm2 / 1000000.0).toStringAsFixed(5)} м²',
           ],
         ),
       ],
@@ -554,8 +604,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         _buildResultCard(
           title: 'Длина окружности',
           outputs: [
-            'В миллиметрах: ${_circumLengthMm.toStringAsFixed(1)} мм',
-            'В метрах: ${(_circumLengthMm / 1000.0).toStringAsFixed(3)} м',
+            '${_circumLengthMm.toStringAsFixed(1)} мм',
+            '${(_circumLengthMm / 1000.0).toStringAsFixed(3)} м',
           ],
         ),
       ],
@@ -568,7 +618,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Расчет объема и веса круглой трубы',
+          'Расчет объема круглой трубы',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         const SizedBox(height: 16),
@@ -605,8 +655,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         _buildResultCard(
           title: 'Результаты расчета трубы',
           outputs: [
-            'Внутренний объем: ${_rpCapacityLiters.toStringAsFixed(2)} л (${_rpCapacityM3.toStringAsFixed(5)} м³)',
-            'Вес трубы (сталь 7850 кг/м³): ${_rpWeightKg.toStringAsFixed(2)} кг',
+            'Внутренний объем: ${_rpCapacityLiters.toStringAsFixed(2)} л',
           ],
         ),
       ],
@@ -619,7 +668,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Расчет объема и веса профильной трубы',
+          'Расчет объема профильной трубы',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         const SizedBox(height: 16),
@@ -674,8 +723,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         _buildResultCard(
           title: 'Результаты расчета трубы',
           outputs: [
-            'Внутренний объем: ${_recCapacityLiters.toStringAsFixed(2)} л (${_recCapacityM3.toStringAsFixed(5)} м³)',
-            'Вес трубы (сталь 7850 кг/м³): ${_recWeightKg.toStringAsFixed(2)} кг',
+            'Внутренний объем: ${_recCapacityLiters.toStringAsFixed(2)} л',
           ],
         ),
       ],
