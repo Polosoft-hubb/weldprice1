@@ -269,7 +269,8 @@ class _PaintingTabState extends State<PaintingTab> {
                         final double activeArea = item.paintingArea > 0 ? item.paintingArea : estimatedArea;
                         final double totalArea = item.quantity * activeArea;
                         final double paintNeeded = totalArea * project.paintConsumption;
-                        final double paintCost = paintNeeded * project.paintPrice;
+                        final double pricePerKg = project.paintCanWeight > 0 ? (project.paintPrice / project.paintCanWeight) : 0.0;
+                        final double paintCost = paintNeeded * pricePerKg;
                         final double totalPaintingCost = paintCost;
 
                         return Card(
