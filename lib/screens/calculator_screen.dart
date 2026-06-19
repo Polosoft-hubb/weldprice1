@@ -658,6 +658,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           title: 'Результаты расчета трубы',
           outputs: [
             'Внутренний объем: ${_rpCapacityM3.toStringAsFixed(5)} м³',
+            'Объем в литрах: ${(_rpCapacityM3 * 1000.0).toStringAsFixed(2)} л',
           ],
         ),
       ],
@@ -726,6 +727,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           title: 'Результаты расчета трубы',
           outputs: [
             'Внутренний объем: ${_recCapacityM3.toStringAsFixed(5)} м³',
+            'Объем в литрах: ${(_recCapacityM3 * 1000.0).toStringAsFixed(2)} л',
           ],
         ),
       ],
