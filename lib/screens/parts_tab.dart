@@ -32,7 +32,7 @@ class _PartsTabState extends State<PartsTab> {
     super.dispose();
   }
 
-  // Linear layout solver algorithm (1D Bin Packing with 45° cuts consideration)
+  // Linear layout solver algorithm (1D Bin Packing with 45° cuts optimization)
   List<StockPipe> _calculateLayout({
     required List<PartItem> parts,
     required double stockLength,
@@ -40,99 +40,115 @@ class _PartsTabState extends State<PartsTab> {
     required double profileHeight,
   }) {
     // 1. Flatten the parts list (expand quantity)
-    final List<PartItem> flatItems = [];
+    final List<PartItem> remainingItems = [];
     for (final p in parts) {
       for (int i = 0; i < p.quantity; i++) {
-        flatItems.add(p);
+        remainingItems.add(p);
       }
     }
 
-    // 2. Sort by length descending (First Fit Decreasing heuristic)
-    flatItems.sort((a, b) => b.length.compareTo(a.length));
+    // 2. Sort by length descending, then by number of 45-degree cuts descending
+    remainingItems.sort((a, b) {
+      final lenComp = b.length.compareTo(a.length);
+      if (lenComp != 0) return lenComp;
+
+      int aCuts = (a.leftCut == '45' ? 1 : 0) + (a.rightCut == '45' ? 1 : 0);
+      int bCuts = (b.leftCut == '45' ? 1 : 0) + (b.rightCut == '45' ? 1 : 0);
+      return bCuts.compareTo(aCuts);
+    });
 
     final List<StockPipe> pipes = [];
 
-    // 3. Pack items
-    for (final item in flatItems) {
-      bool placed = false;
+    // 3. Pack bin-by-bin
+    while (remainingItems.isNotEmpty) {
+      final pipe = StockPipe(length: stockLength);
+      pipes.add(pipe);
 
-      // Try to fit in existing pipes
-      for (final pipe in pipes) {
-        if (_tryPlaceItem(pipe, item, stockLength, bladeThickness, profileHeight)) {
-          placed = true;
-          break;
+      while (true) {
+        final double currentUsed = pipe.usedLength;
+        final String currentAngle = pipe.placements.isEmpty
+            ? '90'
+            : pipe.placements.last.part.rightCut;
+
+        // Find all remaining items that can physically fit
+        final List<PartItem> candidates = [];
+        for (final item in remainingItems) {
+          double wasteLength = 0.0;
+          if (pipe.placements.isNotEmpty) {
+            final lastRightCut = pipe.placements.last.part.rightCut;
+            if (lastRightCut != item.leftCut) {
+              wasteLength = profileHeight;
+            }
+          }
+          final double endX = currentUsed + wasteLength + item.length + bladeThickness;
+          if (endX <= stockLength) {
+            candidates.add(item);
+          }
         }
-      }
 
-      // If didn't fit, create a new pipe
-      if (!placed) {
-        final newPipe = StockPipe(length: stockLength);
-        _placeItemInPipe(newPipe, item, 0.0, bladeThickness);
-        pipes.add(newPipe);
+        if (candidates.isEmpty) {
+          break; // No more items fit in this pipe
+        }
+
+        // Select the best candidate:
+        // We prioritize matching angles for items within a certain length window of the largest item that fits.
+        final double maxLength = candidates.first.length;
+        const double windowSize = 500.0; // Search within 500mm of max length
+
+        final List<PartItem> windowCandidates = candidates
+            .where((c) => c.length >= maxLength - windowSize)
+            .toList();
+
+        final List<PartItem> matchingCandidates = windowCandidates
+            .where((c) => c.leftCut == currentAngle)
+            .toList();
+
+        PartItem selected;
+        if (matchingCandidates.isNotEmpty) {
+          selected = matchingCandidates.first;
+        } else {
+          selected = candidates.first;
+        }
+
+        // Calculate final placement coordinates
+        double wasteLength = 0.0;
+        if (pipe.placements.isNotEmpty) {
+          final lastRightCut = pipe.placements.last.part.rightCut;
+          if (lastRightCut != selected.leftCut) {
+            wasteLength = profileHeight;
+          }
+        }
+
+        double startX = pipe.usedLength;
+        if (wasteLength > 0) {
+          pipe.placements.add(PlacedPart(
+            part: PartItem(
+              id: 'waste_${DateTime.now().microsecondsSinceEpoch}_${selected.id}',
+              projectId: selected.projectId,
+              profileName: selected.profileName,
+              length: wasteLength,
+              quantity: 1,
+              leftCut: pipe.placements.last.part.rightCut,
+              rightCut: selected.leftCut,
+            ),
+            startX: startX,
+            endX: startX + wasteLength,
+            isWaste: true,
+          ));
+          startX += wasteLength;
+        }
+
+        pipe.placements.add(PlacedPart(
+          part: selected,
+          startX: startX,
+          endX: startX + selected.length + bladeThickness,
+        ));
+
+        remainingItems.remove(selected);
       }
     }
 
     return pipes;
-  }
-
-  bool _tryPlaceItem(
-    StockPipe pipe,
-    PartItem item,
-    double stockLength,
-    double bladeThickness,
-    double profileHeight,
-  ) {
-    if (pipe.placements.isEmpty) {
-      _placeItemInPipe(pipe, item, 0.0, bladeThickness);
-      return true;
-    }
-
-    final last = pipe.placements.last;
-    double startX = last.endX;
-    
-    // Check if cuts match (both 45 or both 90)
-    final bool cutsMatch = (last.part.rightCut == item.leftCut);
-
-    double wasteLength = 0.0;
-    if (!cutsMatch) {
-      // Non-matching cuts require a diagonal scrap piece of length 'profileHeight'
-      wasteLength = profileHeight;
-    }
-
-    double endX = startX + wasteLength + item.length + bladeThickness;
-
-    if (endX <= stockLength) {
-      if (wasteLength > 0) {
-        // Place a waste segment
-        pipe.placements.add(PlacedPart(
-          part: PartItem(
-            id: 'waste_${DateTime.now().microsecondsSinceEpoch}',
-            projectId: item.projectId,
-            profileName: item.profileName,
-            length: wasteLength,
-            quantity: 1,
-            leftCut: last.part.rightCut,
-            rightCut: item.leftCut,
-          ),
-          startX: startX,
-          endX: startX + wasteLength,
-          isWaste: true,
-        ));
-        startX += wasteLength;
-      }
-      _placeItemInPipe(pipe, item, startX, bladeThickness);
-      return true;
-    }
-
-    return false;
-  }
-
-  void _placeItemInPipe(StockPipe pipe, PartItem item, double startX, double bladeThickness) {
-    pipe.placements.add(PlacedPart(
-      part: item,
-      startX: startX,
-      endX: startX + item.length + bladeThickness,
-    ));
   }
 
   void _showAddPartDialog(BuildContext context, ProjectProvider provider, {PartItem? editingPart}) {
