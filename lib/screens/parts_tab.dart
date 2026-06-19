@@ -365,12 +365,16 @@ class _PartsTabState extends State<PartsTab> {
 
         // If still empty and project has some materials, prefill selectedProfile with first pipe in project
         if (profiles.isEmpty) {
-          final firstPipeItem = provider.selectedProject?.items.firstWhere(
+          final matchingItems = provider.selectedProject?.items.where(
             (i) => i.name.toLowerCase().contains('труб') || i.name.toLowerCase().contains('профил'),
-            orElse: () => provider.selectedProject!.items.isNotEmpty 
-                ? provider.selectedProject!.items.first 
-                : null as dynamic,
-          );
+          ).toList();
+
+          final firstPipeItem = (matchingItems != null && matchingItems.isNotEmpty)
+              ? matchingItems.first
+              : (provider.selectedProject?.items.isNotEmpty == true
+                  ? provider.selectedProject!.items.first
+                  : null);
+
           if (firstPipeItem != null) {
             profiles.add(firstPipeItem.name);
             _selectedProfile = firstPipeItem.name;
