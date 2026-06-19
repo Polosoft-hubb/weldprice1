@@ -38,6 +38,12 @@ class _PartsTabState extends State<PartsTab> {
     return normA == normB;
   }
 
+  String _flippedCut(String cut) {
+    if (cut == '45_up' || cut == '45') return '45_down';
+    if (cut == '45_down') return '45_up';
+    return '90';
+  }
+
   // Linear layout solver algorithm (1D Bin Packing with 45° cuts optimization)
   List<StockPipe> _calculateLayout({
     required List<PartItem> parts,
@@ -76,19 +82,52 @@ class _PartsTabState extends State<PartsTab> {
             ? '90'
             : pipe.placements.last.part.rightCut;
 
-        // Find all remaining items that can physically fit
-        final List<PartItem> candidates = [];
+        // Find all remaining items that can physically fit in any of their 4 valid orientations
+        final List<PartPlacementCandidate> candidates = [];
         for (final item in remainingItems) {
-          double wasteLength = 0.0;
-          if (pipe.placements.isNotEmpty) {
-            final lastRightCut = pipe.placements.last.part.rightCut;
-            if (!_cutsMatch(lastRightCut, item.leftCut)) {
-              wasteLength = profileHeight;
+          final String l1 = item.leftCut;
+          final String r1 = item.rightCut;
+
+          final String l2 = _flippedCut(r1);
+          final String r2 = _flippedCut(l1);
+
+          final String l3 = _flippedCut(l1);
+          final String r3 = _flippedCut(r1);
+
+          final String l4 = r1;
+          final String r4 = l1;
+
+          final List<List<String>> orientations = [
+            [l1, r1], // 1. Original
+            [l2, r2], // 2. Flipped Horizontal
+            [l3, r3], // 3. Flipped Vertical
+            [l4, r4], // 4. Rotated 180
+          ];
+
+          double bestWaste = double.infinity;
+          List<String>? bestOrientation;
+
+          for (final orient in orientations) {
+            final double waste = (pipe.placements.isEmpty || _cutsMatch(currentAngle, orient[0]))
+                ? 0.0
+                : profileHeight;
+            if (waste < bestWaste) {
+              bestWaste = waste;
+              bestOrientation = orient;
             }
           }
-          final double endX = currentUsed + wasteLength + item.length + bladeThickness;
-          if (endX <= stockLength) {
-            candidates.add(item);
+
+          if (bestOrientation != null) {
+            final double endX = currentUsed + bestWaste + item.length + bladeThickness;
+            if (endX <= stockLength) {
+              candidates.add(PartPlacementCandidate(
+                part: item,
+                leftCut: bestOrientation[0],
+                rightCut: bestOrientation[1],
+                waste: bestWaste,
+                endX: endX,
+              ));
+            }
           }
         }
 
@@ -98,18 +137,18 @@ class _PartsTabState extends State<PartsTab> {
 
         // Select the best candidate:
         // We prioritize matching angles for items within a certain length window of the largest item that fits.
-        final double maxLength = candidates.first.length;
+        final double maxLength = candidates.first.part.length;
         const double windowSize = 500.0; // Search within 500mm of max length
 
-        final List<PartItem> windowCandidates = candidates
-            .where((c) => c.length >= maxLength - windowSize)
+        final List<PartPlacementCandidate> windowCandidates = candidates
+            .where((c) => c.part.length >= maxLength - windowSize)
             .toList();
 
-        final List<PartItem> matchingCandidates = windowCandidates
-            .where((c) => _cutsMatch(c.leftCut, currentAngle))
+        final List<PartPlacementCandidate> matchingCandidates = windowCandidates
+            .where((c) => c.waste == 0.0)
             .toList();
 
-        PartItem selected;
+        PartPlacementCandidate selected;
         if (matchingCandidates.isNotEmpty) {
           selected = matchingCandidates.first;
         } else {
@@ -117,25 +156,23 @@ class _PartsTabState extends State<PartsTab> {
         }
 
         // Calculate final placement coordinates
-        double wasteLength = 0.0;
-        if (pipe.placements.isNotEmpty) {
-          final lastRightCut = pipe.placements.last.part.rightCut;
-          if (!_cutsMatch(lastRightCut, selected.leftCut)) {
-            wasteLength = profileHeight;
-          }
-        }
+        final double wasteLength = selected.waste;
+        final PartItem selectedPart = selected.part.copyWith(
+          leftCut: selected.leftCut,
+          rightCut: selected.rightCut,
+        );
 
         double startX = pipe.usedLength;
         if (wasteLength > 0) {
           pipe.placements.add(PlacedPart(
             part: PartItem(
-              id: 'waste_${DateTime.now().microsecondsSinceEpoch}_${selected.id}',
-              projectId: selected.projectId,
-              profileName: selected.profileName,
+              id: 'waste_${DateTime.now().microsecondsSinceEpoch}_${selectedPart.id}',
+              projectId: selectedPart.projectId,
+              profileName: selectedPart.profileName,
               length: wasteLength,
               quantity: 1,
               leftCut: pipe.placements.last.part.rightCut,
-              rightCut: selected.leftCut,
+              rightCut: selectedPart.leftCut,
             ),
             startX: startX,
             endX: startX + wasteLength,
@@ -145,12 +182,12 @@ class _PartsTabState extends State<PartsTab> {
         }
 
         pipe.placements.add(PlacedPart(
-          part: selected,
+          part: selectedPart,
           startX: startX,
-          endX: startX + selected.length + bladeThickness,
+          endX: startX + selectedPart.length + bladeThickness,
         ));
 
-        remainingItems.remove(selected);
+        remainingItems.remove(selected.part);
       }
     }
 
@@ -837,6 +874,22 @@ class PlacedPart {
     required this.startX,
     required this.endX,
     this.isWaste = false,
+  });
+}
+
+class PartPlacementCandidate {
+  final PartItem part;
+  final String leftCut;
+  final String rightCut;
+  final double waste;
+  final double endX;
+
+  PartPlacementCandidate({
+    required this.part,
+    required this.leftCut,
+    required this.rightCut,
+    required this.waste,
+    required this.endX,
   });
 }
 
