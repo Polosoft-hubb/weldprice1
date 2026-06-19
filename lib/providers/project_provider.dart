@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import '../models/material.dart';
 import '../models/project.dart';
 import '../models/project_item.dart';
+import '../models/part_item.dart';
 import '../services/database_helper.dart';
 import '../services/scraper_service.dart';
 
@@ -12,6 +13,7 @@ class ProjectProvider extends ChangeNotifier {
   List<ProjectModel> _projects = [];
   List<MaterialModel> _projectMaterials = []; // Project-specific materials
   List<MaterialModel> _searchResults = [];
+  List<PartItem> _projectParts = [];
   ProjectModel? _selectedProject;
   
   DateTime? _lastUpdateDate;
@@ -22,6 +24,7 @@ class ProjectProvider extends ChangeNotifier {
   List<ProjectModel> get projects => _projects;
   List<MaterialModel> get projectMaterials => _projectMaterials;
   List<MaterialModel> get searchResults => _searchResults;
+  List<PartItem> get projectParts => _projectParts;
   ProjectModel? get selectedProject => _selectedProject;
   DateTime? get lastUpdateDate => _lastUpdateDate;
   bool get isScraping => _isScraping;
@@ -95,6 +98,7 @@ class ProjectProvider extends ChangeNotifier {
     final project = await _dbHelper.getProjectById(projectId);
     _selectedProject = project;
     await loadProjectMaterials(projectId);
+    await loadProjectParts(projectId);
     notifyListeners();
   }
 
@@ -102,6 +106,7 @@ class ProjectProvider extends ChangeNotifier {
     _selectedProject = null;
     _projectMaterials = [];
     _searchResults = [];
+    _projectParts = [];
     notifyListeners();
   }
 
@@ -305,5 +310,38 @@ class ProjectProvider extends ChangeNotifier {
     await loadProjectMaterials(projectId);
     await loadProjects();
     await selectProject(projectId);
+  }
+
+  // --- Project Parts Management ---
+  Future<void> loadProjectParts(int projectId) async {
+    _projectParts = await _dbHelper.getProjectParts(projectId);
+    notifyListeners();
+  }
+
+  Future<void> addProjectPart(PartItem part) async {
+    if (_selectedProject == null || _selectedProject!.id == null) return;
+    final projectId = (_selectedProject!.id as num).toInt();
+    _projectParts.add(part);
+    await _dbHelper.saveProjectParts(projectId, _projectParts);
+    notifyListeners();
+  }
+
+  Future<void> updateProjectPart(PartItem part) async {
+    if (_selectedProject == null || _selectedProject!.id == null) return;
+    final projectId = (_selectedProject!.id as num).toInt();
+    final index = _projectParts.indexWhere((p) => p.id == part.id);
+    if (index != -1) {
+      _projectParts[index] = part;
+      await _dbHelper.saveProjectParts(projectId, _projectParts);
+      notifyListeners();
+    }
+  }
+
+  Future<void> deleteProjectPart(String partId) async {
+    if (_selectedProject == null || _selectedProject!.id == null) return;
+    final projectId = (_selectedProject!.id as num).toInt();
+    _projectParts.removeWhere((p) => p.id == partId);
+    await _dbHelper.saveProjectParts(projectId, _projectParts);
+    notifyListeners();
   }
 }

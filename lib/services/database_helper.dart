@@ -7,6 +7,7 @@ import 'package:sqflite/sqflite.dart';
 import '../models/material.dart';
 import '../models/project.dart';
 import '../models/project_item.dart';
+import '../models/part_item.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._init();
@@ -678,5 +679,24 @@ class DatabaseHelper {
       where: 'id = ?',
       whereArgs: [projectId],
     );
+  }
+
+  // --- Project Parts Operations ---
+  Future<List<PartItem>> getProjectParts(int projectId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonStr = prefs.getString('project_parts_$projectId');
+    if (jsonStr == null) return [];
+    try {
+      final List<dynamic> decoded = json.decode(jsonStr);
+      return decoded.map((e) => PartItem.fromJson(e)).toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<void> saveProjectParts(int projectId, List<PartItem> parts) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonStr = json.encode(parts.map((e) => e.toJson()).toList());
+    await prefs.setString('project_parts_$projectId', jsonStr);
   }
 }

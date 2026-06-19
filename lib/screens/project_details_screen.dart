@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/project_provider.dart';
 import 'estimate_tab.dart';
 import 'materials_tab.dart';
+import 'parts_tab.dart';
 import 'painting_tab.dart';
 import 'settings_screen.dart';
 
@@ -19,6 +20,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   final List<Widget> _tabs = const [
     EstimateTab(),
     MaterialsTab(),
+    PartsTab(),
     PaintingTab(),
     SettingsScreen(),
   ];
@@ -57,6 +59,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
           ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: _currentIndex,
+            type: BottomNavigationBarType.fixed,
             onTap: (index) {
               setState(() {
                 _currentIndex = index;
@@ -72,6 +75,11 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                 icon: Icon(Icons.inventory_2_outlined),
                 activeIcon: Icon(Icons.inventory_2),
                 label: 'Материалы',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.content_cut_outlined),
+                activeIcon: Icon(Icons.content_cut),
+                label: 'Детали',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.format_paint_outlined),
