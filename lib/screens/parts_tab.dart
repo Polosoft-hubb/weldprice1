@@ -32,6 +32,12 @@ class _PartsTabState extends State<PartsTab> {
     super.dispose();
   }
 
+  bool _cutsMatch(String cutA, String cutB) {
+    final normA = cutA == '45' ? '45_up' : cutA;
+    final normB = cutB == '45' ? '45_up' : cutB;
+    return normA == normB;
+  }
+
   // Linear layout solver algorithm (1D Bin Packing with 45° cuts optimization)
   List<StockPipe> _calculateLayout({
     required List<PartItem> parts,
@@ -52,8 +58,8 @@ class _PartsTabState extends State<PartsTab> {
       final lenComp = b.length.compareTo(a.length);
       if (lenComp != 0) return lenComp;
 
-      int aCuts = (a.leftCut == '45' ? 1 : 0) + (a.rightCut == '45' ? 1 : 0);
-      int bCuts = (b.leftCut == '45' ? 1 : 0) + (b.rightCut == '45' ? 1 : 0);
+      int aCuts = (a.leftCut.startsWith('45') ? 1 : 0) + (a.rightCut.startsWith('45') ? 1 : 0);
+      int bCuts = (b.leftCut.startsWith('45') ? 1 : 0) + (b.rightCut.startsWith('45') ? 1 : 0);
       return bCuts.compareTo(aCuts);
     });
 
@@ -76,7 +82,7 @@ class _PartsTabState extends State<PartsTab> {
           double wasteLength = 0.0;
           if (pipe.placements.isNotEmpty) {
             final lastRightCut = pipe.placements.last.part.rightCut;
-            if (lastRightCut != item.leftCut) {
+            if (!_cutsMatch(lastRightCut, item.leftCut)) {
               wasteLength = profileHeight;
             }
           }
@@ -100,7 +106,7 @@ class _PartsTabState extends State<PartsTab> {
             .toList();
 
         final List<PartItem> matchingCandidates = windowCandidates
-            .where((c) => c.leftCut == currentAngle)
+            .where((c) => _cutsMatch(c.leftCut, currentAngle))
             .toList();
 
         PartItem selected;
@@ -114,7 +120,7 @@ class _PartsTabState extends State<PartsTab> {
         double wasteLength = 0.0;
         if (pipe.placements.isNotEmpty) {
           final lastRightCut = pipe.placements.last.part.rightCut;
-          if (lastRightCut != selected.leftCut) {
+          if (!_cutsMatch(lastRightCut, selected.leftCut)) {
             wasteLength = profileHeight;
           }
         }
@@ -155,8 +161,8 @@ class _PartsTabState extends State<PartsTab> {
     if (editingPart != null) {
       _partLengthController.text = editingPart.length.toInt().toString();
       _partQtyController.text = editingPart.quantity.toString();
-      _leftCut = editingPart.leftCut;
-      _rightCut = editingPart.rightCut;
+      _leftCut = editingPart.leftCut == '45' ? '45_up' : editingPart.leftCut;
+      _rightCut = editingPart.rightCut == '45' ? '45_up' : editingPart.rightCut;
     } else {
       _partLengthController.clear();
       _partQtyController.text = '1';
@@ -209,7 +215,8 @@ class _PartsTabState extends State<PartsTab> {
                                 value: _leftCut,
                                 items: const [
                                   DropdownMenuItem(value: '90', child: Text('Ровный (90°)')),
-                                  DropdownMenuItem(value: '45', child: Text('Угол (45°)')),
+                                  DropdownMenuItem(value: '45_up', child: Text('Снизу вверх (45° /)')),
+                                  DropdownMenuItem(value: '45_down', child: Text('Сверху вниз (45° \\)')),
                                 ],
                                 onChanged: (val) {
                                   if (val != null) {
@@ -232,7 +239,8 @@ class _PartsTabState extends State<PartsTab> {
                                 value: _rightCut,
                                 items: const [
                                   DropdownMenuItem(value: '90', child: Text('Ровный (90°)')),
-                                  DropdownMenuItem(value: '45', child: Text('Угол (45°)')),
+                                  DropdownMenuItem(value: '45_up', child: Text('Снизу вверх (45° /)')),
+                                  DropdownMenuItem(value: '45_down', child: Text('Сверху вниз (45° \\)')),
                                 ],
                                 onChanged: (val) {
                                   if (val != null) {
@@ -776,16 +784,15 @@ class _PartsTabState extends State<PartsTab> {
     );
   }
 
+  String _formatCut(String cut) {
+    if (cut == '90') return 'Ровный (90°)';
+    if (cut == '45_up' || cut == '45') return 'Снизу вверх (45° /)';
+    if (cut == '45_down') return r'Сверху вниз (45° \)';
+    return cut;
+  }
+
   String _getCutLabel(String left, String right) {
-    if (left == '90' && right == '90') {
-      return 'Ровный / Ровный (90°/90°)';
-    } else if (left == '90' && right == '45') {
-      return 'Ровный / Под 45°';
-    } else if (left == '45' && right == '90') {
-      return 'Под 45° / Ровный';
-    } else {
-      return 'Под 45° с двух сторон';
-    }
+    return '${_formatCut(left)} / ${_formatCut(right)}';
   }
 
   // Consistent color palette for pipe parts of different sizes
@@ -852,27 +859,44 @@ class PipeLayoutPainter extends CustomPainter {
     final double hDraw = size.height;
     const double hDrawScale = 35.0; // Fixed visual offset in pixels to make the 45° angle clearly visible
 
+    double getSlantVal(String cut) {
+      if (cut == '45_up' || cut == '45') {
+        return hDrawScale;
+      } else if (cut == '45_down') {
+        return -hDrawScale;
+      }
+      return 0.0;
+    }
+
     // Build initial slant offsets for each boundary.
     // There are placements.length + 1 boundaries.
     final List<double> slants = List.filled(placements.length + 1, 0.0);
     if (placements.isNotEmpty) {
       for (int i = 0; i <= placements.length; i++) {
         if (i == 0) {
-          slants[i] = placements[0].part.leftCut == '45' ? hDrawScale : 0.0;
+          slants[i] = getSlantVal(placements[0].part.leftCut);
         } else if (i == placements.length) {
-          slants[i] = placements[i - 1].part.rightCut == '45' ? hDrawScale : 0.0;
+          slants[i] = getSlantVal(placements[i - 1].part.rightCut);
         } else {
           // Boundary between placement i-1 and placement i
-          slants[i] = placements[i].part.leftCut == '45' ? hDrawScale : 0.0;
+          slants[i] = getSlantVal(placements[i].part.leftCut);
         }
       }
 
-      // Clamp slants right-to-left to ensure no segment's left/right boundaries cross.
+      // Clamp slants to ensure no segment's left/right boundaries cross.
       // They cross if slant[i] - slant[i+1] > width.
-      for (int i = placements.length - 1; i >= 0; i--) {
-        final double width = (placements[i].endX - placements[i].startX) * scale;
-        if (slants[i] > slants[i + 1] + width * 0.8) {
-          slants[i] = slants[i + 1] + width * 0.8;
+      // Run 3 passes of clamping to handle any propagation.
+      for (int pass = 0; pass < 3; pass++) {
+        for (int i = 0; i < placements.length; i++) {
+          final double width = (placements[i].endX - placements[i].startX) * scale;
+          final double diff = slants[i] - slants[i + 1];
+          final double maxDiff = width * 0.8;
+          if (diff > maxDiff) {
+            // Scale both slants towards zero to resolve overlap
+            final double k = maxDiff / diff;
+            slants[i] *= k;
+            slants[i + 1] *= k;
+          }
         }
       }
     }
@@ -947,7 +971,12 @@ class PipeLayoutPainter extends CustomPainter {
         )..layout();
 
         // Draw angles
-        final String slantText = '${part.leftCut}/${part.rightCut}°';
+        String formatCutForText(String cut) {
+          if (cut == '45_up' || cut == '45') return '45/';
+          if (cut == '45_down') return r'45\';
+          return cut;
+        }
+        final String slantText = '${formatCutForText(part.leftCut)}/${formatCutForText(part.rightCut)}°';
         final slantPainter = TextPainter(
           text: TextSpan(
             text: slantText,
