@@ -44,6 +44,162 @@ class _PartsTabState extends State<PartsTab> {
     return '90';
   }
 
+  List<PlacedPart> _buildPlacementsForSequence(
+    List<PartItem> sequence,
+    double stockLength,
+    double bladeThickness,
+    double profileHeight,
+  ) {
+    final List<PlacedPart> placements = [];
+    double currentUsed = 0.0;
+
+    for (final item in sequence) {
+      final String currentAngle = placements.isEmpty
+          ? '90'
+          : placements.last.part.rightCut;
+
+      final String l1 = item.leftCut;
+      final String r1 = item.rightCut;
+
+      final String l2 = _flippedCut(r1);
+      final String r2 = _flippedCut(l1);
+
+      final String l3 = _flippedCut(l1);
+      final String r3 = _flippedCut(r1);
+
+      final String l4 = r1;
+      final String r4 = l1;
+
+      final List<List<String>> orientations = [
+        [l1, r1],
+        [l2, r2],
+        [l3, r3],
+        [l4, r4],
+      ];
+
+      double bestWaste = double.infinity;
+      List<String>? bestOrientation;
+
+      for (final orient in orientations) {
+        final double waste = (placements.isEmpty || _cutsMatch(currentAngle, orient[0]))
+            ? 0.0
+            : profileHeight;
+        if (waste < bestWaste) {
+          bestWaste = waste;
+          bestOrientation = orient;
+        }
+      }
+
+      if (bestOrientation == null) return [];
+
+      final double endX = currentUsed + bestWaste + item.length + bladeThickness;
+      if (endX > stockLength) {
+        return []; // Doesn't fit in the pipe in this sequence
+      }
+
+      final PartItem selectedPart = item.copyWith(
+        leftCut: bestOrientation[0],
+        rightCut: bestOrientation[1],
+      );
+
+      if (bestWaste > 0) {
+        placements.add(PlacedPart(
+          part: PartItem(
+            id: 'waste_${DateTime.now().microsecondsSinceEpoch}_${selectedPart.id}',
+            projectId: selectedPart.projectId,
+            profileName: selectedPart.profileName,
+            length: bestWaste,
+            quantity: 1,
+            leftCut: placements.last.part.rightCut,
+            rightCut: selectedPart.leftCut,
+          ),
+          startX: currentUsed,
+          endX: currentUsed + bestWaste,
+          isWaste: true,
+        ));
+        currentUsed += bestWaste;
+      }
+
+      placements.add(PlacedPart(
+        part: selectedPart,
+        startX: currentUsed,
+        endX: currentUsed + selectedPart.length + bladeThickness,
+      ));
+      currentUsed += selectedPart.length + bladeThickness;
+    }
+
+    return placements;
+  }
+
+  List<PlacedPart> _optimizePipeSequence(
+    List<PartItem> pipeParts,
+    double stockLength,
+    double bladeThickness,
+    double profileHeight,
+  ) {
+    if (pipeParts.isEmpty) return [];
+
+    // If there are too many parts, permutation search is too slow.
+    // In that case, just return the original list.
+    if (pipeParts.length > 8) {
+      return _buildPlacementsForSequence(pipeParts, stockLength, bladeThickness, profileHeight);
+    }
+
+    double bestTotalWaste = double.infinity;
+    List<PlacedPart>? bestPlacements;
+
+    // Helper to generate permutations and find the best one
+    void permute(List<PartItem> list, int k) {
+      if (k == 1) {
+        final placements = _buildPlacementsForSequence(list, stockLength, bladeThickness, profileHeight);
+        if (placements.isNotEmpty) {
+          // Calculate total waste including start and end waste
+          double totalWaste = 0.0;
+          
+          // Start waste
+          if (placements.first.part.leftCut != '90') {
+            totalWaste += profileHeight;
+          }
+          
+          // Intermediate waste
+          for (final p in placements) {
+            if (p.isWaste) {
+              totalWaste += p.part.length;
+            }
+          }
+          
+          // End waste
+          if (placements.last.part.rightCut != '90') {
+            totalWaste += profileHeight;
+          }
+
+          if (totalWaste < bestTotalWaste) {
+            bestTotalWaste = totalWaste;
+            bestPlacements = placements;
+          }
+        }
+        return;
+      }
+
+      for (int i = 0; i < k; i++) {
+        permute(list, k - 1);
+        if (k % 2 == 1) {
+          final temp = list[0];
+          list[0] = list[k - 1];
+          list[k - 1] = temp;
+        } else {
+          final temp = list[i];
+          list[i] = list[k - 1];
+          list[k - 1] = temp;
+        }
+      }
+    }
+
+    permute(List.from(pipeParts), pipeParts.length);
+
+    return bestPlacements ?? _buildPlacementsForSequence(pipeParts, stockLength, bladeThickness, profileHeight);
+  }
+
   // Linear layout solver algorithm (1D Bin Packing with 45° cuts optimization)
   List<StockPipe> _calculateLayout({
     required List<PartItem> parts,
@@ -188,6 +344,27 @@ class _PartsTabState extends State<PartsTab> {
         ));
 
         remainingItems.remove(selected.part);
+      }
+
+      // Optimize placements inside this pipe to minimize total waste (including start and end trim cuts)
+      final List<PartItem> pipeParts = [];
+      for (final p in pipe.placements) {
+        if (!p.isWaste) {
+          final originalPart = parts.firstWhere((item) => item.id == p.part.id, orElse: () => p.part);
+          pipeParts.add(originalPart);
+        }
+      }
+
+      final optimizedPlacements = _optimizePipeSequence(
+        pipeParts,
+        stockLength,
+        bladeThickness,
+        profileHeight,
+      );
+
+      if (optimizedPlacements.isNotEmpty) {
+        pipe.placements.clear();
+        pipe.placements.addAll(optimizedPlacements);
       }
     }
 
