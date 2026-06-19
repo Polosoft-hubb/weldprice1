@@ -749,98 +749,15 @@ class _PartsTabState extends State<PartsTab> {
                                 height: 55,
                                 decoration: BoxDecoration(
                                   color: const Color(0xFF2C2C2C),
-                                  borderRadius: BorderRadius.circular(8),
                                   border: Border.all(color: Colors.white10),
                                 ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: LayoutBuilder(
-                                    builder: (context, constraints) {
-                                      final double totalWidth = constraints.maxWidth;
-                                      
-                                      // Render segments
-                                      return Stack(
-                                        children: [
-                                          // Draw all placed parts
-                                          ...pipe.placements.map((placement) {
-                                            final double pWidth = (placement.endX - placement.startX) / stockLength * totalWidth;
-                                            final double pLeft = placement.startX / stockLength * totalWidth;
-                                            
-                                            // Dynamic color matching item size to group identical parts
-                                            final Color segmentColor = placement.isWaste 
-                                                ? Colors.orange.withOpacity(0.3)
-                                                : _getPartColor(placement.part.length);
-
-                                            return Positioned(
-                                              left: pLeft,
-                                              width: pWidth,
-                                              top: 0,
-                                              bottom: 0,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  color: segmentColor,
-                                                  border: Border(
-                                                    right: BorderSide(
-                                                      color: Colors.white.withOpacity(0.3),
-                                                      width: 1.5,
-                                                    ),
-                                                  ),
-                                                ),
-                                                child: Center(
-                                                  child: SingleChildScrollView(
-                                                    scrollDirection: Axis.horizontal,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                                                      child: Column(
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        children: [
-                                                          Text(
-                                                            placement.isWaste 
-                                                                ? 'Опилок'
-                                                                : '${placement.part.length.toInt()} мм',
-                                                            style: TextStyle(
-                                                              fontWeight: FontWeight.bold,
-                                                              fontSize: placement.isWaste ? 9 : 11,
-                                                              color: Colors.white,
-                                                            ),
-                                                          ),
-                                                          if (!placement.isWaste)
-                                                            Text(
-                                                              '${placement.part.leftCut}/${placement.part.rightCut}°',
-                                                              style: TextStyle(
-                                                                fontSize: 9,
-                                                                color: Colors.white.withOpacity(0.7),
-                                                              ),
-                                                            ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          }),
-
-                                          // Draw remaining empty space at the end
-                                          if (pipe.usedLength < stockLength)
-                                            Positioned(
-                                              left: pipe.usedLength / stockLength * totalWidth,
-                                              right: 0,
-                                              top: 0,
-                                              bottom: 0,
-                                              child: Container(
-                                                color: Colors.redAccent.withOpacity(0.08),
-                                                child: Center(
-                                                  child: Text(
-                                                    'Остаток ${(stockLength - pipe.usedLength).toInt()} мм',
-                                                    style: const TextStyle(fontSize: 10, color: Colors.grey, fontStyle: FontStyle.italic),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                        ],
-                                      );
-                                    },
+                                child: CustomPaint(
+                                  size: Size.infinite,
+                                  painter: PipeLayoutPainter(
+                                    placements: pipe.placements,
+                                    stockLength: stockLength,
+                                    profileHeight: profileHeight,
+                                    getPartColor: _getPartColor,
                                   ),
                                 ),
                               ),
@@ -914,4 +831,160 @@ class PlacedPart {
     required this.endX,
     this.isWaste = false,
   });
+}
+
+class PipeLayoutPainter extends CustomPainter {
+  final List<PlacedPart> placements;
+  final double stockLength;
+  final double profileHeight;
+  final Color Function(double) getPartColor;
+
+  PipeLayoutPainter({
+    required this.placements,
+    required this.stockLength,
+    required this.profileHeight,
+    required this.getPartColor,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final double scale = size.width / stockLength;
+    final double hDraw = size.height;
+    final double hDrawScale = profileHeight * scale;
+
+    // Draw background (pipe stock)
+    final Paint bgPaint = Paint()
+      ..color = const Color(0xFF2C2C2C)
+      ..style = PaintingStyle.fill;
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), bgPaint);
+
+    // Draw outline border
+    final Paint borderPaint = Paint()
+      ..color = Colors.white10
+      ..strokeWidth = 1.0
+      ..style = PaintingStyle.stroke;
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), borderPaint);
+
+    // Draw segments
+    for (final placement in placements) {
+      final double xStart = placement.startX;
+      final double xEnd = placement.endX;
+      final part = placement.part;
+
+      // Left cut: slanted or straight
+      final double xStartBottom = xStart * scale;
+      final double xStartTop = xStartBottom + (part.leftCut == '45' ? hDrawScale : 0.0);
+
+      // Right cut: slanted or straight
+      final double xEndBottom = xEnd * scale;
+      final double xEndTop = xEndBottom + (part.rightCut == '45' ? hDrawScale : 0.0);
+
+      final Path path = Path()
+        ..moveTo(xStartTop, 0)
+        ..lineTo(xEndTop, 0)
+        ..lineTo(xEndBottom, hDraw)
+        ..lineTo(xStartBottom, hDraw)
+        ..close();
+
+      final Paint segmentPaint = Paint()
+        ..color = placement.isWaste
+            ? Colors.orange.withOpacity(0.3)
+            : getPartColor(part.length)
+        ..style = PaintingStyle.fill;
+      canvas.drawPath(path, segmentPaint);
+
+      // Draw segment divider line (on the right end of the piece)
+      final Paint dividerPaint = Paint()
+        ..color = Colors.white.withOpacity(0.4)
+        ..strokeWidth = 1.5
+        ..style = PaintingStyle.stroke;
+      canvas.drawLine(Offset(xEndTop, 0), Offset(xEndBottom, hDraw), dividerPaint);
+
+      // Draw text labels
+      if (!placement.isWaste) {
+        final double xCenterTop = (xStartTop + xEndTop) / 2.0;
+        final double xCenterBottom = (xStartBottom + xEndBottom) / 2.0;
+        final double xCenter = (xCenterTop + xCenterBottom) / 2.0;
+
+        // Draw length
+        final String text = '${part.length.toInt()} мм';
+        final textPainter = TextPainter(
+          text: TextSpan(
+            text: text,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 10,
+            ),
+          ),
+          textDirection: TextDirection.ltr,
+        )..layout();
+
+        // Draw angles
+        final String slantText = '${part.leftCut}/${part.rightCut}°';
+        final slantPainter = TextPainter(
+          text: TextSpan(
+            text: slantText,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.7),
+              fontSize: 8,
+            ),
+          ),
+          textDirection: TextDirection.ltr,
+        )..layout();
+
+        final double textY = (hDraw - (textPainter.height + slantPainter.height)) / 2.0;
+        textPainter.paint(canvas, Offset(xCenter - textPainter.width / 2.0, textY));
+        slantPainter.paint(canvas, Offset(xCenter - slantPainter.width / 2.0, textY + textPainter.height));
+      } else {
+        // Draw waste label
+        final double xCenter = ((xStartBottom + xEndBottom) / 2.0 + (xStartTop + xEndTop) / 2.0) / 2.0;
+        final textPainter = TextPainter(
+          text: const TextSpan(
+            text: 'Опилок',
+            style: TextStyle(
+              color: Colors.white70,
+              fontSize: 8,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+          textDirection: TextDirection.ltr,
+        )..layout();
+        textPainter.paint(canvas, Offset(xCenter - textPainter.width / 2.0, (hDraw - textPainter.height) / 2.0));
+      }
+    }
+
+    // Draw remaining empty space at the end
+    if (placements.isNotEmpty && placements.last.endX < stockLength) {
+      final double xStart = placements.last.endX;
+      final double xStartBottom = xStart * scale;
+      final double xStartTop = xStartBottom;
+      final double xEnd = stockLength * scale;
+
+      final Path path = Path()
+        ..moveTo(xStartTop, 0)
+        ..lineTo(xEnd, 0)
+        ..lineTo(xEnd, hDraw)
+        ..lineTo(xStartBottom, hDraw)
+        ..close();
+
+      final Paint remainderPaint = Paint()
+        ..color = Colors.redAccent.withOpacity(0.08)
+        ..style = PaintingStyle.fill;
+      canvas.drawPath(path, remainderPaint);
+
+      final double xCenter = (xStartBottom + xEnd) / 2.0;
+      final textPainter = TextPainter(
+        text: TextSpan(
+          text: 'Остаток ${(stockLength - xStart).toInt()} мм',
+          style: const TextStyle(fontSize: 10, color: Colors.grey, fontStyle: FontStyle.italic),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      textPainter.paint(canvas, Offset(xCenter - textPainter.width / 2.0, (hDraw - textPainter.height) / 2.0));
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
