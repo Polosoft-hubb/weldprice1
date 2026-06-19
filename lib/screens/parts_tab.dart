@@ -1066,7 +1066,7 @@ class PipeLayoutPainter extends CustomPainter {
     if (placements.isNotEmpty && placements.last.endX < stockLength) {
       final double xStart = placements.last.endX;
       final double xStartBottom = xStart * scale;
-      final double xStartTop = xStartBottom;
+      final double xStartTop = xStartBottom + slants[placements.length];
       final double xEnd = stockLength * scale;
 
       final Path path = Path()
