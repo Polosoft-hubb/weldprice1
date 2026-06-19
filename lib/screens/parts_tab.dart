@@ -44,20 +44,31 @@ class _PartsTabState extends State<PartsTab> {
     return '90';
   }
 
-  List<PlacedPart> _buildPlacementsForSequence(
+  List<PlacedPartState>? _findOptimalOrientations(
     List<PartItem> sequence,
-    double stockLength,
-    double bladeThickness,
     double profileHeight,
   ) {
-    final List<PlacedPart> placements = [];
-    double currentUsed = 0.0;
+    List<PlacedPartState>? bestConfig;
+    double bestWaste = double.infinity;
 
-    for (final item in sequence) {
-      final String currentAngle = placements.isEmpty
-          ? '90'
-          : placements.last.part.rightCut;
+    void search(int index, String currentAngle, double currentWaste, List<PlacedPartState> currentPath) {
+      if (currentWaste >= bestWaste) return; // Prune search branch
 
+      if (index == sequence.length) {
+        // Calculate end waste if the final cut is not 90°
+        double endWaste = 0.0;
+        if (currentPath.isNotEmpty && currentPath.last.part.rightCut != '90') {
+          endWaste = profileHeight;
+        }
+        final totalWaste = currentWaste + endWaste;
+        if (totalWaste < bestWaste) {
+          bestWaste = totalWaste;
+          bestConfig = List.from(currentPath);
+        }
+        return;
+      }
+
+      final item = sequence[index];
       final String l1 = item.leftCut;
       final String r1 = item.rightCut;
 
@@ -77,55 +88,76 @@ class _PartsTabState extends State<PartsTab> {
         [l4, r4],
       ];
 
-      double bestWaste = double.infinity;
-      List<String>? bestOrientation;
-
       for (final orient in orientations) {
-        final double waste = (placements.isEmpty || _cutsMatch(currentAngle, orient[0]))
-            ? 0.0
-            : profileHeight;
-        if (waste < bestWaste) {
-          bestWaste = waste;
-          bestOrientation = orient;
+        // Start waste for the first piece if it starts with a slant
+        double stepWaste = 0.0;
+        if (index == 0) {
+          if (orient[0] != '90') {
+            stepWaste = profileHeight;
+          }
+        } else {
+          stepWaste = _cutsMatch(currentAngle, orient[0]) ? 0.0 : profileHeight;
         }
+
+        final nextPart = item.copyWith(leftCut: orient[0], rightCut: orient[1]);
+        currentPath.add(PlacedPartState(nextPart, stepWaste));
+        
+        search(index + 1, orient[1], currentWaste + stepWaste, currentPath);
+        
+        currentPath.removeLast();
       }
+    }
 
-      if (bestOrientation == null) return [];
+    search(0, '90', 0.0, []);
+    return bestConfig;
+  }
 
-      final double endX = currentUsed + bestWaste + item.length + bladeThickness;
+  List<PlacedPart> _buildPlacementsForSequence(
+    List<PartItem> sequence,
+    double stockLength,
+    double bladeThickness,
+    double profileHeight,
+  ) {
+    final optimalStates = _findOptimalOrientations(sequence, profileHeight);
+    if (optimalStates == null) return [];
+
+    final List<PlacedPart> placements = [];
+    double currentUsed = 0.0;
+
+    for (final state in optimalStates) {
+      final double waste = state.waste;
+      final PartItem part = state.part;
+
+      final double endX = currentUsed + waste + part.length + bladeThickness;
       if (endX > stockLength) {
-        return []; // Doesn't fit in the pipe in this sequence
+        return []; // Doesn't fit in the pipe
       }
 
-      final PartItem selectedPart = item.copyWith(
-        leftCut: bestOrientation[0],
-        rightCut: bestOrientation[1],
-      );
-
-      if (bestWaste > 0) {
+      if (waste > 0) {
+        final String prevRightCut = placements.isEmpty ? '90' : placements.last.part.rightCut;
         placements.add(PlacedPart(
           part: PartItem(
-            id: 'waste_${DateTime.now().microsecondsSinceEpoch}_${selectedPart.id}',
-            projectId: selectedPart.projectId,
-            profileName: selectedPart.profileName,
-            length: bestWaste,
+            id: 'waste_${DateTime.now().microsecondsSinceEpoch}_${part.id}',
+            projectId: part.projectId,
+            profileName: part.profileName,
+            length: waste,
             quantity: 1,
-            leftCut: placements.last.part.rightCut,
-            rightCut: selectedPart.leftCut,
+            leftCut: prevRightCut,
+            rightCut: part.leftCut,
           ),
           startX: currentUsed,
-          endX: currentUsed + bestWaste,
+          endX: currentUsed + waste,
           isWaste: true,
         ));
-        currentUsed += bestWaste;
+        currentUsed += waste;
       }
 
       placements.add(PlacedPart(
-        part: selectedPart,
+        part: part,
         startX: currentUsed,
-        endX: currentUsed + selectedPart.length + bladeThickness,
+        endX: currentUsed + part.length + bladeThickness,
       ));
-      currentUsed += selectedPart.length + bladeThickness;
+      currentUsed += part.length + bladeThickness;
     }
 
     return placements;
@@ -148,7 +180,7 @@ class _PartsTabState extends State<PartsTab> {
     double bestTotalWaste = double.infinity;
     List<PlacedPart>? bestPlacements;
 
-    // Helper to generate permutations and find the best one
+    // Helper to generate permutations and find the best one using standard Heap's algorithm
     void permute(List<PartItem> list, int k) {
       if (k == 1) {
         final placements = _buildPlacementsForSequence(list, stockLength, bladeThickness, profileHeight);
@@ -181,17 +213,21 @@ class _PartsTabState extends State<PartsTab> {
         return;
       }
 
-      for (int i = 0; i < k; i++) {
-        permute(list, k - 1);
-        if (k % 2 == 1) {
-          final temp = list[0];
-          list[0] = list[k - 1];
-          list[k - 1] = temp;
-        } else {
+      // Generate permutations with k-th unaltered
+      permute(list, k - 1);
+
+      // Generate permutations for list[0..k-2] with k-th swapped with each list[i]
+      for (int i = 0; i < k - 1; i++) {
+        if (k % 2 == 0) {
           final temp = list[i];
           list[i] = list[k - 1];
           list[k - 1] = temp;
+        } else {
+          final temp = list[0];
+          list[0] = list[k - 1];
+          list[k - 1] = temp;
         }
+        permute(list, k - 1);
       }
     }
 
@@ -1068,6 +1104,12 @@ class PartPlacementCandidate {
     required this.waste,
     required this.endX,
   });
+}
+
+class PlacedPartState {
+  final PartItem part;
+  final double waste;
+  PlacedPartState(this.part, this.waste);
 }
 
 class PipeLayoutPainter extends CustomPainter {
