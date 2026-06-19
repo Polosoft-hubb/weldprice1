@@ -77,8 +77,8 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                 label: 'Материалы',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.content_cut_outlined),
-                activeIcon: Icon(Icons.content_cut),
+                icon: Icon(Icons.carpenter_outlined),
+                activeIcon: Icon(Icons.carpenter),
                 label: 'Детали',
               ),
               BottomNavigationBarItem(

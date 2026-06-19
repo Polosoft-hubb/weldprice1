@@ -30,14 +30,16 @@ class PartItem {
   }
 
   factory PartItem.fromJson(Map<String, dynamic> json) {
+    final rawLeft = json['leftCut'] as String? ?? '90';
+    final rawRight = json['rightCut'] as String? ?? '90';
     return PartItem(
       id: json['id'] as String,
       projectId: json['projectId'] as int,
       profileName: json['profileName'] as String,
       length: (json['length'] as num).toDouble(),
       quantity: json['quantity'] as int,
-      leftCut: json['leftCut'] as String? ?? '90',
-      rightCut: json['rightCut'] as String? ?? '90',
+      leftCut: rawLeft == '45' ? '45_up' : rawLeft,
+      rightCut: rawRight == '45' ? '45_up' : rawRight,
     );
   }
 

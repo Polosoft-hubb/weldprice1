@@ -50,9 +50,10 @@ class _PartsTabState extends State<PartsTab> {
   ) {
     List<PlacedPartState>? bestConfig;
     double bestWaste = double.infinity;
+    int bestWasteSegments = 999999;
 
-    void search(int index, String currentAngle, double currentWaste, List<PlacedPartState> currentPath) {
-      if (currentWaste >= bestWaste) return; // Prune search branch
+    void search(int index, String currentAngle, double currentWaste, int currentSegments, List<PlacedPartState> currentPath) {
+      if (currentWaste > bestWaste) return; // Prune if intermediate waste exceeds best total waste
 
       if (index == sequence.length) {
         // Calculate end waste if the final cut is not 90°
@@ -61,8 +62,10 @@ class _PartsTabState extends State<PartsTab> {
           endWaste = profileHeight;
         }
         final totalWaste = currentWaste + endWaste;
-        if (totalWaste < bestWaste) {
+        if (totalWaste < bestWaste ||
+            (totalWaste == bestWaste && currentSegments < bestWasteSegments)) {
           bestWaste = totalWaste;
+          bestWasteSegments = currentSegments;
           bestConfig = List.from(currentPath);
         }
         return;
@@ -91,24 +94,28 @@ class _PartsTabState extends State<PartsTab> {
       for (final orient in orientations) {
         // Start waste for the first piece if it starts with a slant
         double stepWaste = 0.0;
+        int stepSegment = 0;
         if (index == 0) {
           if (orient[0] != '90') {
             stepWaste = profileHeight;
           }
         } else {
-          stepWaste = _cutsMatch(currentAngle, orient[0]) ? 0.0 : profileHeight;
+          if (!_cutsMatch(currentAngle, orient[0])) {
+            stepWaste = profileHeight;
+            stepSegment = 1;
+          }
         }
 
         final nextPart = item.copyWith(leftCut: orient[0], rightCut: orient[1]);
         currentPath.add(PlacedPartState(nextPart, stepWaste));
         
-        search(index + 1, orient[1], currentWaste + stepWaste, currentPath);
+        search(index + 1, orient[1], currentWaste + stepWaste, currentSegments + stepSegment, currentPath);
         
         currentPath.removeLast();
       }
     }
 
-    search(0, '90', 0.0, []);
+    search(0, '90', 0.0, 0, []);
     return bestConfig;
   }
 
@@ -124,11 +131,14 @@ class _PartsTabState extends State<PartsTab> {
     final List<PlacedPart> placements = [];
     double currentUsed = 0.0;
 
-    for (final state in optimalStates) {
+    for (int i = 0; i < optimalStates.length; i++) {
+      final state = optimalStates[i];
       final double waste = state.waste;
       final PartItem part = state.part;
+      final bool isLast = (i == optimalStates.length - 1);
+      final double neededCut = isLast ? 0.0 : bladeThickness;
 
-      final double endX = currentUsed + waste + part.length + bladeThickness;
+      final double endX = currentUsed + waste + part.length + neededCut;
       if (endX > stockLength) {
         return []; // Doesn't fit in the pipe
       }
@@ -155,9 +165,9 @@ class _PartsTabState extends State<PartsTab> {
       placements.add(PlacedPart(
         part: part,
         startX: currentUsed,
-        endX: currentUsed + part.length + bladeThickness,
+        endX: currentUsed + part.length,
       ));
-      currentUsed += part.length + bladeThickness;
+      currentUsed += part.length + neededCut;
     }
 
     return placements;
@@ -178,6 +188,7 @@ class _PartsTabState extends State<PartsTab> {
     }
 
     double bestTotalWaste = double.infinity;
+    int bestWasteSegments = 999999;
     List<PlacedPart>? bestPlacements;
 
     // Helper to generate permutations and find the best one using standard Heap's algorithm
@@ -205,8 +216,12 @@ class _PartsTabState extends State<PartsTab> {
             totalWaste += profileHeight;
           }
 
-          if (totalWaste < bestTotalWaste) {
+          final int currentWasteSegments = placements.where((p) => p.isWaste).length;
+
+          if (totalWaste < bestTotalWaste || 
+              (totalWaste == bestTotalWaste && currentWasteSegments < bestWasteSegments)) {
             bestTotalWaste = totalWaste;
+            bestWasteSegments = currentWasteSegments;
             bestPlacements = placements;
           }
         }
@@ -269,7 +284,9 @@ class _PartsTabState extends State<PartsTab> {
       pipes.add(pipe);
 
       while (true) {
-        final double currentUsed = pipe.usedLength;
+        final double currentUsed = pipe.placements.isEmpty
+            ? 0.0
+            : pipe.placements.last.endX + bladeThickness;
         final String currentAngle = pipe.placements.isEmpty
             ? '90'
             : pipe.placements.last.part.rightCut;
@@ -310,7 +327,7 @@ class _PartsTabState extends State<PartsTab> {
           }
 
           if (bestOrientation != null) {
-            final double endX = currentUsed + bestWaste + item.length + bladeThickness;
+            final double endX = currentUsed + bestWaste + item.length;
             if (endX <= stockLength) {
               candidates.add(PartPlacementCandidate(
                 part: item,
@@ -354,7 +371,9 @@ class _PartsTabState extends State<PartsTab> {
           rightCut: selected.rightCut,
         );
 
-        double startX = pipe.usedLength;
+        double startX = pipe.placements.isEmpty
+            ? 0.0
+            : pipe.placements.last.endX + bladeThickness;
         if (wasteLength > 0) {
           pipe.placements.add(PlacedPart(
             part: PartItem(
@@ -376,7 +395,7 @@ class _PartsTabState extends State<PartsTab> {
         pipe.placements.add(PlacedPart(
           part: selectedPart,
           startX: startX,
-          endX: startX + selectedPart.length + bladeThickness,
+          endX: startX + selectedPart.length,
         ));
 
         remainingItems.remove(selected.part);
@@ -857,7 +876,7 @@ class _PartsTabState extends State<PartsTab> {
                     child: ExpansionTile(
                       title: const Text('Параметры раскроя', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white)),
                       subtitle: Text(
-                        'Хлыст: ${stockLength.toInt()} мм, рез: ${bladeThickness.toInt()} мм, высота: ${profileHeight.toInt()} мм',
+                        'Профиль: ${stockLength.toInt()} мм, рез: ${bladeThickness.toInt()} мм, высота: ${profileHeight.toInt()} мм',
                         style: const TextStyle(color: Colors.grey, fontSize: 12),
                       ),
                       tilePadding: EdgeInsets.zero,
@@ -869,7 +888,7 @@ class _PartsTabState extends State<PartsTab> {
                                 controller: _stockLengthController,
                                 keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
-                                  labelText: 'Хлыст (мм)',
+                                  labelText: 'Профиль (мм)',
                                   contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                                 ),
                                 onChanged: (_) => setState(() {}),
@@ -928,7 +947,7 @@ class _PartsTabState extends State<PartsTab> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text('Купить целых хлыстов:', style: TextStyle(color: Colors.grey)),
+                                const Text('Купить целых профилей:', style: TextStyle(color: Colors.grey)),
                                 Text(
                                   '$totalPipesCount шт. (по ${(stockLength / 1000).toStringAsFixed(1)} м)',
                                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFFFF4081)),
@@ -967,7 +986,7 @@ class _PartsTabState extends State<PartsTab> {
                     const SizedBox(height: 16),
                     
                     const Text(
-                      'КАРТА РАСПИЛА ХЛЫСТОВ',
+                      'КАРТА РАСПИЛА',
                       style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey, letterSpacing: 1.1),
                     ),
                     const SizedBox(height: 8),
@@ -991,7 +1010,7 @@ class _PartsTabState extends State<PartsTab> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Хлыст №${pipeIndex + 1}',
+                                    'Профиль №${pipeIndex + 1}',
                                     style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                                   ),
                                   Text(
@@ -1127,9 +1146,34 @@ class PipeLayoutPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double scale = size.width / stockLength;
+    const double dx = 10.0; // 3D projection X-offset
+    const double dy = 10.0; // 3D projection Y-offset
+    
+    final double scale = size.width > dx ? (size.width - dx) / stockLength : 1.0;
     final double hDraw = size.height;
-    const double hDrawScale = 35.0; // Fixed visual offset in pixels to make the 45° angle clearly visible
+    double hDrawScale = 35.0; // Dynamic visual offset in pixels
+    
+    // Scale down visual slant for short real parts to prevent them from looking like triangles
+    for (final p in placements) {
+      if (!p.isWaste) {
+        final double len = (p.endX - p.startX) * scale;
+        final String lCut = p.part.leftCut;
+        final String rCut = p.part.rightCut;
+        final double lUnit = (lCut == '45_up' || lCut == '45') ? 1.0 : (lCut == '45_down' ? -1.0 : 0.0);
+        final double rUnit = (rCut == '45_up' || rCut == '45') ? 1.0 : (rCut == '45_down' ? -1.0 : 0.0);
+        
+        final double diffUnits = (lUnit - rUnit).abs();
+        if (diffUnits > 0) {
+          final double maxH = (len * 0.5) / diffUnits;
+          if (maxH < hDrawScale) {
+            hDrawScale = maxH;
+          }
+        }
+      }
+    }
+    if (hDrawScale < 10.0) {
+      hDrawScale = 10.0; // Ensure slant remains visible
+    }
 
     double getSlantVal(String cut) {
       if (cut == '45_up' || cut == '45') {
@@ -1154,73 +1198,123 @@ class PipeLayoutPainter extends CustomPainter {
           slants[i] = getSlantVal(placements[i].part.leftCut);
         }
       }
-
-      // Clamp slants to ensure no segment's left/right boundaries cross.
-      // They cross if slant[i] - slant[i+1] > width.
-      // Run 3 passes of clamping to handle any propagation.
-      for (int pass = 0; pass < 3; pass++) {
-        for (int i = 0; i < placements.length; i++) {
-          final double width = (placements[i].endX - placements[i].startX) * scale;
-          final double diff = slants[i] - slants[i + 1];
-          final double maxDiff = width * 0.8;
-          if (diff > maxDiff) {
-            // Scale both slants towards zero to resolve overlap
-            final double k = maxDiff / diff;
-            slants[i] *= k;
-            slants[i + 1] *= k;
-          }
-        }
-      }
     }
 
-    // Draw background (pipe stock)
+    // Calculate unscaled sequential boundaries at the bottom to guarantee no crossing slants
+    final List<double> bottomX = List.filled(placements.length + 1, 0.0);
+    bottomX[0] = 0.0;
+    for (int i = 0; i < placements.length; i++) {
+      final double len = (placements[i].endX - placements[i].startX) * scale;
+      final double diff = slants[i] - slants[i + 1];
+      final double step = len > diff ? len : diff;
+      bottomX[i + 1] = bottomX[i] + step;
+    }
+
+    final double remainderLen = placements.isNotEmpty && placements.last.endX < stockLength
+        ? (stockLength - placements.last.endX) * scale
+        : 0.0;
+
+    final double totalDrawnWidth = bottomX[placements.length] +
+        (placements.isNotEmpty && placements.last.endX < stockLength
+            ? (remainderLen > slants[placements.length]
+                ? remainderLen
+                : slants[placements.length])
+            : 0.0);
+
+    double adjustScale = 1.0;
+    if (totalDrawnWidth > size.width - dx) {
+      adjustScale = (size.width - dx) / totalDrawnWidth;
+    }
+
+    // Scale boundaries and slants to fit container perfectly
+    for (int i = 0; i < bottomX.length; i++) {
+      bottomX[i] *= adjustScale;
+    }
+    for (int i = 0; i < slants.length; i++) {
+      slants[i] *= adjustScale;
+    }
+
+    // Draw background slot
     final Paint bgPaint = Paint()
-      ..color = const Color(0xFF2C2C2C)
+      ..color = const Color(0xFF151515)
       ..style = PaintingStyle.fill;
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), bgPaint);
 
-    // Draw outline border
     final Paint borderPaint = Paint()
-      ..color = Colors.white10
+      ..color = Colors.white.withOpacity(0.06)
       ..strokeWidth = 1.0
       ..style = PaintingStyle.stroke;
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), borderPaint);
 
+    final Paint outlinePaint = Paint()
+      ..color = const Color(0xFF121212)
+      ..strokeWidth = 1.5
+      ..style = PaintingStyle.stroke;
+
     // Draw segments
     for (int i = 0; i < placements.length; i++) {
       final placement = placements[i];
-      final double xStart = placement.startX;
-      final double xEnd = placement.endX;
       final part = placement.part;
 
-      // Left cut: slanted or straight
-      final double xStartBottom = xStart * scale;
+      // Front face coordinates using calculated and scaled boundaries
+      final double xStartBottom = bottomX[i];
       final double xStartTop = xStartBottom + slants[i];
-
-      // Right cut: slanted or straight
-      final double xEndBottom = xEnd * scale;
+      final double xEndBottom = bottomX[i + 1];
       final double xEndTop = xEndBottom + slants[i + 1];
 
-      final Path path = Path()
-        ..moveTo(xStartTop, 0)
-        ..lineTo(xEndTop, 0)
+      // Define face colors
+      final Color baseColor = placement.isWaste
+          ? Colors.orange.withOpacity(0.35)
+          : getPartColor(part.length);
+
+      final Color topColor = Color.lerp(baseColor, Colors.white, 0.20)!;
+      final Color sideColor = Color.lerp(baseColor, Colors.black, 0.25)!;
+
+      final Paint frontPaint = Paint()
+        ..color = baseColor
+        ..style = PaintingStyle.fill;
+
+      final Paint topPaint = Paint()
+        ..color = topColor
+        ..style = PaintingStyle.fill;
+
+      final Paint sidePaint = Paint()
+        ..color = sideColor
+        ..style = PaintingStyle.fill;
+
+      // 1. Draw Front Face
+      final Path frontPath = Path()
+        ..moveTo(xStartTop, dy)
+        ..lineTo(xEndTop, dy)
         ..lineTo(xEndBottom, hDraw)
         ..lineTo(xStartBottom, hDraw)
         ..close();
+      canvas.drawPath(frontPath, frontPaint);
+      canvas.drawPath(frontPath, outlinePaint);
 
-      final Paint segmentPaint = Paint()
-        ..color = placement.isWaste
-            ? Colors.orange.withOpacity(0.3)
-            : getPartColor(part.length)
-        ..style = PaintingStyle.fill;
-      canvas.drawPath(path, segmentPaint);
+      // 2. Draw Top Face
+      final Path topPath = Path()
+        ..moveTo(xStartTop + dx, 0.0)
+        ..lineTo(xEndTop + dx, 0.0)
+        ..lineTo(xEndTop, dy)
+        ..lineTo(xStartTop, dy)
+        ..close();
+      canvas.drawPath(topPath, topPaint);
+      canvas.drawPath(topPath, outlinePaint);
 
-      // Draw segment divider line (on the right end of the piece)
-      final Paint dividerPaint = Paint()
-        ..color = Colors.white.withOpacity(0.4)
-        ..strokeWidth = 1.5
-        ..style = PaintingStyle.stroke;
-      canvas.drawLine(Offset(xEndTop, 0), Offset(xEndBottom, hDraw), dividerPaint);
+      // 3. Draw Right End Face (only if this is the last placement and there is no remainder)
+      final bool isLastSegment = (i == placements.length - 1);
+      final bool hasNoRemainder = !(placements.last.endX < stockLength);
+      if (isLastSegment && hasNoRemainder) {
+        final Path sidePath = Path()
+          ..moveTo(xEndTop, dy)
+          ..lineTo(xEndTop + dx, 0.0)
+          ..lineTo(xEndBottom + dx, hDraw - dy)
+          ..lineTo(xEndBottom, hDraw)
+          ..close();
+        canvas.drawPath(sidePath, sidePaint);
+        canvas.drawPath(sidePath, outlinePaint);
+      }
 
       // Draw text labels
       if (!placement.isWaste) {
@@ -1228,7 +1322,6 @@ class PipeLayoutPainter extends CustomPainter {
         final double xCenterBottom = (xStartBottom + xEndBottom) / 2.0;
         final double xCenter = (xCenterTop + xCenterBottom) / 2.0;
 
-        // Draw length
         final String text = '${part.length.toInt()} мм';
         final textPainter = TextPainter(
           text: TextSpan(
@@ -1237,12 +1330,18 @@ class PipeLayoutPainter extends CustomPainter {
               color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 10,
+              shadows: [
+                Shadow(
+                  color: Color(0xD9000000),
+                  offset: Offset(0.0, 1.0),
+                  blurRadius: 2.0,
+                ),
+              ],
             ),
           ),
           textDirection: TextDirection.ltr,
         )..layout();
 
-        // Draw angles
         String formatCutForText(String cut) {
           if (cut == '45_up' || cut == '45') return '45/';
           if (cut == '45_down') return r'45\';
@@ -1253,18 +1352,25 @@ class PipeLayoutPainter extends CustomPainter {
           text: TextSpan(
             text: slantText,
             style: TextStyle(
-              color: Colors.white.withOpacity(0.7),
+              color: Colors.white.withOpacity(0.85),
+              fontWeight: FontWeight.w500,
               fontSize: 8,
+              shadows: const [
+                Shadow(
+                  color: Color(0xD9000000),
+                  offset: Offset(0.0, 1.0),
+                  blurRadius: 2.0,
+                ),
+              ],
             ),
           ),
           textDirection: TextDirection.ltr,
         )..layout();
 
-        final double textY = (hDraw - (textPainter.height + slantPainter.height)) / 2.0;
+        final double textY = dy + (hDraw - dy - (textPainter.height + slantPainter.height)) / 2.0;
         textPainter.paint(canvas, Offset(xCenter - textPainter.width / 2.0, textY));
         slantPainter.paint(canvas, Offset(xCenter - slantPainter.width / 2.0, textY + textPainter.height));
       } else {
-        // Draw waste label
         final double xCenter = ((xStartBottom + xEndBottom) / 2.0 + (xStartTop + xEndTop) / 2.0) / 2.0;
         final textPainter = TextPainter(
           text: const TextSpan(
@@ -1273,42 +1379,95 @@ class PipeLayoutPainter extends CustomPainter {
               color: Colors.white70,
               fontSize: 8,
               fontStyle: FontStyle.italic,
+              shadows: [
+                Shadow(
+                  color: Colors.black54,
+                  offset: Offset(0.0, 1.0),
+                  blurRadius: 1.0,
+                ),
+              ],
             ),
           ),
           textDirection: TextDirection.ltr,
         )..layout();
-        textPainter.paint(canvas, Offset(xCenter - textPainter.width / 2.0, (hDraw - textPainter.height) / 2.0));
+        textPainter.paint(canvas, Offset(xCenter - textPainter.width / 2.0, dy + (hDraw - dy - textPainter.height) / 2.0));
       }
     }
 
     // Draw remaining empty space at the end
     if (placements.isNotEmpty && placements.last.endX < stockLength) {
       final double xStart = placements.last.endX;
-      final double xStartBottom = xStart * scale;
+      final double xStartBottom = bottomX[placements.length];
       final double xStartTop = xStartBottom + slants[placements.length];
-      final double xEnd = stockLength * scale;
+      final double xEnd = size.width - dx;
 
-      final Path path = Path()
-        ..moveTo(xStartTop, 0)
-        ..lineTo(xEnd, 0)
+      // Remainder coordinates
+      final Path frontPath = Path()
+        ..moveTo(xStartTop, dy)
+        ..lineTo(xEnd, dy)
         ..lineTo(xEnd, hDraw)
         ..lineTo(xStartBottom, hDraw)
         ..close();
 
-      final Paint remainderPaint = Paint()
-        ..color = Colors.redAccent.withOpacity(0.08)
+      final Path topPath = Path()
+        ..moveTo(xStartTop + dx, 0.0)
+        ..lineTo(xEnd + dx, 0.0)
+        ..lineTo(xEnd, dy)
+        ..lineTo(xStartTop, dy)
+        ..close();
+
+      final Path sidePath = Path()
+        ..moveTo(xEnd, dy)
+        ..lineTo(xEnd + dx, 0.0)
+        ..lineTo(xEnd + dx, hDraw - dy)
+        ..lineTo(xEnd, hDraw)
+        ..close();
+
+      final Color remainderBase = Colors.grey.withOpacity(0.15);
+      final Color topColor = Color.lerp(remainderBase, Colors.white, 0.20)!;
+      final Color sideColor = Color.lerp(remainderBase, Colors.black, 0.25)!;
+
+      final Paint frontPaint = Paint()
+        ..color = remainderBase
         ..style = PaintingStyle.fill;
-      canvas.drawPath(path, remainderPaint);
+
+      final Paint topPaint = Paint()
+        ..color = topColor
+        ..style = PaintingStyle.fill;
+
+      final Paint sidePaint = Paint()
+        ..color = sideColor
+        ..style = PaintingStyle.fill;
+
+      canvas.drawPath(frontPath, frontPaint);
+      canvas.drawPath(frontPath, outlinePaint);
+
+      canvas.drawPath(topPath, topPaint);
+      canvas.drawPath(topPath, outlinePaint);
+
+      canvas.drawPath(sidePath, sidePaint);
+      canvas.drawPath(sidePath, outlinePaint);
 
       final double xCenter = (xStartBottom + xEnd) / 2.0;
       final textPainter = TextPainter(
         text: TextSpan(
           text: 'Остаток ${(stockLength - xStart).toInt()} мм',
-          style: const TextStyle(fontSize: 10, color: Colors.grey, fontStyle: FontStyle.italic),
+          style: const TextStyle(
+            fontSize: 10,
+            color: Colors.white70,
+            fontStyle: FontStyle.italic,
+            shadows: [
+              Shadow(
+                color: Color(0xD9000000),
+                offset: Offset(0.0, 1.0),
+                blurRadius: 2.0,
+              ),
+            ],
+          ),
         ),
         textDirection: TextDirection.ltr,
       )..layout();
-      textPainter.paint(canvas, Offset(xCenter - textPainter.width / 2.0, (hDraw - textPainter.height) / 2.0));
+      textPainter.paint(canvas, Offset(xCenter - textPainter.width / 2.0, dy + (hDraw - dy - textPainter.height) / 2.0));
     }
   }
 
