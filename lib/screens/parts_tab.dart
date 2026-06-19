@@ -850,7 +850,32 @@ class PipeLayoutPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final double scale = size.width / stockLength;
     final double hDraw = size.height;
-    final double hDrawScale = profileHeight * scale;
+    const double hDrawScale = 35.0; // Fixed visual offset in pixels to make the 45° angle clearly visible
+
+    // Build initial slant offsets for each boundary.
+    // There are placements.length + 1 boundaries.
+    final List<double> slants = List.filled(placements.length + 1, 0.0);
+    if (placements.isNotEmpty) {
+      for (int i = 0; i <= placements.length; i++) {
+        if (i == 0) {
+          slants[i] = placements[0].part.leftCut == '45' ? hDrawScale : 0.0;
+        } else if (i == placements.length) {
+          slants[i] = placements[i - 1].part.rightCut == '45' ? hDrawScale : 0.0;
+        } else {
+          // Boundary between placement i-1 and placement i
+          slants[i] = placements[i].part.leftCut == '45' ? hDrawScale : 0.0;
+        }
+      }
+
+      // Clamp slants right-to-left to ensure no segment's left/right boundaries cross.
+      // They cross if slant[i] - slant[i+1] > width.
+      for (int i = placements.length - 1; i >= 0; i--) {
+        final double width = (placements[i].endX - placements[i].startX) * scale;
+        if (slants[i] > slants[i + 1] + width * 0.8) {
+          slants[i] = slants[i + 1] + width * 0.8;
+        }
+      }
+    }
 
     // Draw background (pipe stock)
     final Paint bgPaint = Paint()
@@ -866,18 +891,19 @@ class PipeLayoutPainter extends CustomPainter {
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), borderPaint);
 
     // Draw segments
-    for (final placement in placements) {
+    for (int i = 0; i < placements.length; i++) {
+      final placement = placements[i];
       final double xStart = placement.startX;
       final double xEnd = placement.endX;
       final part = placement.part;
 
       // Left cut: slanted or straight
       final double xStartBottom = xStart * scale;
-      final double xStartTop = xStartBottom + (part.leftCut == '45' ? hDrawScale : 0.0);
+      final double xStartTop = xStartBottom + slants[i];
 
       // Right cut: slanted or straight
       final double xEndBottom = xEnd * scale;
-      final double xEndTop = xEndBottom + (part.rightCut == '45' ? hDrawScale : 0.0);
+      final double xEndTop = xEndBottom + slants[i + 1];
 
       final Path path = Path()
         ..moveTo(xStartTop, 0)
