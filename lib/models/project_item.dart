@@ -74,6 +74,9 @@ class ProjectItemModel {
     final unitLower = unit.toLowerCase();
     
     if (unitLower == 'кв. м' || unitLower == 'кв.м' || unitLower == 'м2' || unitLower == 'м²') {
+      if (nameLower.contains('лист') || nameLower.contains('профлист') || nameLower.contains('профнастил') || nameLower.contains('плита')) {
+        return 2.0; // A sheet/plate has two sides, so 1 m² of sheet has 2 m² of paintable surface area
+      }
       return 1.0;
     }
     
