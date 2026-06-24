@@ -34,7 +34,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 3,
+      version: 4,
       onCreate: _createDB,
       onConfigure: _onConfigure,
       onUpgrade: _onUpgrade,
@@ -60,6 +60,34 @@ class DatabaseHelper {
       // Add paint_can_weight column to projects table
       await db.execute('ALTER TABLE projects ADD COLUMN paint_can_weight REAL DEFAULT 1.0');
     }
+    if (oldVersion < 4) {
+      // Add weight column to materials, project_materials, and project_items
+      await db.execute('ALTER TABLE materials ADD COLUMN weight REAL DEFAULT 0.0');
+      await db.execute('ALTER TABLE project_materials ADD COLUMN weight REAL DEFAULT 0.0');
+      await db.execute('ALTER TABLE project_items ADD COLUMN weight REAL DEFAULT 0.0');
+      
+      // Update materials table templates and backfill weights for existing records
+      try {
+        await _seedInitialMaterials(db);
+        
+        await db.execute('''
+          UPDATE project_materials
+          SET weight = COALESCE((
+            SELECT weight FROM materials 
+            WHERE materials.id = project_materials.material_id
+          ), 0.0)
+        ''');
+        await db.execute('''
+          UPDATE project_items
+          SET weight = COALESCE((
+            SELECT weight FROM materials 
+            WHERE materials.id = project_items.material_id
+          ), 0.0)
+        ''');
+      } catch (e) {
+        print("Database migration seeding failed: $e");
+      }
+    }
   }
 
   Future _createDB(Database db, int version) async {
@@ -76,7 +104,8 @@ class DatabaseHelper {
         url $textType,
         unit $textType,
         price $doubleType,
-        category $textType
+        category $textType,
+        weight REAL DEFAULT 0.0
       )
     ''');
 
@@ -105,6 +134,7 @@ class DatabaseHelper {
         unit $textType,
         price $doubleType,
         category $textType,
+        weight REAL DEFAULT 0.0,
         PRIMARY KEY (project_id, material_id),
         FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE
       )
@@ -121,6 +151,7 @@ class DatabaseHelper {
         unit $textType,
         price $doubleType,
         painting_area REAL DEFAULT 0.0,
+        weight REAL DEFAULT 0.0,
         FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE
       )
     ''');
@@ -142,6 +173,7 @@ class DatabaseHelper {
           'unit': item['unit'] ?? 'пог. м',
           'price': (item['price'] as num?)?.toDouble() ?? 0.0,
           'category': item['category'] ?? '',
+          'weight': (item['weight'] as num?)?.toDouble() ?? 0.0,
         }, conflictAlgorithm: ConflictAlgorithm.replace);
       }
       await batch.commit(noResult: true);
@@ -199,6 +231,41 @@ class DatabaseHelper {
       _webProjectMaterials = decoded.map((e) => Map<String, dynamic>.from(e)).toList();
     } else {
       _webProjectMaterials = [];
+    }
+
+    // Web Migration: Check if weight is missing from cached materials and backfill them
+    if (_webMaterials != null && _webMaterials!.isNotEmpty) {
+      final hasNoWeights = _webMaterials!.every((m) => m.weight == 0.0);
+      if (hasNoWeights) {
+        try {
+          final jsonString = await rootBundle.loadString('assets/materials_db.json');
+          final List<dynamic> jsonList = json.decode(jsonString);
+          _webMaterials = jsonList.map((e) => MaterialModel.fromJson(e)).toList();
+          await _saveWebMaterials();
+
+          for (var pm in _webProjectMaterials!) {
+            final template = _webMaterials!.firstWhere(
+              (m) => m.id == pm['material_id'] || m.id == pm['id'],
+              orElse: () => MaterialModel(id: '', name: '', url: '', unit: '', price: 0.0, category: ''),
+            );
+            if (template.id.isNotEmpty) {
+              pm['weight'] = template.weight;
+            }
+          }
+          await _saveWebProjectMaterials();
+
+          _webProjectItems = _webProjectItems!.map((item) {
+            final template = _webMaterials!.firstWhere(
+              (m) => m.id == item.materialId,
+              orElse: () => MaterialModel(id: '', name: '', url: '', unit: '', price: 0.0, category: ''),
+            );
+            return template.id.isNotEmpty ? item.copyWith(weight: template.weight) : item;
+          }).toList();
+          await _saveWebProjectItems();
+        } catch (e) {
+          // ignore
+        }
+      }
     }
   }
 
@@ -364,6 +431,7 @@ class DatabaseHelper {
       'unit': material.unit,
       'price': material.price,
       'category': material.category,
+      'weight': material.weight,
     }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
@@ -392,6 +460,7 @@ class DatabaseHelper {
         'unit': mat.unit,
         'price': mat.price,
         'category': mat.category,
+        'weight': mat.weight,
       }, conflictAlgorithm: ConflictAlgorithm.replace);
     }
     await batch.commit(noResult: true);
@@ -424,8 +493,8 @@ class DatabaseHelper {
     
     // Copy templates in SQLite
     await db.execute('''
-      INSERT INTO project_materials (project_id, material_id, name, url, unit, price, category)
-      SELECT ?, id, name, url, unit, price, category FROM materials
+      INSERT INTO project_materials (project_id, material_id, name, url, unit, price, category, weight)
+      SELECT ?, id, name, url, unit, price, category, weight FROM materials
     ''', [id]);
 
     return project.copyWith(id: id);

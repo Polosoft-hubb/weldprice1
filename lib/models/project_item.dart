@@ -7,6 +7,7 @@ class ProjectItemModel {
   final String unit;
   final double price;
   final double paintingArea;
+  final double weight; // in kg per unit
 
   ProjectItemModel({
     this.id,
@@ -17,9 +18,11 @@ class ProjectItemModel {
     required this.unit,
     required this.price,
     this.paintingArea = 0.0,
+    this.weight = 0.0,
   });
 
   double get totalPrice => quantity * price;
+  double get totalWeight => quantity * weight;
 
   factory ProjectItemModel.fromJson(Map<String, dynamic> json) {
     return ProjectItemModel(
@@ -31,6 +34,7 @@ class ProjectItemModel {
       unit: json['unit'] ?? 'пог. м',
       price: (json['price'] as num?)?.toDouble() ?? 0.0,
       paintingArea: (json['painting_area'] as num?)?.toDouble() ?? 0.0,
+      weight: (json['weight'] as num?)?.toDouble() ?? 0.0,
     );
   }
 
@@ -44,6 +48,7 @@ class ProjectItemModel {
       'unit': unit,
       'price': price,
       'painting_area': paintingArea,
+      'weight': weight,
     };
   }
 
@@ -56,6 +61,7 @@ class ProjectItemModel {
     String? unit,
     double? price,
     double? paintingArea,
+    double? weight,
   }) {
     return ProjectItemModel(
       id: id ?? this.id,
@@ -66,6 +72,7 @@ class ProjectItemModel {
       unit: unit ?? this.unit,
       price: price ?? this.price,
       paintingArea: paintingArea ?? this.paintingArea,
+      weight: weight ?? this.weight,
     );
   }
 

@@ -87,6 +87,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final nameController = TextEditingController();
     final categoryController = TextEditingController(text: 'Свои материалы');
     final priceController = TextEditingController();
+    final weightController = TextEditingController();
     
     String selectedUnit = 'пог. м';
     final customUnitController = TextEditingController();
@@ -169,6 +170,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         hintText: '0.0',
                       ),
                     ),
+                    const SizedBox(height: 12),
+                    TextField(
+                      controller: weightController,
+                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      decoration: const InputDecoration(
+                        labelText: 'Вес единицы (кг, необязательно)',
+                        hintText: '0.0',
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -185,6 +195,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ? customUnitController.text.trim() 
                         : selectedUnit;
                     final double? price = double.tryParse(priceController.text.replaceAll(',', '.').trim());
+                    final double weight = double.tryParse(weightController.text.replaceAll(',', '.').trim()) ?? 0.0;
 
                     if (name.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -212,7 +223,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     }
 
                     Provider.of<ProjectProvider>(context, listen: false)
-                        .addCustomMaterial(name, category, unit, price);
+                        .addCustomMaterial(name, category, unit, price, weight: weight);
 
                     Navigator.of(dialogCtx).pop();
 
@@ -432,7 +443,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                               ),
                               subtitle: Text(
-                                '${mat.category} • ед. изм.: ${mat.unit}',
+                                mat.weight > 0
+                                    ? '${mat.category} • ед. изм.: ${mat.unit} • вес: ${mat.weight.toString().replaceAll(RegExp(r"\.0$"), "")} кг/${mat.unit}'
+                                    : '${mat.category} • ед. изм.: ${mat.unit}',
                                 style: const TextStyle(color: Colors.grey, fontSize: 11),
                               ),
                               trailing: Row(

@@ -77,6 +77,8 @@ class ScraperService {
               } else if (regPrice != null) {
                 priceVal = double.tryParse(regPrice.toString()) ?? 0.0;
               }
+
+              final double weightVal = double.tryParse(productData['weight']?.toString() ?? '') ?? 0.0;
               
               parsedMaterials.add(MaterialModel(
                 id: id,
@@ -85,6 +87,7 @@ class ScraperService {
                 unit: unit,
                 price: priceVal,
                 category: catName,
+                weight: weightVal,
               ));
               seenIds.add(id);
             } catch (e) {

@@ -125,6 +125,11 @@ class _EstimateTabState extends State<EstimateTab> {
                           'Материалы: ${_formatCurrency(project.materialsCost)}',
                           style: const TextStyle(fontSize: 13, color: Colors.black54, fontWeight: FontWeight.bold),
                         ),
+                        if (project.totalWeight > 0)
+                          Text(
+                            'Вес мат.: ${project.totalWeight >= 1000 ? '${(project.totalWeight / 1000).toStringAsFixed(2)} т' : '${project.totalWeight.toStringAsFixed(1).replaceAll(RegExp(r"\.0$"), "")} кг'}',
+                            style: const TextStyle(fontSize: 13, color: Colors.black54, fontWeight: FontWeight.bold),
+                          ),
                         if (project.isPaintingEnabled)
                           Text(
                             'Покраска: ${_formatCurrency(project.totalPaintingCost)}',
@@ -161,7 +166,9 @@ class _EstimateTabState extends State<EstimateTab> {
                       _buildDetailRow(
                         title: 'Стоимость материалов',
                         value: _formatCurrency(project.materialsCost),
-                        subtitle: 'Сумма добавленных позиций',
+                        subtitle: project.totalWeight > 0
+                            ? 'Сумма добавленных позиций\nОбщий вес материалов: ${project.totalWeight >= 1000 ? '${(project.totalWeight / 1000).toStringAsFixed(2)} т' : '${project.totalWeight.toStringAsFixed(1).replaceAll(RegExp(r"\.0$"), "")} кг'}'
+                            : 'Сумма добавленных позиций',
                         icon: Icons.inventory_2_outlined,
                       ),
                       const Divider(height: 24, color: Colors.grey),
@@ -369,7 +376,14 @@ class _EstimateTabState extends State<EstimateTab> {
       sb.writeln('----------------------------------------');
       for (final item in project.items) {
         sb.writeln('- ${item.name}');
-        sb.writeln('  Количество: ${item.quantity.toStringAsFixed(1)} ${item.unit} × ${_formatCurrency(item.price)} = ${_formatCurrency(item.totalPrice)}');
+        final itemWeightStr = item.weight > 0 ? ' • Вес: ${item.totalWeight.toStringAsFixed(1).replaceAll(RegExp(r"\.0$"), "")} кг' : '';
+        sb.writeln('  Количество: ${item.quantity.toStringAsFixed(1)} ${item.unit} × ${_formatCurrency(item.price)} = ${_formatCurrency(item.totalPrice)}$itemWeightStr');
+      }
+      if (project.totalWeight > 0) {
+        final totalWeightStr = project.totalWeight >= 1000 
+            ? '${(project.totalWeight / 1000).toStringAsFixed(2)} т' 
+            : '${project.totalWeight.toStringAsFixed(1).replaceAll(RegExp(r"\.0$"), "")} кг';
+        sb.writeln('  Общий вес материалов: $totalWeightStr');
       }
       sb.writeln('----------------------------------------');
       sb.writeln();

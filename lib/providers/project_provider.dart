@@ -160,6 +160,7 @@ class ProjectProvider extends ChangeNotifier {
       unit: material.unit,
       price: material.price,
       paintingArea: ProjectItemModel.estimateAreaFromName(material.name, material.unit),
+      weight: material.weight,
     );
 
     await _dbHelper.addProjectItem(item);
@@ -290,7 +291,7 @@ class ProjectProvider extends ChangeNotifier {
     await selectProject(projectId);
   }
 
-  Future<void> addCustomMaterial(String name, String category, String unit, double price) async {
+  Future<void> addCustomMaterial(String name, String category, String unit, double price, {double weight = 0.0}) async {
     if (_selectedProject == null || _selectedProject!.id == null) return;
     final projectId = (_selectedProject!.id as num).toInt();
 
@@ -301,6 +302,7 @@ class ProjectProvider extends ChangeNotifier {
       unit: unit,
       price: price,
       category: category,
+      weight: weight,
     );
 
     await _dbHelper.addGlobalMaterial(customMat);

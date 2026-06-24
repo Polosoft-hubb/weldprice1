@@ -31,6 +31,10 @@ class ProjectModel {
     return items.fold(0.0, (sum, item) => sum + item.totalPrice);
   }
 
+  double get totalWeight {
+    return items.fold(0.0, (sum, item) => sum + item.totalWeight);
+  }
+
   double get workCost {
     return materialsCost * complexity;
   }

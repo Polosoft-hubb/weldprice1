@@ -5,6 +5,7 @@ class MaterialModel {
   final String unit;
   final double price;
   final String category;
+  final double weight; // in kg per unit
 
   MaterialModel({
     required this.id,
@@ -13,6 +14,7 @@ class MaterialModel {
     required this.unit,
     required this.price,
     required this.category,
+    this.weight = 0.0,
   });
 
   factory MaterialModel.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class MaterialModel {
       unit: json['unit'] ?? 'пог. м',
       price: (json['price'] as num?)?.toDouble() ?? 0.0,
       category: json['category'] ?? '',
+      weight: (json['weight'] as num?)?.toDouble() ?? 0.0,
     );
   }
 
@@ -34,6 +37,7 @@ class MaterialModel {
       'unit': unit,
       'price': price,
       'category': category,
+      'weight': weight,
     };
   }
 
@@ -44,6 +48,7 @@ class MaterialModel {
     String? unit,
     double? price,
     String? category,
+    double? weight,
   }) {
     return MaterialModel(
       id: id ?? this.id,
@@ -52,6 +57,7 @@ class MaterialModel {
       unit: unit ?? this.unit,
       price: price ?? this.price,
       category: category ?? this.category,
+      weight: weight ?? this.weight,
     );
   }
 }

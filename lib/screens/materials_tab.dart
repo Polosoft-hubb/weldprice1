@@ -31,6 +31,10 @@ class MaterialsTab extends StatelessWidget {
             children: [
               Text('Единица измерения: ${item.unit}'),
               Text('Цена за единицу: ${_formatCurrency(item.price)}'),
+              if (item.weight > 0) ...[
+                const SizedBox(height: 4),
+                Text('Вес: ${item.weight.toString().replaceAll(RegExp(r"\.0$"), "")} кг/${item.unit} (всего: ${item.totalWeight.toStringAsFixed(1).replaceAll(RegExp(r"\.0$"), "")} кг)'),
+              ],
               const SizedBox(height: 16),
               TextField(
                 controller: textController,
@@ -214,7 +218,9 @@ class MaterialsTab extends StatelessWidget {
                                     style: const TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: Text(
-                                    '${mat.category} • ${mat.unit}',
+                                    mat.weight > 0
+                                        ? '${mat.category} • ${mat.unit} • ${mat.weight.toString().replaceAll(RegExp(r"\.0$"), "")} кг/${mat.unit}'
+                                        : '${mat.category} • ${mat.unit}',
                                     style: const TextStyle(color: Colors.grey, fontSize: 12),
                                   ),
                                   trailing: Text(
@@ -264,6 +270,10 @@ class MaterialsTab extends StatelessWidget {
               const SizedBox(height: 8),
               Text('Ед. изм.: ${mat.unit}'),
               Text('Цена: ${_formatCurrency(mat.price)}'),
+              if (mat.weight > 0) ...[
+                const SizedBox(height: 4),
+                Text('Вес: ${mat.weight.toString().replaceAll(RegExp(r"\.0$"), "")} кг/${mat.unit}'),
+              ],
               const SizedBox(height: 16),
               TextField(
                 controller: textController,
@@ -364,9 +374,21 @@ class MaterialsTab extends StatelessWidget {
                     item.name,
                     style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                   ),
-                  subtitle: Text(
-                    '${item.quantity.toStringAsFixed(1)} ${item.unit} × ${_formatCurrency(item.price)}',
-                    style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${item.quantity.toStringAsFixed(1)} ${item.unit} × ${_formatCurrency(item.price)}',
+                        style: const TextStyle(color: Colors.grey, fontSize: 12),
+                      ),
+                      if (item.weight > 0) ...[
+                        const SizedBox(height: 2),
+                        Text(
+                          'Вес: ${item.weight.toString().replaceAll(RegExp(r"\.0$"), "")} кг/${item.unit} (всего: ${item.totalWeight.toStringAsFixed(1).replaceAll(RegExp(r"\.0$"), "")} кг)',
+                          style: const TextStyle(color: Colors.grey, fontSize: 11),
+                        ),
+                      ],
+                    ],
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
