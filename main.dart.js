@@ -93339,7 +93339,7 @@ case 3:m=a5
 h=A.hb(J.aV(m.a,"web_materials_version"))
 if(h==null)h=0
 g=A.co(J.aV(m.a,"web_materials"))
-s=g!=null&&h>=2?4:6
+s=g!=null&&h>=3?4:6
 break
 case 4:f=J.fC(B.b3.el(0,g),new A.a1x(),t.jm)
 n.a=A.a0(f,!0,f.$ti.i("aL.E"))
@@ -93355,7 +93355,7 @@ n.a=A.a0(f,!0,f.$ti.i("aL.E"))
 s=12
 return A.y(n.nQ(),$async$dk)
 case 12:s=13
-return A.y(m.nT("Int","web_materials_version",2),$async$dk)
+return A.y(m.nT("Int","web_materials_version",3),$async$dk)
 case 13:p=2
 s=10
 break
@@ -93376,7 +93376,7 @@ b=A.co(J.aV(m.a,"web_project_materials"))
 if(b!=null){f=J.fC(B.b3.el(0,b),new A.a1B(),t.a)
 f=n.d=A.a0(f,!0,f.$ti.i("aL.E"))}else f=n.d=A.a([],t.H7)
 a=n.a
-s=a!=null&&a.length!==0&&h<2?14:15
+s=a!=null&&a.length!==0&&h<3?14:15
 break
 case 14:p=17
 for(a=f.length,a0=0;a0<f.length;f.length===a||(0,A.J)(f),++a0){j=f[a0]
