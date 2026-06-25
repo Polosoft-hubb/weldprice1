@@ -34,7 +34,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 4,
+      version: 5,
       onCreate: _createDB,
       onConfigure: _onConfigure,
       onUpgrade: _onUpgrade,
@@ -86,6 +86,29 @@ class DatabaseHelper {
         ''');
       } catch (e) {
         print("Database migration seeding failed: $e");
+      }
+    }
+    if (oldVersion < 5) {
+      // Re-seed all materials templates with corrected weights and update project_materials/project_items weights
+      try {
+        await _seedInitialMaterials(db);
+        
+        await db.execute('''
+          UPDATE project_materials
+          SET weight = COALESCE((
+            SELECT weight FROM materials 
+            WHERE materials.id = project_materials.material_id
+          ), 0.0)
+        ''');
+        await db.execute('''
+          UPDATE project_items
+          SET weight = COALESCE((
+            SELECT weight FROM materials 
+            WHERE materials.id = project_items.material_id
+          ), 0.0)
+        ''');
+      } catch (e) {
+        print("Database migration seeding version 5 failed: $e");
       }
     }
   }
@@ -191,8 +214,9 @@ class DatabaseHelper {
     final prefs = await SharedPreferences.getInstance();
 
     // 1. Global Materials
+    final int webMaterialsVersion = prefs.getInt('web_materials_version') ?? 0;
     final matsJson = prefs.getString('web_materials');
-    if (matsJson != null) {
+    if (matsJson != null && webMaterialsVersion >= 2) {
       final List<dynamic> decoded = json.decode(matsJson);
       _webMaterials = decoded.map((e) => MaterialModel.fromJson(e)).toList();
     } else {
@@ -201,6 +225,7 @@ class DatabaseHelper {
         final List<dynamic> jsonList = json.decode(jsonString);
         _webMaterials = jsonList.map((e) => MaterialModel.fromJson(e)).toList();
         await _saveWebMaterials();
+        await prefs.setInt('web_materials_version', 2);
       } catch (e) {
         _webMaterials = [];
       }
@@ -233,38 +258,30 @@ class DatabaseHelper {
       _webProjectMaterials = [];
     }
 
-    // Web Migration: Check if weight is missing from cached materials and backfill them
-    if (_webMaterials != null && _webMaterials!.isNotEmpty) {
-      final hasNoWeights = _webMaterials!.every((m) => m.weight == 0.0);
-      if (hasNoWeights) {
-        try {
-          final jsonString = await rootBundle.loadString('assets/materials_db.json');
-          final List<dynamic> jsonList = json.decode(jsonString);
-          _webMaterials = jsonList.map((e) => MaterialModel.fromJson(e)).toList();
-          await _saveWebMaterials();
-
-          for (var pm in _webProjectMaterials!) {
-            final template = _webMaterials!.firstWhere(
-              (m) => m.id == pm['material_id'] || m.id == pm['id'],
-              orElse: () => MaterialModel(id: '', name: '', url: '', unit: '', price: 0.0, category: ''),
-            );
-            if (template.id.isNotEmpty) {
-              pm['weight'] = template.weight;
-            }
+    // Web Migration: Force update weights in projects if version is outdated
+    if (_webMaterials != null && _webMaterials!.isNotEmpty && webMaterialsVersion < 2) {
+      try {
+        for (var pm in _webProjectMaterials!) {
+          final template = _webMaterials!.firstWhere(
+            (m) => m.id == pm['material_id'] || m.id == pm['id'],
+            orElse: () => MaterialModel(id: '', name: '', url: '', unit: '', price: 0.0, category: ''),
+          );
+          if (template.id.isNotEmpty) {
+            pm['weight'] = template.weight;
           }
-          await _saveWebProjectMaterials();
-
-          _webProjectItems = _webProjectItems!.map((item) {
-            final template = _webMaterials!.firstWhere(
-              (m) => m.id == item.materialId,
-              orElse: () => MaterialModel(id: '', name: '', url: '', unit: '', price: 0.0, category: ''),
-            );
-            return template.id.isNotEmpty ? item.copyWith(weight: template.weight) : item;
-          }).toList();
-          await _saveWebProjectItems();
-        } catch (e) {
-          // ignore
         }
+        await _saveWebProjectMaterials();
+
+        _webProjectItems = _webProjectItems!.map((item) {
+          final template = _webMaterials!.firstWhere(
+            (m) => m.id == item.materialId,
+            orElse: () => MaterialModel(id: '', name: '', url: '', unit: '', price: 0.0, category: ''),
+          );
+          return template.id.isNotEmpty ? item.copyWith(weight: template.weight) : item;
+        }).toList();
+        await _saveWebProjectItems();
+      } catch (e) {
+        // ignore
       }
     }
   }
