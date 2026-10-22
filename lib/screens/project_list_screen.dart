@@ -23,6 +23,35 @@ class ProjectListScreen extends StatelessWidget {
     return DateFormat('dd.MM.yyyy HH:mm').format(date);
   }
 
+  Widget _buildStatItem(String label, String value, Color valueColor) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            color: Colors.grey,
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: valueColor,
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    );
+  }
+
   Future<void> _makePhoneCall(BuildContext context, String phone) async {
     final clean = phone.replaceAll(RegExp(r'[^\d+]'), '');
     if (clean.isEmpty) {
@@ -102,7 +131,7 @@ class ProjectListScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              'Кому позвонить?',
+                              'Вызов',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -325,9 +354,11 @@ class ProjectListScreen extends StatelessWidget {
           final totalMyEarnings = provider.projects.fold(0.0, (sum, p) => sum + p.workCost);
 
           final oneMonthAgo = DateTime.now().subtract(const Duration(days: 30));
-          final lastMonthSum = provider.projects
+          final lastMonthProjects = provider.projects
               .where((p) => p.createdAt.isAfter(oneMonthAgo))
-              .fold(0.0, (sum, p) => sum + p.totalPrice);
+              .toList();
+          final lastMonthSum = lastMonthProjects.fold(0.0, (sum, p) => sum + p.totalPrice);
+          final lastMonthEarnings = lastMonthProjects.fold(0.0, (sum, p) => sum + p.workCost);
 
           return Column(
             children: [
@@ -374,30 +405,11 @@ class ProjectListScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 16),
+                    // Row 1: Заказы (Всего & За 30 дней)
                     Row(
                       children: [
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Всего',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                _formatCurrency(totalClientSum),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
+                          child: _buildStatItem('Всего', _formatCurrency(totalClientSum), Colors.white),
                         ),
                         Container(
                           width: 1,
@@ -406,27 +418,18 @@ class ProjectListScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 12),
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'За 30 дней',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                _formatCurrency(lastMonthSum),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white70,
-                                ),
-                              ),
-                            ],
-                          ),
+                          child: _buildStatItem('За 30 дней', _formatCurrency(lastMonthSum), Colors.white70),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    const Divider(height: 1, color: Colors.white10),
+                    const SizedBox(height: 12),
+                    // Row 2: Прибыль (Моя прибыль & Прибыль за 30 дней)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildStatItem('Моя прибыль', _formatCurrency(totalMyEarnings), const Color(0xFFFF4081)),
                         ),
                         Container(
                           width: 1,
@@ -435,27 +438,7 @@ class ProjectListScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 12),
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Мой доход',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                _formatCurrency(totalMyEarnings),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFFF4081),
-                                ),
-                              ),
-                            ],
-                          ),
+                          child: _buildStatItem('Прибыль за 30 дней', _formatCurrency(lastMonthEarnings), const Color(0xFFFF4081)),
                         ),
                       ],
                     ),
@@ -860,7 +843,7 @@ class _ProjectDialogState extends State<_ProjectDialog> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Контакты (кому звонить):',
+                    'Контакты:',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
