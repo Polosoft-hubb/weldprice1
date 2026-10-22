@@ -113,6 +113,7 @@ class ProjectProvider extends ChangeNotifier {
   // CRUD Projects
   Future<void> createProject(
     String name, {
+    String status = ProjectStatus.inProgress,
     List<ProjectContact> contacts = const [],
     String phone = '',
     String address = '',
@@ -123,6 +124,7 @@ class ProjectProvider extends ChangeNotifier {
 
     final newProj = ProjectModel(
       name: name,
+      status: status,
       contacts: finalContacts,
       address: address,
       createdAt: DateTime.now(),
@@ -146,8 +148,23 @@ class ProjectProvider extends ChangeNotifier {
     required String name,
     required List<ProjectContact> contacts,
     required String address,
+    String? status,
   }) async {
-    await _dbHelper.updateProjectInfo(projectId, name: name, contacts: contacts, address: address);
+    await _dbHelper.updateProjectInfo(
+      projectId,
+      name: name,
+      contacts: contacts,
+      address: address,
+      status: status,
+    );
+    await loadProjects();
+    if (_selectedProject?.id == projectId) {
+      await selectProject(projectId);
+    }
+  }
+
+  Future<void> updateProjectStatus(int projectId, String status) async {
+    await _dbHelper.updateProjectStatus(projectId, status);
     await loadProjects();
     if (_selectedProject?.id == projectId) {
       await selectProject(projectId);

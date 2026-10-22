@@ -35,9 +35,32 @@ class ProjectContact {
   }
 }
 
+class ProjectStatus {
+  static const String inProgress = 'in_progress';
+  static const String completed = 'completed';
+  static const String rejected = 'rejected';
+
+  static const String labelInProgress = 'В работе';
+  static const String labelCompleted = 'Завершен';
+  static const String labelRejected = 'Не согласились';
+
+  static String getLabel(String? status) {
+    switch (status) {
+      case completed:
+        return labelCompleted;
+      case rejected:
+        return labelRejected;
+      case inProgress:
+      default:
+        return labelInProgress;
+    }
+  }
+}
+
 class ProjectModel {
   final int? id;
   final String name;
+  final String status;
   final List<ProjectContact> contacts;
   final String address;
   final double complexity;
@@ -54,6 +77,7 @@ class ProjectModel {
   ProjectModel({
     this.id,
     required this.name,
+    this.status = ProjectStatus.inProgress,
     List<ProjectContact> contacts = const [],
     String? phone,
     this.address = '',
@@ -143,6 +167,9 @@ class ProjectModel {
     return ProjectModel(
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] ?? '',
+      status: (json['status'] as String?)?.isNotEmpty == true
+          ? json['status'] as String
+          : ProjectStatus.inProgress,
       contacts: parsedContacts,
       address: json['address'] as String? ?? '',
       complexity: (json['complexity'] as num?)?.toDouble() ?? 2.5,
@@ -162,6 +189,7 @@ class ProjectModel {
     return {
       if (id != null) 'id': id,
       'name': name,
+      'status': status,
       'phone': phone,
       'contacts': jsonEncode(contacts.map((c) => c.toJson()).toList()),
       'address': address,
@@ -178,6 +206,7 @@ class ProjectModel {
   ProjectModel copyWith({
     int? id,
     String? name,
+    String? status,
     List<ProjectContact>? contacts,
     String? phone,
     String? address,
@@ -193,6 +222,7 @@ class ProjectModel {
     return ProjectModel(
       id: id ?? this.id,
       name: name ?? this.name,
+      status: status ?? this.status,
       contacts: contacts ?? (phone != null ? [ProjectContact(phone: phone)] : this.contacts),
       address: address ?? this.address,
       complexity: complexity ?? this.complexity,

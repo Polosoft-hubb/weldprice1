@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../providers/project_provider.dart';
+import '../models/project.dart';
 import '../models/material.dart' as model;
 
 class SettingsScreen extends StatefulWidget {
@@ -253,6 +254,166 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
+  Widget _buildStatusSelector(BuildContext context, ProjectProvider provider) {
+    final project = provider.selectedProject;
+    if (project == null || project.id == null) return const SizedBox.shrink();
+
+    final currentStatus = project.status;
+
+    final options = [
+      {
+        'status': ProjectStatus.rejected,
+        'title': 'Не согласились',
+        'hint': 'Вне статистики',
+        'color': const Color(0xFFE57373), // soft muted brick red
+      },
+      {
+        'status': ProjectStatus.inProgress,
+        'title': 'В работе',
+        'hint': 'В процессе',
+        'color': const Color(0xFFFFB74D), // soft muted warm amber
+      },
+      {
+        'status': ProjectStatus.completed,
+        'title': 'Завершен',
+        'hint': 'В статистике',
+        'color': const Color(0xFF81C784), // soft muted emerald green
+      },
+    ];
+
+    String statusExplanation;
+    switch (currentStatus) {
+      case ProjectStatus.completed:
+        statusExplanation = 'Заказ завершен: сумма и прибыль включены в общую статистику.';
+        break;
+      case ProjectStatus.rejected:
+        statusExplanation = 'Клиент отказался: заказ выделен красным и исключен из статистики.';
+        break;
+      case ProjectStatus.inProgress:
+      default:
+        statusExplanation = 'Заказ в процессе: выделен желтым, пока не учитывается в статистике.';
+        break;
+    }
+
+    return Container(
+      color: const Color(0xFF1B1B1B),
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              Icon(Icons.palette_outlined, size: 18, color: Color(0xFFFF4081)),
+              SizedBox(width: 8),
+              Text(
+                'Статус и цвет проекта',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: options.map((opt) {
+              final statusVal = opt['status'] as String;
+              final isSelected = currentStatus == statusVal;
+              final color = opt['color'] as Color;
+              final title = opt['title'] as String;
+              final hint = opt['hint'] as String;
+
+              return Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: InkWell(
+                    onTap: () {
+                      if (!isSelected) {
+                        provider.updateProjectStatus(project.id!, statusVal);
+                      }
+                    },
+                    borderRadius: BorderRadius.circular(10),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 180),
+                      padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 6),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? color.withOpacity(0.14)
+                            : Colors.white.withOpacity(0.03),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: isSelected ? color.withOpacity(0.7) : Colors.white12,
+                          width: isSelected ? 1.5 : 1,
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 8,
+                                height: 8,
+                                decoration: BoxDecoration(
+                                  color: color,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              Flexible(
+                                child: Text(
+                                  title,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                                    color: isSelected ? color : Colors.white70,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            hint,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: isSelected ? Colors.white70 : Colors.grey,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              const Icon(Icons.info_outline, size: 13, color: Colors.grey),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  statusExplanation,
+                  style: const TextStyle(fontSize: 11, color: Colors.grey),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -265,6 +426,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           return Column(
             children: [
+              if (provider.selectedProject != null)
+                _buildStatusSelector(context, provider),
+
               // SCRAPER CONTAINER
               Container(
                 color: const Color(0xFF161616),

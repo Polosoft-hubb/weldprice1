@@ -36,7 +36,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 9,
+      version: 10,
       onCreate: _createDB,
       onConfigure: _onConfigure,
       onUpgrade: _onUpgrade,
@@ -156,6 +156,9 @@ class DatabaseHelper {
         )
       ''');
     }
+    if (oldVersion < 10) {
+      await db.execute('ALTER TABLE projects ADD COLUMN status TEXT DEFAULT "in_progress"');
+    }
   }
 
   Future _createDB(Database db, int version) async {
@@ -182,6 +185,7 @@ class DatabaseHelper {
       CREATE TABLE projects (
         id $integerPrimaryKey,
         name $textType,
+        status TEXT DEFAULT "in_progress",
         phone TEXT DEFAULT "",
         contacts TEXT DEFAULT "[]",
         address TEXT DEFAULT "",
@@ -653,11 +657,33 @@ class DatabaseHelper {
     );
   }
 
+  Future<int> updateProjectStatus(int projectId, String status) async {
+    if (kIsWeb) {
+      await _initWebData();
+      final index = _webProjects!.indexWhere((element) => (element.id as num).toInt() == projectId);
+      if (index != -1) {
+        _webProjects![index] = _webProjects![index].copyWith(status: status);
+        await _saveWebProjects();
+        return 1;
+      }
+      return 0;
+    }
+
+    final db = await instance.database;
+    return await db.update(
+      'projects',
+      {'status': status},
+      where: 'id = ?',
+      whereArgs: [projectId],
+    );
+  }
+
   Future<int> updateProjectInfo(
     int projectId, {
     required String name,
     required List<ProjectContact> contacts,
     required String address,
+    String? status,
   }) async {
     final primaryPhone = contacts.isNotEmpty ? contacts.first.phone : '';
     final contactsJson = jsonEncode(contacts.map((c) => c.toJson()).toList());
@@ -670,6 +696,7 @@ class DatabaseHelper {
           name: name,
           contacts: contacts,
           address: address,
+          status: status,
         );
         await _saveWebProjects();
         return 1;
@@ -678,14 +705,19 @@ class DatabaseHelper {
     }
 
     final db = await instance.database;
+    final Map<String, dynamic> updateValues = {
+      'name': name,
+      'phone': primaryPhone,
+      'contacts': contactsJson,
+      'address': address,
+    };
+    if (status != null) {
+      updateValues['status'] = status;
+    }
+
     return await db.update(
       'projects',
-      {
-        'name': name,
-        'phone': primaryPhone,
-        'contacts': contactsJson,
-        'address': address,
-      },
+      updateValues,
       where: 'id = ?',
       whereArgs: [projectId],
     );

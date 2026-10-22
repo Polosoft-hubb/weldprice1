@@ -24,6 +24,22 @@ class ProjectListScreen extends StatelessWidget {
     return DateFormat('dd.MM.yyyy HH:mm').format(date);
   }
 
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case ProjectStatus.completed:
+        return const Color(0xFF81C784); // Muted emerald green
+      case ProjectStatus.rejected:
+        return const Color(0xFFE57373); // Muted brick red
+      case ProjectStatus.inProgress:
+      default:
+        return const Color(0xFFFFB74D); // Muted warm amber
+    }
+  }
+
+  String _getStatusLabel(String status) {
+    return ProjectStatus.getLabel(status);
+  }
+
   Widget _buildStatItem(String label, String value, Color valueColor) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -227,9 +243,14 @@ class ProjectListScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => _ProjectDialog(
-        onSave: (name, address, contacts) {
+        onSave: (name, address, contacts, status) {
           final provider = Provider.of<ProjectProvider>(context, listen: false);
-          provider.createProject(name, contacts: contacts, address: address);
+          provider.createProject(
+            name,
+            status: status,
+            contacts: contacts,
+            address: address,
+          );
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Проект создан. Обновление цен в фоне...'),
@@ -246,7 +267,7 @@ class ProjectListScreen extends StatelessWidget {
       context: context,
       builder: (_) => _ProjectDialog(
         project: project,
-        onSave: (name, address, contacts) {
+        onSave: (name, address, contacts, status) {
           if (project.id != null) {
             final provider = Provider.of<ProjectProvider>(context, listen: false);
             provider.updateProjectInfo(
@@ -254,6 +275,7 @@ class ProjectListScreen extends StatelessWidget {
               name: name,
               contacts: contacts,
               address: address,
+              status: status,
             );
           }
         },
@@ -361,11 +383,15 @@ class ProjectListScreen extends StatelessWidget {
           }
 
           final totalProjects = provider.projects.length;
-          final totalClientSum = provider.projects.fold(0.0, (sum, p) => sum + p.totalPrice);
-          final totalMyEarnings = provider.projects.fold(0.0, (sum, p) => sum + p.workCost);
+          final completedProjects = provider.projects
+              .where((p) => p.status == ProjectStatus.completed)
+              .toList();
+
+          final totalClientSum = completedProjects.fold(0.0, (sum, p) => sum + p.totalPrice);
+          final totalMyEarnings = completedProjects.fold(0.0, (sum, p) => sum + p.workCost);
 
           final oneMonthAgo = DateTime.now().subtract(const Duration(days: 30));
-          final lastMonthProjects = provider.projects
+          final lastMonthProjects = completedProjects
               .where((p) => p.createdAt.isAfter(oneMonthAgo))
               .toList();
           final lastMonthSum = lastMonthProjects.fold(0.0, (sum, p) => sum + p.totalPrice);
@@ -389,14 +415,34 @@ class ProjectListScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'СТАТИСТИКА ПРОЕКТОВ',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey,
-                            letterSpacing: 1.2,
-                          ),
+                        Row(
+                          children: [
+                            const Text(
+                              'СТАТИСТИКА ПРОЕКТОВ',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                                letterSpacing: 1.2,
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF81C784).withOpacity(0.12),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: const Text(
+                                'завершенные',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Color(0xFF81C784),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -405,7 +451,7 @@ class ProjectListScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Text(
-                            'Проектов: $totalProjects',
+                            'Завершено: ${completedProjects.length} из $totalProjects',
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -467,6 +513,8 @@ class ProjectListScreen extends StatelessWidget {
                         .toList();
                     final hasPhone = validContacts.isNotEmpty;
                     final hasAddress = project.address.trim().isNotEmpty;
+                    final statusColor = _getStatusColor(project.status);
+                    final statusLabel = _getStatusLabel(project.status);
 
                     return Container(
                       margin: const EdgeInsets.only(bottom: 12),
@@ -488,6 +536,13 @@ class ProjectListScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16),
                         child: Card(
                           margin: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            side: BorderSide(
+                              color: statusColor.withOpacity(0.35),
+                              width: 1.2,
+                            ),
+                          ),
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
@@ -511,13 +566,53 @@ class ProjectListScreen extends StatelessWidget {
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                           ),
-                                          const SizedBox(height: 3),
-                                          Text(
-                                            'Создан: ${_formatDate(project.createdAt)}',
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.grey,
-                                            ),
+                                          const SizedBox(height: 5),
+                                          Wrap(
+                                            crossAxisAlignment: WrapCrossAlignment.center,
+                                            spacing: 8,
+                                            runSpacing: 4,
+                                            children: [
+                                              Container(
+                                                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                                                decoration: BoxDecoration(
+                                                  color: statusColor.withOpacity(0.14),
+                                                  borderRadius: BorderRadius.circular(6),
+                                                  border: Border.all(
+                                                    color: statusColor.withOpacity(0.4),
+                                                    width: 1,
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    Container(
+                                                      width: 6,
+                                                      height: 6,
+                                                      decoration: BoxDecoration(
+                                                        color: statusColor,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 5),
+                                                    Text(
+                                                      statusLabel,
+                                                      style: TextStyle(
+                                                        fontSize: 11,
+                                                        fontWeight: FontWeight.w600,
+                                                        color: statusColor,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Text(
+                                                'Создан: ${_formatDate(project.createdAt)}',
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
@@ -623,12 +718,29 @@ class ProjectListScreen extends StatelessWidget {
                                     ),
                                     Text(
                                       _formatCurrency(project.totalPrice),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
-                                        color: Color(0xFFFF4081),
+                                        color: project.status == ProjectStatus.rejected
+                                            ? Colors.grey
+                                            : (project.status == ProjectStatus.completed
+                                                ? const Color(0xFF81C784)
+                                                : const Color(0xFFFF4081)),
                                       ),
                                     ),
+                                    if (project.status == ProjectStatus.rejected) ...[
+                                      const SizedBox(width: 6),
+                                      const Text(
+                                        '(отказ, вне статистики)',
+                                        style: TextStyle(fontSize: 11, color: Colors.grey),
+                                      ),
+                                    ] else if (project.status == ProjectStatus.inProgress) ...[
+                                      const SizedBox(width: 6),
+                                      const Text(
+                                        '(в работе)',
+                                        style: TextStyle(fontSize: 11, color: Colors.grey),
+                                      ),
+                                    ],
                                   ],
                                 ),
 
@@ -759,7 +871,7 @@ class _ContactRow {
 
 class _ProjectDialog extends StatefulWidget {
   final ProjectModel? project;
-  final Function(String name, String address, List<ProjectContact> contacts) onSave;
+  final Function(String name, String address, List<ProjectContact> contacts, String status) onSave;
 
   const _ProjectDialog({
     this.project,
@@ -773,6 +885,7 @@ class _ProjectDialog extends StatefulWidget {
 class _ProjectDialogState extends State<_ProjectDialog> {
   late final TextEditingController _nameController;
   late final TextEditingController _addressController;
+  late String _selectedStatus;
   final List<_ContactRow> _contacts = [];
 
   @override
@@ -780,6 +893,7 @@ class _ProjectDialogState extends State<_ProjectDialog> {
     super.initState();
     _nameController = TextEditingController(text: widget.project?.name ?? '');
     _addressController = TextEditingController(text: widget.project?.address ?? '');
+    _selectedStatus = widget.project?.status ?? ProjectStatus.inProgress;
 
     if (widget.project != null && widget.project!.contacts.isNotEmpty) {
       for (final c in widget.project!.contacts) {
@@ -801,6 +915,59 @@ class _ProjectDialogState extends State<_ProjectDialog> {
       c.dispose();
     }
     super.dispose();
+  }
+
+  Widget _buildStatusChip({
+    required String status,
+    required String label,
+    required Color color,
+  }) {
+    final isSelected = _selectedStatus == status;
+    return Expanded(
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            _selectedStatus = status;
+          });
+        },
+        borderRadius: BorderRadius.circular(8),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+          decoration: BoxDecoration(
+            color: isSelected ? color.withOpacity(0.18) : Colors.white.withOpacity(0.04),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: isSelected ? color : Colors.white12,
+              width: isSelected ? 1.5 : 1,
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 7,
+                height: 7,
+                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+              ),
+              const SizedBox(width: 5),
+              Flexible(
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    color: isSelected ? color : Colors.white70,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   void _addContact() {
@@ -848,6 +1015,37 @@ class _ProjectDialogState extends State<_ProjectDialog> {
                   hintText: 'г. Москва, ул. Ленина, д. 10',
                   prefixIcon: Icon(Icons.location_on_outlined),
                 ),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Статус заказа:',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white70,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  _buildStatusChip(
+                    status: ProjectStatus.rejected,
+                    label: 'Не согласились',
+                    color: const Color(0xFFE57373),
+                  ),
+                  const SizedBox(width: 8),
+                  _buildStatusChip(
+                    status: ProjectStatus.inProgress,
+                    label: 'В работе',
+                    color: const Color(0xFFFFB74D),
+                  ),
+                  const SizedBox(width: 8),
+                  _buildStatusChip(
+                    status: ProjectStatus.completed,
+                    label: 'Завершен',
+                    color: const Color(0xFF81C784),
+                  ),
+                ],
               ),
               const SizedBox(height: 18),
               Row(
@@ -971,7 +1169,7 @@ class _ProjectDialogState extends State<_ProjectDialog> {
             }
 
             Navigator.of(context).pop();
-            widget.onSave(name, address, validContacts);
+            widget.onSave(name, address, validContacts, _selectedStatus);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFFFF4081),

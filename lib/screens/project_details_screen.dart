@@ -87,9 +87,9 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                 label: 'Покраска',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.price_change_outlined),
-                activeIcon: Icon(Icons.price_change),
-                label: 'База цен',
+                icon: Icon(Icons.settings_outlined),
+                activeIcon: Icon(Icons.settings),
+                label: 'Настройки',
               ),
             ],
           ),
