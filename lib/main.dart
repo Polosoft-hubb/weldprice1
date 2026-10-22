@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/project_provider.dart';
+import 'providers/notes_provider.dart';
 import 'screens/project_list_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  final provider = ProjectProvider();
-  await provider.initializeApp();
+  final projectProvider = ProjectProvider();
+  await projectProvider.initializeApp();
+
+  final notesProvider = NotesProvider();
+  await notesProvider.loadNotes();
 
   runApp(
-    ChangeNotifierProvider<ProjectProvider>.value(
-      value: provider,
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ProjectProvider>.value(value: projectProvider),
+        ChangeNotifierProvider<NotesProvider>.value(value: notesProvider),
+      ],
       child: const MyApp(),
     ),
   );

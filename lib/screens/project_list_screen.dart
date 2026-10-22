@@ -6,6 +6,7 @@ import '../models/project.dart';
 import '../utils/url_launcher_helper.dart';
 import 'project_details_screen.dart';
 import 'calculator_screen.dart';
+import 'notes_screen.dart';
 
 class ProjectListScreen extends StatelessWidget {
   const ProjectListScreen({super.key});
@@ -298,6 +299,16 @@ class ProjectListScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('WELDPRICE'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.note_alt_outlined, size: 28),
+            iconSize: 28,
+            tooltip: 'Заметки',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const NotesScreen()),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.calculate_outlined, size: 32),
             iconSize: 32,

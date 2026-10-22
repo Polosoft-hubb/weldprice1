@@ -8,6 +8,7 @@ import '../models/material.dart';
 import '../models/project.dart';
 import '../models/project_item.dart';
 import '../models/part_item.dart';
+import '../models/note.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._init();
@@ -18,6 +19,7 @@ class DatabaseHelper {
   List<ProjectModel>? _webProjects;
   List<ProjectItemModel>? _webProjectItems;
   List<Map<String, dynamic>>? _webProjectMaterials; // Stores maps with project_id and Material fields
+  List<NoteModel>? _webNotes;
 
   DatabaseHelper._init();
 
@@ -34,7 +36,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 8,
+      version: 9,
       onCreate: _createDB,
       onConfigure: _onConfigure,
       onUpgrade: _onUpgrade,
@@ -141,6 +143,19 @@ class DatabaseHelper {
     if (oldVersion < 8) {
       await db.execute('ALTER TABLE projects ADD COLUMN contacts TEXT DEFAULT "[]"');
     }
+    if (oldVersion < 9) {
+      await db.execute('''
+        CREATE TABLE notes (
+          id TEXT PRIMARY KEY,
+          title TEXT,
+          content TEXT NOT NULL,
+          project_id INTEGER,
+          project_name TEXT,
+          created_at TEXT NOT NULL,
+          updated_at TEXT NOT NULL
+        )
+      ''');
+    }
   }
 
   Future _createDB(Database db, int version) async {
@@ -177,6 +192,19 @@ class DatabaseHelper {
         paint_consumption REAL DEFAULT 0.2,
         painting_work_price REAL DEFAULT 200.0,
         paint_can_weight REAL DEFAULT 1.0
+      )
+    ''');
+
+    // Notes Table
+    await db.execute('''
+      CREATE TABLE notes (
+        id TEXT PRIMARY KEY,
+        title TEXT,
+        content TEXT NOT NULL,
+        project_id INTEGER,
+        project_name TEXT,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
       )
     ''');
 
@@ -242,7 +270,7 @@ class DatabaseHelper {
   // --- Web Helper Init ---
   Future<void> _initWebData() async {
     if (!kIsWeb) return;
-    if (_webMaterials != null && _webProjects != null && _webProjectItems != null && _webProjectMaterials != null) return;
+    if (_webMaterials != null && _webProjects != null && _webProjectItems != null && _webProjectMaterials != null && _webNotes != null) return;
 
     final prefs = await SharedPreferences.getInstance();
 
@@ -289,6 +317,19 @@ class DatabaseHelper {
       _webProjectMaterials = decoded.map((e) => Map<String, dynamic>.from(e)).toList();
     } else {
       _webProjectMaterials = [];
+    }
+
+    // 5. Notes
+    final notesJson = prefs.getString('web_notes');
+    if (notesJson != null) {
+      try {
+        final List<dynamic> decoded = json.decode(notesJson);
+        _webNotes = decoded.map((e) => NoteModel.fromJson(e)).toList();
+      } catch (e) {
+        _webNotes = [];
+      }
+    } else {
+      _webNotes = [];
     }
 
     // Web Migration: Force update weights in projects if version is outdated
@@ -855,5 +896,54 @@ class DatabaseHelper {
     final prefs = await SharedPreferences.getInstance();
     final jsonStr = json.encode(parts.map((e) => e.toJson()).toList());
     await prefs.setString('project_parts_$projectId', jsonStr);
+  }
+
+  // --- Notes Operations ---
+  Future<void> _saveWebNotes() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonStr = json.encode(_webNotes?.map((e) => e.toJson()).toList());
+    await prefs.setString('web_notes', jsonStr);
+  }
+
+  Future<List<NoteModel>> getAllNotes() async {
+    if (kIsWeb) {
+      await _initWebData();
+      final list = List<NoteModel>.from(_webNotes ?? []);
+      list.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+      return list;
+    }
+
+    final db = await instance.database;
+    final result = await db.query('notes', orderBy: 'updated_at DESC');
+    return result.map((json) => NoteModel.fromJson(json)).toList();
+  }
+
+  Future<void> saveNote(NoteModel note) async {
+    if (kIsWeb) {
+      await _initWebData();
+      final index = _webNotes!.indexWhere((n) => n.id == note.id);
+      if (index != -1) {
+        _webNotes![index] = note;
+      } else {
+        _webNotes!.insert(0, note);
+      }
+      await _saveWebNotes();
+      return;
+    }
+
+    final db = await instance.database;
+    await db.insert('notes', note.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  Future<void> deleteNote(String noteId) async {
+    if (kIsWeb) {
+      await _initWebData();
+      _webNotes!.removeWhere((n) => n.id == noteId);
+      await _saveWebNotes();
+      return;
+    }
+
+    final db = await instance.database;
+    await db.delete('notes', where: 'id = ?', whereArgs: [noteId]);
   }
 }
