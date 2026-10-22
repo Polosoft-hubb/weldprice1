@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../providers/project_provider.dart';
 import '../models/project.dart';
+import '../utils/url_launcher_helper.dart';
 import 'project_details_screen.dart';
 import 'calculator_screen.dart';
 
@@ -31,9 +31,8 @@ class ProjectListScreen extends StatelessWidget {
       );
       return;
     }
-    final uri = Uri.parse('tel:$clean');
     try {
-      await launchUrl(uri);
+      await launchCall(clean);
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -51,10 +50,8 @@ class ProjectListScreen extends StatelessWidget {
       );
       return;
     }
-    final urlString = 'https://yandex.ru/maps/?text=${Uri.encodeComponent(trimmed)}';
-    final uri = Uri.parse(urlString);
     try {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
+      await launchYandexMaps(trimmed);
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
