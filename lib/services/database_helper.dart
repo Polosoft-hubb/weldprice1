@@ -34,7 +34,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 5,
+      version: 7,
       onCreate: _createDB,
       onConfigure: _onConfigure,
       onUpgrade: _onUpgrade,
@@ -111,6 +111,33 @@ class DatabaseHelper {
         print("Database migration seeding version 5 failed: $e");
       }
     }
+    if (oldVersion < 6) {
+      // Re-seed database to backfill weights parsed directly from website (e.g. Ugolok 200x200x12 -> 37.0)
+      try {
+        await _seedInitialMaterials(db);
+        
+        await db.execute('''
+          UPDATE project_materials
+          SET weight = COALESCE((
+            SELECT weight FROM materials 
+            WHERE materials.id = project_materials.material_id
+          ), 0.0)
+        ''');
+        await db.execute('''
+          UPDATE project_items
+          SET weight = COALESCE((
+            SELECT weight FROM materials 
+            WHERE materials.id = project_items.material_id
+          ), 0.0)
+        ''');
+      } catch (e) {
+        print("Database migration seeding version 6 failed: $e");
+      }
+    }
+    if (oldVersion < 7) {
+      await db.execute('ALTER TABLE projects ADD COLUMN phone TEXT DEFAULT ""');
+      await db.execute('ALTER TABLE projects ADD COLUMN address TEXT DEFAULT ""');
+    }
   }
 
   Future _createDB(Database db, int version) async {
@@ -137,6 +164,8 @@ class DatabaseHelper {
       CREATE TABLE projects (
         id $integerPrimaryKey,
         name $textType,
+        phone TEXT DEFAULT "",
+        address TEXT DEFAULT "",
         complexity $doubleType,
         created_at $textType,
         is_painting_enabled INTEGER DEFAULT 0,
@@ -216,7 +245,7 @@ class DatabaseHelper {
     // 1. Global Materials
     final int webMaterialsVersion = prefs.getInt('web_materials_version') ?? 0;
     final matsJson = prefs.getString('web_materials');
-    if (matsJson != null && webMaterialsVersion >= 2) {
+    if (matsJson != null && webMaterialsVersion >= 3) {
       final List<dynamic> decoded = json.decode(matsJson);
       _webMaterials = decoded.map((e) => MaterialModel.fromJson(e)).toList();
     } else {
@@ -225,7 +254,7 @@ class DatabaseHelper {
         final List<dynamic> jsonList = json.decode(jsonString);
         _webMaterials = jsonList.map((e) => MaterialModel.fromJson(e)).toList();
         await _saveWebMaterials();
-        await prefs.setInt('web_materials_version', 2);
+        await prefs.setInt('web_materials_version', 3);
       } catch (e) {
         _webMaterials = [];
       }
@@ -259,7 +288,7 @@ class DatabaseHelper {
     }
 
     // Web Migration: Force update weights in projects if version is outdated
-    if (_webMaterials != null && _webMaterials!.isNotEmpty && webMaterialsVersion < 2) {
+    if (_webMaterials != null && _webMaterials!.isNotEmpty && webMaterialsVersion < 3) {
       try {
         for (var pm in _webProjectMaterials!) {
           final template = _webMaterials!.firstWhere(
@@ -574,6 +603,35 @@ class DatabaseHelper {
     return await db.update(
       'projects',
       {'complexity': complexity},
+      where: 'id = ?',
+      whereArgs: [projectId],
+    );
+  }
+
+  Future<int> updateProjectInfo(int projectId, {required String name, required String phone, required String address}) async {
+    if (kIsWeb) {
+      await _initWebData();
+      final index = _webProjects!.indexWhere((element) => (element.id as num).toInt() == projectId);
+      if (index != -1) {
+        _webProjects![index] = _webProjects![index].copyWith(
+          name: name,
+          phone: phone,
+          address: address,
+        );
+        await _saveWebProjects();
+        return 1;
+      }
+      return 0;
+    }
+
+    final db = await instance.database;
+    return await db.update(
+      'projects',
+      {
+        'name': name,
+        'phone': phone,
+        'address': address,
+      },
       where: 'id = ?',
       whereArgs: [projectId],
     );

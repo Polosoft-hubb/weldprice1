@@ -111,9 +111,11 @@ class ProjectProvider extends ChangeNotifier {
   }
 
   // CRUD Projects
-  Future<void> createProject(String name) async {
+  Future<void> createProject(String name, {String phone = '', String address = ''}) async {
     final newProj = ProjectModel(
       name: name,
+      phone: phone,
+      address: address,
       createdAt: DateTime.now(),
       complexity: 2.5,
       items: const [],
@@ -127,6 +129,14 @@ class ProjectProvider extends ChangeNotifier {
       await selectProject(newId);
       // Run automatic background sync for this specific project
       _runAutomaticWebSync(newId);
+    }
+  }
+
+  Future<void> updateProjectInfo(int projectId, {required String name, required String phone, required String address}) async {
+    await _dbHelper.updateProjectInfo(projectId, name: name, phone: phone, address: address);
+    await loadProjects();
+    if (_selectedProject?.id == projectId) {
+      await selectProject(projectId);
     }
   }
 

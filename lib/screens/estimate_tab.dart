@@ -346,6 +346,12 @@ class _EstimateTabState extends State<EstimateTab> {
     final sb = StringBuffer();
     sb.writeln('СМЕТА ПРОЕКТА: ${project.name}');
     sb.writeln('Дата создания: $dateStr');
+    if (project.phone != null && (project.phone as String).trim().isNotEmpty) {
+      sb.writeln('Телефон: ${project.phone}');
+    }
+    if (project.address != null && (project.address as String).trim().isNotEmpty) {
+      sb.writeln('Адрес: ${project.address}');
+    }
     sb.writeln();
     sb.writeln('ИТОГО К ОПЛАТЕ: ${_formatCurrency(project.totalPrice)}');
     sb.writeln();

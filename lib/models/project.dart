@@ -3,6 +3,8 @@ import 'project_item.dart';
 class ProjectModel {
   final int? id;
   final String name;
+  final String phone;
+  final String address;
   final double complexity;
   final DateTime createdAt;
   final List<ProjectItemModel> items;
@@ -17,6 +19,8 @@ class ProjectModel {
   ProjectModel({
     this.id,
     required this.name,
+    this.phone = '',
+    this.address = '',
     this.complexity = 2.5,
     required this.createdAt,
     this.items = const [],
@@ -80,6 +84,8 @@ class ProjectModel {
     return ProjectModel(
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] ?? '',
+      phone: json['phone'] as String? ?? '',
+      address: json['address'] as String? ?? '',
       complexity: (json['complexity'] as num?)?.toDouble() ?? 2.5,
       createdAt: json['created_at'] != null 
           ? DateTime.parse(json['created_at']) 
@@ -97,6 +103,8 @@ class ProjectModel {
     return {
       if (id != null) 'id': id,
       'name': name,
+      'phone': phone,
+      'address': address,
       'complexity': complexity,
       'created_at': createdAt.toIso8601String(),
       'is_painting_enabled': isPaintingEnabled ? 1 : 0,
@@ -110,6 +118,8 @@ class ProjectModel {
   ProjectModel copyWith({
     int? id,
     String? name,
+    String? phone,
+    String? address,
     double? complexity,
     DateTime? createdAt,
     List<ProjectItemModel>? items,
@@ -122,6 +132,8 @@ class ProjectModel {
     return ProjectModel(
       id: id ?? this.id,
       name: name ?? this.name,
+      phone: phone ?? this.phone,
+      address: address ?? this.address,
       complexity: complexity ?? this.complexity,
       createdAt: createdAt ?? this.createdAt,
       items: items ?? this.items,
