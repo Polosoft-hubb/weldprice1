@@ -1,9 +1,44 @@
+import 'dart:convert';
 import 'project_item.dart';
+
+class ProjectContact {
+  final String name;
+  final String phone;
+
+  ProjectContact({
+    this.name = '',
+    required this.phone,
+  });
+
+  factory ProjectContact.fromJson(Map<String, dynamic> json) {
+    return ProjectContact(
+      name: json['name'] as String? ?? '',
+      phone: json['phone'] as String? ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'phone': phone,
+    };
+  }
+
+  ProjectContact copyWith({
+    String? name,
+    String? phone,
+  }) {
+    return ProjectContact(
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+    );
+  }
+}
 
 class ProjectModel {
   final int? id;
   final String name;
-  final String phone;
+  final List<ProjectContact> contacts;
   final String address;
   final double complexity;
   final DateTime createdAt;
@@ -19,7 +54,8 @@ class ProjectModel {
   ProjectModel({
     this.id,
     required this.name,
-    this.phone = '',
+    List<ProjectContact> contacts = const [],
+    String? phone,
     this.address = '',
     this.complexity = 2.5,
     required this.createdAt,
@@ -29,7 +65,13 @@ class ProjectModel {
     this.paintConsumption = 0.2,
     this.paintingWorkPrice = 200.0,
     this.paintCanWeight = 1.0,
-  });
+  }) : contacts = contacts.isNotEmpty
+            ? contacts
+            : ((phone != null && phone.trim().isNotEmpty)
+                ? [ProjectContact(phone: phone.trim())]
+                : const []);
+
+  String get phone => contacts.isNotEmpty ? contacts.first.phone : '';
 
   double get materialsCost {
     return items.fold(0.0, (sum, item) => sum + item.totalPrice);
@@ -81,10 +123,27 @@ class ProjectModel {
   }
 
   factory ProjectModel.fromJson(Map<String, dynamic> json, {List<ProjectItemModel> items = const []}) {
+    List<ProjectContact> parsedContacts = [];
+    if (json['contacts'] != null) {
+      final raw = json['contacts'];
+      if (raw is String && raw.isNotEmpty) {
+        try {
+          final decoded = jsonDecode(raw) as List;
+          parsedContacts = decoded.map((e) => ProjectContact.fromJson(e as Map<String, dynamic>)).toList();
+        } catch (_) {}
+      } else if (raw is List) {
+        parsedContacts = raw.map((e) => ProjectContact.fromJson(Map<String, dynamic>.from(e))).toList();
+      }
+    }
+    final legacyPhone = json['phone'] as String? ?? '';
+    if (parsedContacts.isEmpty && legacyPhone.trim().isNotEmpty) {
+      parsedContacts.add(ProjectContact(phone: legacyPhone.trim()));
+    }
+
     return ProjectModel(
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] ?? '',
-      phone: json['phone'] as String? ?? '',
+      contacts: parsedContacts,
       address: json['address'] as String? ?? '',
       complexity: (json['complexity'] as num?)?.toDouble() ?? 2.5,
       createdAt: json['created_at'] != null 
@@ -104,6 +163,7 @@ class ProjectModel {
       if (id != null) 'id': id,
       'name': name,
       'phone': phone,
+      'contacts': jsonEncode(contacts.map((c) => c.toJson()).toList()),
       'address': address,
       'complexity': complexity,
       'created_at': createdAt.toIso8601String(),
@@ -118,6 +178,7 @@ class ProjectModel {
   ProjectModel copyWith({
     int? id,
     String? name,
+    List<ProjectContact>? contacts,
     String? phone,
     String? address,
     double? complexity,
@@ -132,7 +193,7 @@ class ProjectModel {
     return ProjectModel(
       id: id ?? this.id,
       name: name ?? this.name,
-      phone: phone ?? this.phone,
+      contacts: contacts ?? (phone != null ? [ProjectContact(phone: phone)] : this.contacts),
       address: address ?? this.address,
       complexity: complexity ?? this.complexity,
       createdAt: createdAt ?? this.createdAt,

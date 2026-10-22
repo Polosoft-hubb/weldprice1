@@ -34,7 +34,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 7,
+      version: 8,
       onCreate: _createDB,
       onConfigure: _onConfigure,
       onUpgrade: _onUpgrade,
@@ -138,6 +138,9 @@ class DatabaseHelper {
       await db.execute('ALTER TABLE projects ADD COLUMN phone TEXT DEFAULT ""');
       await db.execute('ALTER TABLE projects ADD COLUMN address TEXT DEFAULT ""');
     }
+    if (oldVersion < 8) {
+      await db.execute('ALTER TABLE projects ADD COLUMN contacts TEXT DEFAULT "[]"');
+    }
   }
 
   Future _createDB(Database db, int version) async {
@@ -165,6 +168,7 @@ class DatabaseHelper {
         id $integerPrimaryKey,
         name $textType,
         phone TEXT DEFAULT "",
+        contacts TEXT DEFAULT "[]",
         address TEXT DEFAULT "",
         complexity $doubleType,
         created_at $textType,
@@ -608,14 +612,22 @@ class DatabaseHelper {
     );
   }
 
-  Future<int> updateProjectInfo(int projectId, {required String name, required String phone, required String address}) async {
+  Future<int> updateProjectInfo(
+    int projectId, {
+    required String name,
+    required List<ProjectContact> contacts,
+    required String address,
+  }) async {
+    final primaryPhone = contacts.isNotEmpty ? contacts.first.phone : '';
+    final contactsJson = jsonEncode(contacts.map((c) => c.toJson()).toList());
+
     if (kIsWeb) {
       await _initWebData();
       final index = _webProjects!.indexWhere((element) => (element.id as num).toInt() == projectId);
       if (index != -1) {
         _webProjects![index] = _webProjects![index].copyWith(
           name: name,
-          phone: phone,
+          contacts: contacts,
           address: address,
         );
         await _saveWebProjects();
@@ -629,7 +641,8 @@ class DatabaseHelper {
       'projects',
       {
         'name': name,
-        'phone': phone,
+        'phone': primaryPhone,
+        'contacts': contactsJson,
         'address': address,
       },
       where: 'id = ?',

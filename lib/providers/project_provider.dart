@@ -111,10 +111,19 @@ class ProjectProvider extends ChangeNotifier {
   }
 
   // CRUD Projects
-  Future<void> createProject(String name, {String phone = '', String address = ''}) async {
+  Future<void> createProject(
+    String name, {
+    List<ProjectContact> contacts = const [],
+    String phone = '',
+    String address = '',
+  }) async {
+    final finalContacts = contacts.isNotEmpty
+        ? contacts
+        : (phone.trim().isNotEmpty ? [ProjectContact(phone: phone.trim())] : <ProjectContact>[]);
+
     final newProj = ProjectModel(
       name: name,
-      phone: phone,
+      contacts: finalContacts,
       address: address,
       createdAt: DateTime.now(),
       complexity: 2.5,
@@ -132,8 +141,13 @@ class ProjectProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> updateProjectInfo(int projectId, {required String name, required String phone, required String address}) async {
-    await _dbHelper.updateProjectInfo(projectId, name: name, phone: phone, address: address);
+  Future<void> updateProjectInfo(
+    int projectId, {
+    required String name,
+    required List<ProjectContact> contacts,
+    required String address,
+  }) async {
+    await _dbHelper.updateProjectInfo(projectId, name: name, contacts: contacts, address: address);
     await loadProjects();
     if (_selectedProject?.id == projectId) {
       await selectProject(projectId);

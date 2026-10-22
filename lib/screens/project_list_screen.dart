@@ -61,166 +61,173 @@ class ProjectListScreen extends StatelessWidget {
     }
   }
 
-  void _showCreateProjectDialog(BuildContext context) {
-    final nameController = TextEditingController();
-    final phoneController = TextEditingController();
-    final addressController = TextEditingController();
+  void _handleCallAction(BuildContext context, ProjectModel project) {
+    final contactsWithPhone = project.contacts
+        .where((c) => c.phone.trim().isNotEmpty)
+        .toList();
 
-    showDialog(
+    if (contactsWithPhone.isEmpty) {
+      _showEditProjectDialog(context, project);
+      return;
+    }
+
+    if (contactsWithPhone.length == 1) {
+      _makePhoneCall(context, contactsWithPhone.first.phone);
+      return;
+    }
+
+    // More than 1 contact -> ask user who to call
+    showModalBottomSheet(
       context: context,
+      backgroundColor: const Color(0xFF1E1E1E),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (ctx) {
-        return AlertDialog(
-          title: const Text('Новый проект'),
-          content: SingleChildScrollView(
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
             child: Column(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextField(
-                  controller: nameController,
-                  autofocus: true,
-                  textCapitalization: TextCapitalization.sentences,
-                  decoration: const InputDecoration(
-                    labelText: 'Название проекта *',
-                    hintText: 'Например, Навес у дома',
-                    prefixIcon: Icon(Icons.assignment_outlined),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.call, color: Colors.greenAccent),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Кому позвонить?',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              project.name,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close, color: Colors.grey),
+                        onPressed: () => Navigator.of(ctx).pop(),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: phoneController,
-                  keyboardType: TextInputType.phone,
-                  decoration: const InputDecoration(
-                    labelText: 'Номер телефона',
-                    hintText: '+7 (999) 000-00-00',
-                    prefixIcon: Icon(Icons.phone_outlined),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: addressController,
-                  textCapitalization: TextCapitalization.sentences,
-                  keyboardType: TextInputType.streetAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'Адрес объекта',
-                    hintText: 'г. Москва, ул. Ленина, д. 10',
-                    prefixIcon: Icon(Icons.location_on_outlined),
+                const Divider(height: 20, color: Colors.white12),
+                Flexible(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: contactsWithPhone.length,
+                    itemBuilder: (context, index) {
+                      final contact = contactsWithPhone[index];
+                      final name = contact.name.trim().isNotEmpty
+                          ? contact.name.trim()
+                          : 'Контакт ${index + 1}';
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.greenAccent.withOpacity(0.15),
+                          child: const Icon(Icons.person, color: Colors.greenAccent),
+                        ),
+                        title: Text(
+                          name,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        subtitle: Text(
+                          contact.phone.trim(),
+                          style: const TextStyle(color: Colors.white70),
+                        ),
+                        trailing: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: Colors.greenAccent.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.greenAccent.withOpacity(0.4)),
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.phone, size: 14, color: Colors.greenAccent),
+                              SizedBox(width: 4),
+                              Text(
+                                'Вызов',
+                                style: TextStyle(
+                                  color: Colors.greenAccent,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.of(ctx).pop();
+                          _makePhoneCall(context, contact.phone);
+                        },
+                      );
+                    },
                   ),
                 ),
               ],
             ),
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: const Text('Отмена', style: TextStyle(color: Colors.grey)),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                final name = nameController.text.trim();
-                final phone = phoneController.text.trim();
-                final address = addressController.text.trim();
-                if (name.isNotEmpty) {
-                  final provider = Provider.of<ProjectProvider>(context, listen: false);
-                  Navigator.of(ctx).pop();
-                  provider.createProject(name, phone: phone, address: address);
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Проект создан. Обновление цен в фоне...'),
-                      duration: Duration(seconds: 3),
-                    ),
-                  );
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFF4081),
-                foregroundColor: Colors.black,
-              ),
-              child: const Text('Создать'),
-            ),
-          ],
         );
       },
     );
   }
 
-  void _showEditProjectDialog(BuildContext context, ProjectModel project) {
-    final nameController = TextEditingController(text: project.name);
-    final phoneController = TextEditingController(text: project.phone);
-    final addressController = TextEditingController(text: project.address);
-
+  void _showCreateProjectDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (ctx) {
-        return AlertDialog(
-          title: const Text('Редактировать проект'),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: nameController,
-                  autofocus: true,
-                  textCapitalization: TextCapitalization.sentences,
-                  decoration: const InputDecoration(
-                    labelText: 'Название проекта *',
-                    prefixIcon: Icon(Icons.assignment_outlined),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: phoneController,
-                  keyboardType: TextInputType.phone,
-                  decoration: const InputDecoration(
-                    labelText: 'Номер телефона',
-                    hintText: '+7 (999) 000-00-00',
-                    prefixIcon: Icon(Icons.phone_outlined),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: addressController,
-                  textCapitalization: TextCapitalization.sentences,
-                  keyboardType: TextInputType.streetAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'Адрес объекта',
-                    hintText: 'г. Москва, ул. Ленина, д. 10',
-                    prefixIcon: Icon(Icons.location_on_outlined),
-                  ),
-                ),
-              ],
+      builder: (_) => _ProjectDialog(
+        onSave: (name, address, contacts) {
+          final provider = Provider.of<ProjectProvider>(context, listen: false);
+          provider.createProject(name, contacts: contacts, address: address);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Проект создан. Обновление цен в фоне...'),
+              duration: Duration(seconds: 3),
             ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: const Text('Отмена', style: TextStyle(color: Colors.grey)),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                final name = nameController.text.trim();
-                final phone = phoneController.text.trim();
-                final address = addressController.text.trim();
-                if (name.isNotEmpty && project.id != null) {
-                  final provider = Provider.of<ProjectProvider>(context, listen: false);
-                  Navigator.of(ctx).pop();
-                  provider.updateProjectInfo(
-                    project.id!,
-                    name: name,
-                    phone: phone,
-                    address: address,
-                  );
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFF4081),
-                foregroundColor: Colors.black,
-              ),
-              child: const Text('Сохранить'),
-            ),
-          ],
-        );
-      },
+          );
+        },
+      ),
+    );
+  }
+
+  void _showEditProjectDialog(BuildContext context, ProjectModel project) {
+    showDialog(
+      context: context,
+      builder: (_) => _ProjectDialog(
+        project: project,
+        onSave: (name, address, contacts) {
+          if (project.id != null) {
+            final provider = Provider.of<ProjectProvider>(context, listen: false);
+            provider.updateProjectInfo(
+              project.id!,
+              name: name,
+              contacts: contacts,
+              address: address,
+            );
+          }
+        },
+      ),
     );
   }
 
@@ -461,7 +468,10 @@ class ProjectListScreen extends StatelessWidget {
                   itemCount: provider.projects.length,
                   itemBuilder: (context, index) {
                     final project = provider.projects[index];
-                    final hasPhone = project.phone.trim().isNotEmpty;
+                    final validContacts = project.contacts
+                        .where((c) => c.phone.trim().isNotEmpty)
+                        .toList();
+                    final hasPhone = validContacts.isNotEmpty;
                     final hasAddress = project.address.trim().isNotEmpty;
 
                     return Container(
@@ -536,7 +546,7 @@ class ProjectListScreen extends StatelessWidget {
                                   ],
                                 ),
 
-                                // Address & Phone display
+                                // Address display
                                 if (hasAddress) ...[
                                   const SizedBox(height: 8),
                                   Row(
@@ -558,24 +568,51 @@ class ProjectListScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ],
+
+                                // Contacts display (Name + Phone)
                                 if (hasPhone) ...[
-                                  const SizedBox(height: 4),
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.phone_outlined, size: 16, color: Colors.greenAccent),
-                                      const SizedBox(width: 6),
-                                      Expanded(
-                                        child: Text(
-                                          project.phone,
-                                          style: const TextStyle(
-                                            fontSize: 13,
-                                            color: Colors.white70,
+                                  const SizedBox(height: 6),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: validContacts.map((contact) {
+                                      final hasName = contact.name.trim().isNotEmpty;
+                                      return Padding(
+                                        padding: const EdgeInsets.only(top: 2),
+                                        child: InkWell(
+                                          onTap: () => _makePhoneCall(context, contact.phone),
+                                          borderRadius: BorderRadius.circular(4),
+                                          child: Row(
+                                            children: [
+                                              const Icon(Icons.phone_outlined, size: 15, color: Colors.greenAccent),
+                                              const SizedBox(width: 6),
+                                              if (hasName) ...[
+                                                Text(
+                                                  '${contact.name.trim()}: ',
+                                                  style: const TextStyle(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ],
+                                              Expanded(
+                                                child: Text(
+                                                  contact.phone.trim(),
+                                                  style: TextStyle(
+                                                    fontSize: 13,
+                                                    color: hasName ? Colors.greenAccent.shade100 : Colors.white70,
+                                                    decoration: TextDecoration.underline,
+                                                    decorationColor: Colors.greenAccent.withOpacity(0.3),
+                                                  ),
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                      ),
-                                    ],
+                                      );
+                                    }).toList(),
                                   ),
                                 ],
 
@@ -605,30 +642,32 @@ class ProjectListScreen extends StatelessWidget {
                                 const Divider(height: 1, color: Colors.white10),
                                 const SizedBox(height: 10),
 
-                                // Action Buttons: Call & Yandex Maps
+                                // Action Buttons: Call & Route
                                 Row(
                                   children: [
                                     Expanded(
                                       child: OutlinedButton.icon(
-                                        onPressed: () {
-                                          if (hasPhone) {
-                                            _makePhoneCall(context, project.phone);
-                                          } else {
-                                            _showEditProjectDialog(context, project);
-                                          }
-                                        },
+                                        onPressed: () => _handleCallAction(context, project),
                                         icon: Icon(
                                           Icons.phone,
                                           size: 16,
                                           color: hasPhone ? Colors.greenAccent : Colors.grey,
                                         ),
                                         label: Text(
-                                          hasPhone ? 'Позвонить' : 'Указать телефон',
+                                          !hasPhone
+                                              ? 'Указать телефон'
+                                              : (validContacts.length == 1
+                                                  ? (validContacts.first.name.trim().isNotEmpty
+                                                      ? 'Позвонить (${validContacts.first.name.trim()})'
+                                                      : 'Позвонить')
+                                                  : 'Позвонить (${validContacts.length})'),
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: hasPhone ? Colors.greenAccent : Colors.grey,
                                             fontWeight: FontWeight.w600,
                                           ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                         style: OutlinedButton.styleFrom(
                                           backgroundColor: hasPhone
@@ -706,6 +745,247 @@ class ProjectListScreen extends StatelessWidget {
         foregroundColor: Colors.black,
         child: const Icon(Icons.add),
       ),
+    );
+  }
+}
+
+class _ContactRow {
+  final TextEditingController nameController;
+  final TextEditingController phoneController;
+
+  _ContactRow({String name = '', String phone = ''})
+      : nameController = TextEditingController(text: name),
+        phoneController = TextEditingController(text: phone);
+
+  void dispose() {
+    nameController.dispose();
+    phoneController.dispose();
+  }
+}
+
+class _ProjectDialog extends StatefulWidget {
+  final ProjectModel? project;
+  final Function(String name, String address, List<ProjectContact> contacts) onSave;
+
+  const _ProjectDialog({
+    this.project,
+    required this.onSave,
+  });
+
+  @override
+  State<_ProjectDialog> createState() => _ProjectDialogState();
+}
+
+class _ProjectDialogState extends State<_ProjectDialog> {
+  late final TextEditingController _nameController;
+  late final TextEditingController _addressController;
+  final List<_ContactRow> _contacts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: widget.project?.name ?? '');
+    _addressController = TextEditingController(text: widget.project?.address ?? '');
+
+    if (widget.project != null && widget.project!.contacts.isNotEmpty) {
+      for (final c in widget.project!.contacts) {
+        _contacts.add(_ContactRow(name: c.name, phone: c.phone));
+      }
+    } else if (widget.project != null && widget.project!.phone.isNotEmpty) {
+      _contacts.add(_ContactRow(name: '', phone: widget.project!.phone));
+    } else {
+      // Default: one empty contact entry ready to fill
+      _contacts.add(_ContactRow());
+    }
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _addressController.dispose();
+    for (final c in _contacts) {
+      c.dispose();
+    }
+    super.dispose();
+  }
+
+  void _addContact() {
+    setState(() {
+      _contacts.add(_ContactRow());
+    });
+  }
+
+  void _removeContact(int index) {
+    setState(() {
+      final removed = _contacts.removeAt(index);
+      removed.dispose();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isEditing = widget.project != null;
+    return AlertDialog(
+      title: Text(isEditing ? 'Редактировать проект' : 'Новый проект'),
+      content: SizedBox(
+        width: 480,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                controller: _nameController,
+                autofocus: !isEditing,
+                textCapitalization: TextCapitalization.sentences,
+                decoration: const InputDecoration(
+                  labelText: 'Название проекта *',
+                  hintText: 'Например, Навес у дома',
+                  prefixIcon: Icon(Icons.assignment_outlined),
+                ),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: _addressController,
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.streetAddress,
+                decoration: const InputDecoration(
+                  labelText: 'Адрес объекта',
+                  hintText: 'г. Москва, ул. Ленина, д. 10',
+                  prefixIcon: Icon(Icons.location_on_outlined),
+                ),
+              ),
+              const SizedBox(height: 18),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Контакты (кому звонить):',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white70,
+                    ),
+                  ),
+                  TextButton.icon(
+                    onPressed: _addContact,
+                    icon: const Icon(Icons.add, size: 16, color: Colors.greenAccent),
+                    label: const Text(
+                      'Добавить номер',
+                      style: TextStyle(color: Colors.greenAccent, fontSize: 13),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              if (_contacts.isEmpty)
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: OutlinedButton.icon(
+                      onPressed: _addContact,
+                      icon: const Icon(Icons.add, size: 16),
+                      label: const Text('Добавить контакт'),
+                    ),
+                  ),
+                )
+              else
+                ..._contacts.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final contact = entry.value;
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.04),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.white12),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Контакт ${index + 1}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey.shade400,
+                              ),
+                            ),
+                            const Spacer(),
+                            if (_contacts.length > 1)
+                              IconButton(
+                                icon: const Icon(Icons.delete_outline, size: 18, color: Colors.redAccent),
+                                tooltip: 'Удалить контакт',
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                onPressed: () => _removeContact(index),
+                              ),
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                        TextField(
+                          controller: contact.nameController,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: const InputDecoration(
+                            isDense: true,
+                            labelText: 'Имя / Должность',
+                            hintText: 'Иван (заказчик) или Прораб',
+                            prefixIcon: Icon(Icons.person_outline, size: 20),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: contact.phoneController,
+                          keyboardType: TextInputType.phone,
+                          decoration: const InputDecoration(
+                            isDense: true,
+                            labelText: 'Номер телефона',
+                            hintText: '+7 (999) 000-00-00',
+                            prefixIcon: Icon(Icons.phone_outlined, size: 20),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+            ],
+          ),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Отмена', style: TextStyle(color: Colors.grey)),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            final name = _nameController.text.trim();
+            final address = _addressController.text.trim();
+            if (name.isEmpty) return;
+
+            final List<ProjectContact> validContacts = [];
+            for (final c in _contacts) {
+              final phone = c.phoneController.text.trim();
+              final cName = c.nameController.text.trim();
+              if (phone.isNotEmpty || cName.isNotEmpty) {
+                validContacts.add(ProjectContact(name: cName, phone: phone));
+              }
+            }
+
+            Navigator.of(context).pop();
+            widget.onSave(name, address, validContacts);
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFFFF4081),
+            foregroundColor: Colors.black,
+          ),
+          child: Text(isEditing ? 'Сохранить' : 'Создать'),
+        ),
+      ],
     );
   }
 }

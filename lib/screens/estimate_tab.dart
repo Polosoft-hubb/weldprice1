@@ -346,7 +346,18 @@ class _EstimateTabState extends State<EstimateTab> {
     final sb = StringBuffer();
     sb.writeln('СМЕТА ПРОЕКТА: ${project.name}');
     sb.writeln('Дата создания: $dateStr');
-    if (project.phone != null && (project.phone as String).trim().isNotEmpty) {
+    if (project.contacts != null && (project.contacts as List).isNotEmpty) {
+      sb.writeln('Контакты:');
+      for (final c in project.contacts) {
+        final nameStr = c.name.toString().trim();
+        final phoneStr = c.phone.toString().trim();
+        if (nameStr.isNotEmpty) {
+          sb.writeln('  $nameStr: $phoneStr');
+        } else {
+          sb.writeln('  $phoneStr');
+        }
+      }
+    } else if (project.phone != null && (project.phone as String).trim().isNotEmpty) {
       sb.writeln('Телефон: ${project.phone}');
     }
     if (project.address != null && (project.address as String).trim().isNotEmpty) {
