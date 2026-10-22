@@ -542,7 +542,7 @@ class ProjectListScreen extends StatelessWidget {
                                   Row(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      const Icon(Icons.location_on_outlined, size: 16, color: Color(0xFFFFB300)),
+                                      const Icon(Icons.location_on, size: 16, color: Colors.redAccent),
                                       const SizedBox(width: 6),
                                       Expanded(
                                         child: Text(
@@ -657,25 +657,25 @@ class ProjectListScreen extends StatelessWidget {
                                           }
                                         },
                                         icon: Icon(
-                                          Icons.map_outlined,
+                                          Icons.location_on,
                                           size: 16,
-                                          color: hasAddress ? const Color(0xFFFFB300) : Colors.grey,
+                                          color: hasAddress ? Colors.redAccent : Colors.grey,
                                         ),
                                         label: Text(
-                                          hasAddress ? 'Яндекс Карты' : 'Указать адрес',
+                                          hasAddress ? 'Маршрут' : 'Указать адрес',
                                           style: TextStyle(
                                             fontSize: 12,
-                                            color: hasAddress ? const Color(0xFFFFB300) : Colors.grey,
+                                            color: hasAddress ? Colors.redAccent : Colors.grey,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
                                         style: OutlinedButton.styleFrom(
                                           backgroundColor: hasAddress
-                                              ? const Color(0xFFFFB300).withOpacity(0.08)
+                                              ? Colors.redAccent.withOpacity(0.08)
                                               : Colors.white.withOpacity(0.03),
                                           side: BorderSide(
                                             color: hasAddress
-                                                ? const Color(0xFFFFB300).withOpacity(0.4)
+                                                ? Colors.redAccent.withOpacity(0.4)
                                                 : Colors.grey.shade800,
                                           ),
                                           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
