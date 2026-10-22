@@ -27,13 +27,19 @@ class ProjectListScreen extends StatelessWidget {
   Color _getStatusColor(String status) {
     switch (status) {
       case ProjectStatus.completed:
-        return const Color(0xFF81C784); // Muted emerald green
+        return const Color(0xFF22C55E); // Bold vivid green
       case ProjectStatus.rejected:
-        return const Color(0xFFE57373); // Muted brick red
+        return const Color(0xFFEF4444); // Bold vivid red
       case ProjectStatus.inProgress:
       default:
-        return const Color(0xFFFFB74D); // Muted warm amber
+        return const Color(0xFFFFB300); // Bold vivid warm yellow/amber
     }
+  }
+
+  Color _getCardBackgroundColor(String status) {
+    final statusColor = _getStatusColor(status);
+    // Dim, close to grey, but still slightly tinted with color
+    return Color.alphaBlend(statusColor.withOpacity(0.09), const Color(0xFF1B1B1D));
   }
 
   String _getStatusLabel(String status) {
@@ -415,34 +421,14 @@ class ProjectListScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            const Text(
-                              'СТАТИСТИКА ПРОЕКТОВ',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                letterSpacing: 1.2,
-                              ),
-                            ),
-                            const SizedBox(width: 6),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF81C784).withOpacity(0.12),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: const Text(
-                                'завершенные',
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Color(0xFF81C784),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ],
+                        const Text(
+                          'СТАТИСТИКА ПРОЕКТОВ',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                            letterSpacing: 1.2,
+                          ),
                         ),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -451,7 +437,7 @@ class ProjectListScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Text(
-                            'Завершено: ${completedProjects.length} из $totalProjects',
+                            'Проектов: $totalProjects',
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -536,11 +522,12 @@ class ProjectListScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16),
                         child: Card(
                           margin: EdgeInsets.zero,
+                          color: _getCardBackgroundColor(project.status),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
                             side: BorderSide(
-                              color: statusColor.withOpacity(0.35),
-                              width: 1.2,
+                              color: statusColor.withOpacity(0.85),
+                              width: 1.8,
                             ),
                           ),
                           child: Padding(
@@ -573,32 +560,32 @@ class ProjectListScreen extends StatelessWidget {
                                             runSpacing: 4,
                                             children: [
                                               Container(
-                                                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                                                 decoration: BoxDecoration(
-                                                  color: statusColor.withOpacity(0.14),
+                                                  color: statusColor.withOpacity(0.22),
                                                   borderRadius: BorderRadius.circular(6),
                                                   border: Border.all(
-                                                    color: statusColor.withOpacity(0.4),
-                                                    width: 1,
+                                                    color: statusColor,
+                                                    width: 1.2,
                                                   ),
                                                 ),
                                                 child: Row(
                                                   mainAxisSize: MainAxisSize.min,
                                                   children: [
                                                     Container(
-                                                      width: 6,
-                                                      height: 6,
+                                                      width: 7,
+                                                      height: 7,
                                                       decoration: BoxDecoration(
                                                         color: statusColor,
                                                         shape: BoxShape.circle,
                                                       ),
                                                     ),
-                                                    const SizedBox(width: 5),
+                                                    const SizedBox(width: 6),
                                                     Text(
                                                       statusLabel,
                                                       style: TextStyle(
                                                         fontSize: 11,
-                                                        fontWeight: FontWeight.w600,
+                                                        fontWeight: FontWeight.bold,
                                                         color: statusColor,
                                                       ),
                                                     ),
@@ -933,21 +920,21 @@ class _ProjectDialogState extends State<_ProjectDialog> {
         borderRadius: BorderRadius.circular(8),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 180),
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+          padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 4),
           decoration: BoxDecoration(
-            color: isSelected ? color.withOpacity(0.18) : Colors.white.withOpacity(0.04),
+            color: isSelected ? color.withOpacity(0.24) : Colors.white.withOpacity(0.04),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
               color: isSelected ? color : Colors.white12,
-              width: isSelected ? 1.5 : 1,
+              width: isSelected ? 1.8 : 1,
             ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: 7,
-                height: 7,
+                width: 8,
+                height: 8,
                 decoration: BoxDecoration(color: color, shape: BoxShape.circle),
               ),
               const SizedBox(width: 5),
@@ -956,7 +943,7 @@ class _ProjectDialogState extends State<_ProjectDialog> {
                   label,
                   style: TextStyle(
                     fontSize: 11,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
                     color: isSelected ? color : Colors.white70,
                   ),
                   maxLines: 1,
@@ -1031,19 +1018,19 @@ class _ProjectDialogState extends State<_ProjectDialog> {
                   _buildStatusChip(
                     status: ProjectStatus.rejected,
                     label: 'Не согласились',
-                    color: const Color(0xFFE57373),
+                    color: const Color(0xFFEF4444),
                   ),
                   const SizedBox(width: 8),
                   _buildStatusChip(
                     status: ProjectStatus.inProgress,
                     label: 'В работе',
-                    color: const Color(0xFFFFB74D),
+                    color: const Color(0xFFFFB300),
                   ),
                   const SizedBox(width: 8),
                   _buildStatusChip(
                     status: ProjectStatus.completed,
                     label: 'Завершен',
-                    color: const Color(0xFF81C784),
+                    color: const Color(0xFF22C55E),
                   ),
                 ],
               ),

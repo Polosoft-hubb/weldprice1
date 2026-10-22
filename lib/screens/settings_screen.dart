@@ -265,19 +265,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
         'status': ProjectStatus.rejected,
         'title': 'Не согласились',
         'hint': 'Вне статистики',
-        'color': const Color(0xFFE57373), // soft muted brick red
+        'color': const Color(0xFFEF4444), // bold vivid red
       },
       {
         'status': ProjectStatus.inProgress,
         'title': 'В работе',
         'hint': 'В процессе',
-        'color': const Color(0xFFFFB74D), // soft muted warm amber
+        'color': const Color(0xFFFFB300), // bold vivid warm yellow/amber
       },
       {
         'status': ProjectStatus.completed,
         'title': 'Завершен',
         'hint': 'В статистике',
-        'color': const Color(0xFF81C784), // soft muted emerald green
+        'color': const Color(0xFF22C55E), // bold vivid green
       },
     ];
 
