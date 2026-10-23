@@ -281,7 +281,7 @@ class DatabaseHelper {
     // 1. Global Materials
     final int webMaterialsVersion = prefs.getInt('web_materials_version') ?? 0;
     final matsJson = prefs.getString('web_materials');
-    if (matsJson != null && webMaterialsVersion >= 3) {
+    if (matsJson != null && webMaterialsVersion >= 4) {
       final List<dynamic> decoded = json.decode(matsJson);
       _webMaterials = decoded.map((e) => MaterialModel.fromJson(e)).toList();
     } else {
@@ -290,7 +290,7 @@ class DatabaseHelper {
         final List<dynamic> jsonList = json.decode(jsonString);
         _webMaterials = jsonList.map((e) => MaterialModel.fromJson(e)).toList();
         await _saveWebMaterials();
-        await prefs.setInt('web_materials_version', 3);
+        await prefs.setInt('web_materials_version', 4);
       } catch (e) {
         _webMaterials = [];
       }

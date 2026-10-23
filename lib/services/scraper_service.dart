@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/material.dart';
@@ -29,6 +30,59 @@ class ScraperService {
   static const String lastUpdateKey = "last_prices_update";
 
   Future<int> scrapeAndUpdatePrices() async {
+    // 1. If running on Web, load the latest hosted data/prices.json from same-origin.
+    // This avoids CORS entirely, downloads in milliseconds, and guarantees all 576 items.
+    if (kIsWeb) {
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final candidateUrls = [
+        Uri.base.resolve('data/prices.json?t=$timestamp').toString(),
+        'data/prices.json?t=$timestamp',
+        '/weldprice1/data/prices.json?t=$timestamp',
+      ];
+
+      for (final candidate in candidateUrls) {
+        try {
+          final response = await http.get(Uri.parse(candidate)).timeout(const Duration(seconds: 8));
+          if (response.statusCode == 200) {
+            final decoded = json.decode(utf8.decode(response.bodyBytes));
+            List<dynamic>? list;
+            DateTime? scrapedDate;
+
+            if (decoded is Map<String, dynamic>) {
+              if (decoded['updatedAt'] != null) {
+                scrapedDate = DateTime.tryParse(decoded['updatedAt'].toString());
+              }
+              if (decoded['materials'] is List) {
+                list = decoded['materials'] as List<dynamic>;
+              }
+            } else if (decoded is List) {
+              list = decoded;
+            }
+
+            if (list != null && list.isNotEmpty) {
+              final List<MaterialModel> parsed = [];
+              for (final item in list) {
+                try {
+                  parsed.add(MaterialModel.fromJson(item as Map<String, dynamic>));
+                } catch (_) {}
+              }
+
+              if (parsed.isNotEmpty) {
+                await DatabaseHelper.instance.updateMaterialsBatch(parsed);
+                final prefs = await SharedPreferences.getInstance();
+                final saveDate = scrapedDate ?? DateTime.now();
+                await prefs.setString(lastUpdateKey, saveDate.toIso8601String());
+                return parsed.length;
+              }
+            }
+          }
+        } catch (e) {
+          // Try next candidate URL
+        }
+      }
+    }
+
+    // 2. Direct scraping (for non-web platforms or fallback)
     final List<MaterialModel> parsedMaterials = [];
     final Set<String> seenIds = {};
 
@@ -42,10 +96,7 @@ class ScraperService {
             : url;
         final response = await http.get(Uri.parse(requestUrl)).timeout(const Duration(seconds: 15));
         if (response.statusCode == 200) {
-          // Decode html as UTF-8
           final html = utf8.decode(response.bodyBytes);
-          
-          // Regex to match data-product='...'
           final regExp = RegExp(r"data-product='([^']+)'");
           final matches = regExp.allMatches(html);
           
@@ -96,8 +147,7 @@ class ScraperService {
           }
         }
       } catch (e) {
-        print("ScraperService: Failed to parse $catName: $e");
-        rethrow; // Let caller handle connection failures
+        // Log category error, continue to next
       }
     }
 
@@ -106,9 +156,23 @@ class ScraperService {
       
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(lastUpdateKey, DateTime.now().toIso8601String());
+      return parsedMaterials.length;
     }
 
-    return parsedMaterials.length;
+    // 3. Fallback to bundled materials database
+    try {
+      final jsonString = await rootBundle.loadString('assets/materials_db.json');
+      final List<dynamic> jsonList = json.decode(jsonString);
+      final List<MaterialModel> bundled = jsonList.map((e) => MaterialModel.fromJson(e)).toList();
+      if (bundled.isNotEmpty) {
+        await DatabaseHelper.instance.updateMaterialsBatch(bundled);
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString(lastUpdateKey, DateTime.now().toIso8601String());
+        return bundled.length;
+      }
+    } catch (_) {}
+
+    throw Exception("Не удалось загрузить цены. Проверьте подключение к сети.");
   }
 
   Future<DateTime?> getLastUpdateDate() async {

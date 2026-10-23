@@ -269,11 +269,8 @@ class ProjectProvider extends ChangeNotifier {
     await selectProject(projectId);
   }
 
-  // Web Scraping / Synchronization (Project Specific)
+  // Web Scraping / Synchronization (Project Specific or Global)
   Future<void> syncPrices() async {
-    if (_selectedProject == null || _selectedProject!.id == null) return;
-    final projectId = (_selectedProject!.id as num).toInt();
-
     _isScraping = true;
     _scrapingError = null;
     notifyListeners();
@@ -283,20 +280,23 @@ class ProjectProvider extends ChangeNotifier {
       await _scraperService.scrapeAndUpdatePrices();
       final updatedTemplates = await _dbHelper.getAllMaterials();
       
-      // 2. Batch update this specific project's materials list
-      await _dbHelper.updateProjectMaterialsBatch(projectId, updatedTemplates);
+      // 2. Batch update this specific project's materials list if a project is selected
+      if (_selectedProject != null && _selectedProject!.id != null) {
+        final projectId = (_selectedProject!.id as num).toInt();
+        await _dbHelper.updateProjectMaterialsBatch(projectId, updatedTemplates);
+        await loadProjectMaterials(projectId);
+        await loadProjects();
+        await selectProject(projectId);
+      }
       
-      // 3. Reload databases and view
-      await loadProjectMaterials(projectId);
-      await loadProjects();
-      await selectProject(projectId);
+      // 3. Reload last update date
       await loadLastUpdateDate();
       
       _isScraping = false;
       notifyListeners();
     } catch (e) {
       _isScraping = false;
-      _scrapingError = "Не удалось автоматически обновить цены. Возможно CORS блокировка в браузере или отсутствует подключение к интернету.";
+      _scrapingError = "Не удалось автоматически обновить цены: $e";
       notifyListeners();
     }
   }

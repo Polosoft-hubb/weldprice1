@@ -1,0 +1,56 @@
+name: Update Metal Prices
+
+on:
+  schedule:
+    - cron: '0 3 * * *' # Every day at 03:00 UTC
+  workflow_dispatch:     # Manual trigger via GitHub UI
+
+permissions:
+  contents: write
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Run scraper script
+        run: |
+          python scripts/scrape_prices.py
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Build Web Application
+        run: |
+          flutter config --enable-web
+          flutter pub get
+          flutter build web --base-href "/weldprice1/"
+          touch build/web/.nojekyll
+
+      - name: Commit updated prices to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add web/data/prices.json assets/data/prices.json assets/materials_db.json
+          git commit -m "Auto-update prices [skip ci]" || echo "No changes to commit"
+          git push origin main || echo "Push skipped"
+
+      - name: Deploy Web Build to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web
+          publish_branch: gh-pages
