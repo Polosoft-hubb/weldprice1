@@ -268,59 +268,118 @@ class MaterialsTab extends StatelessWidget {
 
   void _showQuantityInputDialog(BuildContext context, ProjectProvider provider, model.MaterialModel mat) {
     final textController = TextEditingController(text: '1.0');
+    bool updateExistingPrice = false;
+
+    // Check if an item with this materialId already exists in the project with a different price
+    final existingItems = provider.selectedProject?.items.where((it) => it.materialId == mat.id).toList() ?? [];
+    final hasDifferentPrice = existingItems.any((it) => (it.price - mat.price).abs() >= 0.01);
+    final existingItem = hasDifferentPrice ? existingItems.first : null;
     
     showDialog(
       context: context,
       builder: (dialogCtx) {
-        return AlertDialog(
-          title: const Text('Количество'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                mat.name,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              title: const Text('Количество'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    mat.name,
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  ),
+                  const SizedBox(height: 8),
+                  Text('Ед. изм.: ${mat.unit}'),
+                  Text('Цена по каталогу: ${_formatCurrency(mat.price)}'),
+                  if (mat.weight > 0) ...[
+                    const SizedBox(height: 4),
+                    Text('Вес: ${mat.weight.toString().replaceAll(RegExp(r"\.0$"), "")} кг/${mat.unit}'),
+                  ],
+                  if (existingItem != null) ...[
+                    const SizedBox(height: 12),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.amber.withOpacity(0.12),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.amber.withOpacity(0.4)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'В смете уже есть: ${existingItem.quantity.toStringAsFixed(1)} ${existingItem.unit} по цене ${_formatCurrency(existingItem.price)}',
+                            style: const TextStyle(fontSize: 12, color: Colors.amberAccent),
+                          ),
+                          const SizedBox(height: 6),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 22,
+                                height: 22,
+                                child: Checkbox(
+                                  value: updateExistingPrice,
+                                  activeColor: const Color(0xFFFF4081),
+                                  onChanged: (val) {
+                                    setDialogState(() {
+                                      updateExistingPrice = val ?? false;
+                                    });
+                                  },
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              const Expanded(
+                                child: Text(
+                                  'Обновить цену всей позиции в смете до новой и сложить',
+                                  style: TextStyle(fontSize: 12, color: Colors.white70),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: textController,
+                    autofocus: true,
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    decoration: InputDecoration(
+                      labelText: 'Укажите метраж / количество',
+                      hintText: 'Количество в ${mat.unit}',
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 8),
-              Text('Ед. изм.: ${mat.unit}'),
-              Text('Цена: ${_formatCurrency(mat.price)}'),
-              if (mat.weight > 0) ...[
-                const SizedBox(height: 4),
-                Text('Вес: ${mat.weight.toString().replaceAll(RegExp(r"\.0$"), "")} кг/${mat.unit}'),
-              ],
-              const SizedBox(height: 16),
-              TextField(
-                controller: textController,
-                autofocus: true,
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                decoration: InputDecoration(
-                  labelText: 'Укажите метраж / количество',
-                  hintText: 'Количество в ${mat.unit}',
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(dialogCtx).pop(),
+                  child: const Text('Отмена', style: TextStyle(color: Colors.grey)),
                 ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(dialogCtx).pop(),
-              child: const Text('Отмена', style: TextStyle(color: Colors.grey)),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                final double? qty = double.tryParse(textController.text.replaceAll(',', '.').trim());
-                Navigator.of(dialogCtx).pop();
-                if (qty != null && qty > 0) {
-                  provider.addMaterialToProject(mat, qty);
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFF4081),
-                foregroundColor: Colors.black,
-              ),
-              child: const Text('Добавить'),
-            ),
-          ],
+                ElevatedButton(
+                  onPressed: () {
+                    final double? qty = double.tryParse(textController.text.replaceAll(',', '.').trim());
+                    Navigator.of(dialogCtx).pop();
+                    if (qty != null && qty > 0) {
+                      provider.addMaterialToProject(
+                        mat,
+                        qty,
+                        updateExistingPrice: updateExistingPrice,
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFFF4081),
+                    foregroundColor: Colors.black,
+                  ),
+                  child: const Text('Добавить'),
+                ),
+              ],
+            );
+          },
         );
       },
     );

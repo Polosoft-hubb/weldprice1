@@ -785,8 +785,11 @@ class DatabaseHelper {
     if (kIsWeb) {
       await _initWebData();
       
+      // Match by projectId, materialId AND same price!
       final existingIndex = _webProjectItems!.indexWhere(
-        (element) => (element.projectId as num).toInt() == item.projectId && element.materialId == item.materialId
+        (element) => (element.projectId as num).toInt() == item.projectId && 
+                     element.materialId == item.materialId &&
+                     (element.price - item.price).abs() < 0.01
       );
 
       if (existingIndex != -1) {
@@ -811,8 +814,8 @@ class DatabaseHelper {
     
     final existing = await db.query(
       'project_items',
-      where: 'project_id = ? AND material_id = ?',
-      whereArgs: [item.projectId, item.materialId],
+      where: 'project_id = ? AND material_id = ? AND ABS(price - ?) < 0.01',
+      whereArgs: [item.projectId, item.materialId, item.price],
     );
 
     if (existing.isNotEmpty) {

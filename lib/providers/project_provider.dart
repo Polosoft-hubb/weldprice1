@@ -189,9 +189,24 @@ class ProjectProvider extends ChangeNotifier {
   }
 
   // CRUD Project Items (Specification)
-  Future<void> addMaterialToProject(MaterialModel material, double quantity) async {
+  Future<void> addMaterialToProject(MaterialModel material, double quantity, {bool updateExistingPrice = false}) async {
     if (_selectedProject == null || _selectedProject!.id == null) return;
     final projectId = (_selectedProject!.id as num).toInt();
+
+    if (updateExistingPrice) {
+      final existingIndex = _selectedProject!.items.indexWhere((it) => it.materialId == material.id);
+      if (existingIndex != -1) {
+        final existingItem = _selectedProject!.items[existingIndex];
+        if (existingItem.id != null) {
+          final newQty = existingItem.quantity + quantity;
+          await _dbHelper.updateProjectItemQuantity(existingItem.id!, newQty);
+          await _dbHelper.updateProjectItemPrice(existingItem.id!, material.price);
+          await loadProjects();
+          await selectProject(projectId);
+          return;
+        }
+      }
+    }
 
     final item = ProjectItemModel(
       projectId: projectId,
