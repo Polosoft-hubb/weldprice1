@@ -7,6 +7,7 @@ import '../utils/url_launcher_helper.dart';
 import 'project_details_screen.dart';
 import 'calculator_screen.dart';
 import 'notes_screen.dart';
+import 'detailed_stats_screen.dart';
 
 class ProjectListScreen extends StatelessWidget {
   const ProjectListScreen({super.key});
@@ -328,6 +329,16 @@ class ProjectListScreen extends StatelessWidget {
         title: const Text('WELDPRICE'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.table_chart_outlined, size: 26),
+            iconSize: 26,
+            tooltip: 'Подробная статистика',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const DetailedStatsScreen()),
+              );
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.note_alt_outlined, size: 28),
             iconSize: 28,
             tooltip: 'Заметки',
@@ -484,6 +495,42 @@ class ProjectListScreen extends StatelessWidget {
                           child: _buildStatItem('Прибыль за 30 дней', _formatCurrency(lastMonthEarnings), const Color(0xFFFF4081)),
                         ),
                       ],
+                    ),
+                    const SizedBox(height: 14),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const DetailedStatsScreen()),
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFF4081).withOpacity(0.08),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: const Color(0xFFFF4081).withOpacity(0.25),
+                          ),
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.table_chart_outlined, size: 16, color: Color(0xFFFF4081)),
+                            SizedBox(width: 8),
+                            Text(
+                              'Подробная статистика по месяцам',
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFFF4081),
+                              ),
+                            ),
+                            SizedBox(width: 6),
+                            Icon(Icons.arrow_forward_ios, size: 12, color: Color(0xFFFF4081)),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
