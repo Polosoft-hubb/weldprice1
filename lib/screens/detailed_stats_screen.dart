@@ -116,9 +116,6 @@ class _DetailedStatsScreenState extends State<DetailedStatsScreen> {
 
         final totalCompletedSum = completedProjects.fold(0.0, (sum, p) => sum + p.totalPrice);
         final totalCompletedProfit = completedProjects.fold(0.0, (sum, p) => sum + p.workCost);
-        final totalAverageCheck = completedProjects.isEmpty
-            ? 0.0
-            : totalCompletedSum / completedProjects.length;
 
         final monthStats = _groupProjects(allProjects);
 
@@ -142,10 +139,6 @@ class _DetailedStatsScreenState extends State<DetailedStatsScreen> {
                       _buildTopOverview(
                         totalCompletedSum: totalCompletedSum,
                         totalCompletedProfit: totalCompletedProfit,
-                        totalOrders: allProjects.length,
-                        completedOrders: completedProjects.length,
-                        avgCheck: totalAverageCheck,
-                        monthsCount: monthStats.length,
                       ),
                       const SizedBox(height: 16),
 
@@ -223,10 +216,6 @@ class _DetailedStatsScreenState extends State<DetailedStatsScreen> {
   Widget _buildTopOverview({
     required double totalCompletedSum,
     required double totalCompletedProfit,
-    required int totalOrders,
-    required int completedOrders,
-    required double avgCheck,
-    required int monthsCount,
   }) {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -238,30 +227,14 @@ class _DetailedStatsScreenState extends State<DetailedStatsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'СВОДКА ЗА ВСЕ ВРЕМЯ',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey,
-                  letterSpacing: 1.2,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.06),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  'Периодов: $monthsCount мес.',
-                  style: const TextStyle(fontSize: 11, color: Colors.grey),
-                ),
-              ),
-            ],
+          const Text(
+            'СВОДКА ЗА ВСЕ ВРЕМЯ',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey,
+              letterSpacing: 1.2,
+            ),
           ),
           const SizedBox(height: 14),
           Row(
@@ -281,30 +254,6 @@ class _DetailedStatsScreenState extends State<DetailedStatsScreen> {
                   _formatCurrency(totalCompletedProfit),
                   const Color(0xFFFF4081),
                   Icons.trending_up,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          const Divider(height: 1, color: Colors.white10),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              Expanded(
-                child: _buildMetricTile(
-                  'Заказов выполнено',
-                  '$completedOrders из $totalOrders',
-                  const Color(0xFF22C55E),
-                  Icons.check_circle_outline,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildMetricTile(
-                  'Средний чек',
-                  _formatCurrency(avgCheck),
-                  const Color(0xFFFFB300),
-                  Icons.calculate_outlined,
                 ),
               ),
             ],
@@ -665,7 +614,6 @@ class _DetailedStatsScreenState extends State<DetailedStatsScreen> {
   ) {
     final totalCompletedCount = monthStats.fold(0, (sum, m) => sum + m.completedProjects.length);
     final totalOrdersCount = monthStats.fold(0, (sum, m) => sum + m.projects.length);
-    final avgTotal = totalCompletedCount == 0 ? 0.0 : totalRevenue / totalCompletedCount;
 
     return Container(
       decoration: BoxDecoration(
@@ -691,7 +639,6 @@ class _DetailedStatsScreenState extends State<DetailedStatsScreen> {
             DataColumn(label: Text('ЗАКАЗОВ')),
             DataColumn(label: Text('ВЫРУЧКА')),
             DataColumn(label: Text('ПРИБЫЛЬ')),
-            DataColumn(label: Text('СРЕДНИЙ ЧЕК')),
           ],
           rows: [
             ...monthStats.map((m) {
@@ -731,12 +678,6 @@ class _DetailedStatsScreenState extends State<DetailedStatsScreen> {
                         fontWeight: FontWeight.bold,
                         color: Color(0xFFFF4081),
                       ),
-                    ),
-                  ),
-                  DataCell(
-                    Text(
-                      _formatCurrency(m.averageCheck),
-                      style: const TextStyle(fontSize: 13, color: Colors.white70),
                     ),
                   ),
                 ],
@@ -784,16 +725,6 @@ class _DetailedStatsScreenState extends State<DetailedStatsScreen> {
                       fontSize: 14,
                       fontWeight: FontWeight.w900,
                       color: Color(0xFFFF4081),
-                    ),
-                  ),
-                ),
-                DataCell(
-                  Text(
-                    _formatCurrency(avgTotal),
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
                     ),
                   ),
                 ),
