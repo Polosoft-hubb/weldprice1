@@ -44,6 +44,9 @@ String normalizeDimensionSeparators(String text) {
 
 /// Filters and ranks items based on intelligent query parsing,
 /// dimension recognition, and relevance scoring.
+///
+/// Keeps partial matches (e.g. "200" and "120" when searching "20"),
+/// but ranks exact dimension matches (e.g. "20x20") at the very top.
 List<T> filterAndRankMaterials<T>({
   required List<T> items,
   required String query,
@@ -79,70 +82,108 @@ List<T> filterAndRankMaterials<T>({
     final nameLower = getName(item).toLowerCase();
     final catLower = getCategory(item).toLowerCase();
     final fullText = '$catLower $nameLower';
-
     final normFullText = normalizeDimensionSeparators(fullText);
+
+    // Verify all query tokens match somewhere in the text (exact or substring)
+    bool allMatched = true;
+    for (final token in rawTokens) {
+      final tokenClean = token.replaceAll(',', '.');
+      if (!fullText.contains(token) &&
+          !normFullText.contains(token) &&
+          !normFullText.contains(tokenClean) &&
+          !fullText.contains(tokenClean)) {
+        allMatched = false;
+        break;
+      }
+    }
+    if (!allMatched) continue;
+
     final textNumbers = RegExp(r'\b\d+(?:[.,]\d+)?\b')
         .allMatches(normFullText)
-        .map((m) => double.tryParse(m.group(0)!.replaceAll(',', '.')))
-        .whereType<double>()
+        .map((m) => m.group(0)!.replaceAll(',', '.'))
         .toList();
+    final availExactNums = List<String>.from(textNumbers);
 
-    bool isMatch = true;
-    int numExactMatches = 0;
-    int wordNameMatches = 0;
-    int wordCatMatches = 0;
+    int score = 0;
 
-    final availNumbers = List<double>.from(textNumbers);
+    // Bonus for whole raw query string being a substring in the name
+    if (nameLower.contains(trimmed.toLowerCase())) {
+      score += 2000;
+    }
 
+    // Token-by-token relevance scoring
     for (final token in rawTokens) {
-      final tokenNum = double.tryParse(token.replaceAll(',', '.'));
+      final tokenClean = token.replaceAll(',', '.');
+      final isNumeric = RegExp(r'^\d+(?:\.\d+)?$').hasMatch(tokenClean);
 
-      if (tokenNum != null) {
-        final matchIdx = availNumbers.indexWhere((n) => (n - tokenNum).abs() < 0.001);
-        if (matchIdx != -1) {
-          availNumbers.removeAt(matchIdx);
-          numExactMatches++;
+      if (isNumeric) {
+        final tokenVal = double.tryParse(tokenClean);
+        if (tokenVal != null) {
+          final exactIdx = availExactNums.indexWhere((n) {
+            final nVal = double.tryParse(n);
+            return nVal != null && (nVal - tokenVal).abs() < 0.001;
+          });
+
+          if (exactIdx != -1) {
+            availExactNums.removeAt(exactIdx);
+            score += 1000; // Exact dimension match gets highest score
+          } else if (textNumbers.any((n) => n.startsWith(tokenClean))) {
+            score += 200; // Prefix match in dimension (e.g. "20" in "200")
+          } else {
+            score += 50;  // Substring match in dimension (e.g. "20" in "120")
+          }
         } else {
-          isMatch = false;
-          break;
+          score += 50;
         }
       } else {
         if (nameLower.contains(token)) {
-          wordNameMatches++;
+          if (RegExp(r'\b' + RegExp.escape(token)).hasMatch(nameLower)) {
+            score += 400; // Exact word boundary match
+          } else {
+            score += 200; // Substring word match
+          }
         } else if (catLower.contains(token)) {
-          wordCatMatches++;
-        } else {
-          isMatch = false;
-          break;
+          score += 100;
         }
       }
     }
 
-    if (isMatch) {
-      int score = 0;
-      score += numExactMatches * 150;
-      score += wordNameMatches * 50;
-      score += wordCatMatches * 20;
+    // Bonus for every dimension in the item that equals any numeric query token
+    // (e.g. 20x20 has two dimensions matching 20 -> gets +1000 bonus!)
+    final numTokens = rawTokens
+        .map((t) => t.replaceAll(',', '.'))
+        .where((t) => RegExp(r'^\d+(?:\.\d+)?$').hasMatch(t))
+        .toList();
 
-      // Bonus if whole raw query is substring in name
-      if (nameLower.contains(trimmed.toLowerCase())) {
-        score += 100;
+    for (final qn in numTokens) {
+      final qnVal = double.tryParse(qn);
+      if (qnVal != null) {
+        for (final tn in textNumbers) {
+          final tnVal = double.tryParse(tn);
+          if (tnVal != null && (tnVal - qnVal).abs() < 0.001) {
+            score += 500;
+          }
+        }
       }
-
-      // Bonus if name starts with any non-numeric word token
-      final wordTokens = rawTokens.where((t) => double.tryParse(t.replaceAll(',', '.')) == null).toList();
-      if (wordTokens.isNotEmpty && wordTokens.any((w) => nameLower.startsWith(w))) {
-        score += 40;
-      }
-
-      // Bonus if number of dimensions requested matches closely
-      final queryNumCount = rawTokens.where((t) => double.tryParse(t.replaceAll(',', '.')) != null).length;
-      if (queryNumCount > 0 && textNumbers.length >= queryNumCount) {
-        score -= (textNumbers.length - queryNumCount) * 5;
-      }
-
-      scored.add(MapEntry(score, item));
     }
+
+    // Bonus if name starts with any word token
+    for (final t in rawTokens) {
+      if (!RegExp(r'^\d').hasMatch(t) && nameLower.startsWith(t)) {
+        score += 150;
+        break;
+      }
+    }
+
+    // Proximity to requested dimension count
+    if (numTokens.isNotEmpty) {
+      final extraDims = textNumbers.length - numTokens.length;
+      if (extraDims > 0) {
+        score -= extraDims * 10;
+      }
+    }
+
+    scored.add(MapEntry(score, item));
   }
 
   scored.sort((a, b) {

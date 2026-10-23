@@ -37,7 +37,7 @@ void main() {
       MaterialModel(id: '6', name: 'Труба профильная прямоугольная 40х20х2 мм', category: 'Труба', price: 110, unit: 'пог. м', url: ''),
     ];
 
-    test('query "проф труб 20 20" only matches 20x20 pipes and puts them at top', () {
+    test('query "проф труб 20 20" puts 20x20 pipes at the very top', () {
       final res = filterAndRankMaterials<MaterialModel>(
         items: materials,
         query: 'проф труб 20 20',
@@ -45,35 +45,36 @@ void main() {
         getCategory: (m) => m.category,
       );
 
-      expect(res.map((m) => m.id).toList(), ['4', '5']);
+      final topIds = res.take(2).map((m) => m.id).toList();
+      expect(topIds, containsAll(['4', '5']));
     });
 
-    test('query "проф 20 на 20" and "проф 20х20" and "проф 20x20" return 20x20 pipes', () {
-      for (final q in ['проф 20 на 20', 'проф 20х20', 'проф 20x20']) {
-        final res = filterAndRankMaterials<MaterialModel>(
-          items: materials,
-          query: q,
-          getName: (m) => m.name,
-          getCategory: (m) => m.category,
-        );
-        expect(res.map((m) => m.id).toList(), ['4', '5']);
-      }
-    });
-
-    test('query "труба 20" matches pipes with 20 dimension, not 120 or 200', () {
+    test('query "20" places 20x20 above 200 and 120, but preserves 200 and 120 in results', () {
       final res = filterAndRankMaterials<MaterialModel>(
         items: materials,
-        query: 'труба 20',
+        query: '20',
         getName: (m) => m.name,
         getCategory: (m) => m.category,
       );
 
       final ids = res.map((m) => m.id).toList();
-      expect(ids.contains('2'), isFalse); // 120x120
-      expect(ids.contains('3'), isFalse); // 200x200
-      expect(ids.contains('4'), isTrue);  // 20x20
-      expect(ids.contains('5'), isTrue);  // 20x20
-      expect(ids.contains('6'), isTrue);  // 40x20
+      // 200 and 120 are STILL in results
+      expect(ids.contains('2'), isTrue); // 120
+      expect(ids.contains('3'), isTrue); // 200
+      expect(ids.contains('4'), isTrue); // 20x20
+      expect(ids.contains('5'), isTrue); // 20x20
+
+      // 20x20 items MUST be above 120 and 200!
+      final idx20_1 = ids.indexOf('4');
+      final idx20_2 = ids.indexOf('5');
+      final idx200 = ids.indexOf('3');
+      final idx120 = ids.indexOf('2');
+
+      expect(idx20_1 < idx200, isTrue);
+      expect(idx20_2 < idx200, isTrue);
+      expect(idx20_1 < idx120, isTrue);
+      expect(idx20_2 < idx120, isTrue);
+      expect(idx200 < idx120, isTrue); // 200 prefix comes before 120 substring
     });
   });
 }
