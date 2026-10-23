@@ -5,6 +5,7 @@ import '../models/project_item.dart';
 import '../models/part_item.dart';
 import '../services/database_helper.dart';
 import '../services/scraper_service.dart';
+import '../utils/search_utils.dart';
 
 class ProjectProvider extends ChangeNotifier {
   final DatabaseHelper _dbHelper = DatabaseHelper.instance;
@@ -50,7 +51,13 @@ class ProjectProvider extends ChangeNotifier {
 
   Future<void> loadProjectMaterials(int projectId) async {
     _projectMaterials = await _dbHelper.getProjectMaterials(projectId);
-    _searchResults = List.from(_projectMaterials);
+    _searchResults = filterAndRankMaterials<MaterialModel>(
+      items: _projectMaterials,
+      query: '',
+      getName: (m) => m.name,
+      getCategory: (m) => m.category,
+      category: 'Все',
+    );
     notifyListeners();
   }
 
@@ -61,35 +68,13 @@ class ProjectProvider extends ChangeNotifier {
 
   // Search materials
   void filterMaterials(String query, {String category = 'Все'}) {
-    List<MaterialModel> temp = List.from(_projectMaterials);
-    
-    // Apply category filter if it is not 'Все'
-    if (category != 'Все') {
-      temp = temp.where((m) => m.category == category).toList();
-    }
-    
-    // Apply search query filter if it is not empty
-    if (query.isNotEmpty) {
-      // Split the search query into lowercase non-empty words/tokens
-      final tokens = query
-          .toLowerCase()
-          .split(RegExp(r'\s+'))
-          .where((token) => token.isNotEmpty)
-          .toList();
-
-      if (tokens.isNotEmpty) {
-        temp = temp.where((m) {
-          final nameLower = m.name.toLowerCase();
-          final categoryLower = m.category.toLowerCase();
-          
-          // Verify that EVERY token matches either the name or the category
-          return tokens.every((token) =>
-              nameLower.contains(token) || categoryLower.contains(token));
-        }).toList();
-      }
-    }
-    
-    _searchResults = temp;
+    _searchResults = filterAndRankMaterials<MaterialModel>(
+      items: _projectMaterials,
+      query: query,
+      getName: (m) => m.name,
+      getCategory: (m) => m.category,
+      category: category,
+    );
     notifyListeners();
   }
 

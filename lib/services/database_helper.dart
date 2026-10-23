@@ -9,6 +9,7 @@ import '../models/project.dart';
 import '../models/project_item.dart';
 import '../models/part_item.dart';
 import '../models/note.dart';
+import '../utils/search_utils.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._init();
@@ -424,12 +425,14 @@ class DatabaseHelper {
     if (kIsWeb) {
       await _initWebData();
       final sorted = List<MaterialModel>.from(_webMaterials!);
-      sorted.sort((a, b) => a.category.compareTo(b.category) != 0 ? a.category.compareTo(b.category) : a.name.compareTo(b.name));
+      sorted.sort((a, b) => a.category.compareTo(b.category) != 0 ? a.category.compareTo(b.category) : naturalCompare(a.name, b.name));
       return sorted;
     }
     final db = await instance.database;
-    final result = await db.query('materials', orderBy: 'category ASC, name ASC');
-    return result.map((json) => MaterialModel.fromJson(json)).toList();
+    final result = await db.query('materials');
+    final list = result.map((json) => MaterialModel.fromJson(json)).toList();
+    list.sort((a, b) => a.category.compareTo(b.category) != 0 ? a.category.compareTo(b.category) : naturalCompare(a.name, b.name));
+    return list;
   }
 
   Future<void> updateMaterialsBatch(List<MaterialModel> materials) async {
@@ -464,7 +467,7 @@ class DatabaseHelper {
           .where((e) => (e['project_id'] as num).toInt() == projectId)
           .map((e) => MaterialModel.fromJson(e))
           .toList();
-      list.sort((a, b) => a.category.compareTo(b.category) != 0 ? a.category.compareTo(b.category) : a.name.compareTo(b.name));
+      list.sort((a, b) => a.category.compareTo(b.category) != 0 ? a.category.compareTo(b.category) : naturalCompare(a.name, b.name));
       return list;
     }
     final db = await instance.database;
@@ -472,28 +475,20 @@ class DatabaseHelper {
       'project_materials',
       where: 'project_id = ?',
       whereArgs: [projectId],
-      orderBy: 'category ASC, name ASC',
     );
-    return result.map((json) => MaterialModel.fromJson(json)).toList();
+    final list = result.map((json) => MaterialModel.fromJson(json)).toList();
+    list.sort((a, b) => a.category.compareTo(b.category) != 0 ? a.category.compareTo(b.category) : naturalCompare(a.name, b.name));
+    return list;
   }
 
   Future<List<MaterialModel>> searchProjectMaterials(int projectId, String query) async {
-    if (kIsWeb) {
-      final all = await getProjectMaterials(projectId);
-      if (query.isEmpty) return all;
-      final lower = query.toLowerCase();
-      return all.where((m) =>
-          m.name.toLowerCase().contains(lower) ||
-          m.category.toLowerCase().contains(lower)).toList();
-    }
-    final db = await instance.database;
-    final result = await db.query(
-      'project_materials',
-      where: 'project_id = ? AND (name LIKE ? OR category LIKE ?)',
-      whereArgs: [projectId, '%$query%', '%$query%'],
-      orderBy: 'category ASC, name ASC',
+    final all = await getProjectMaterials(projectId);
+    return filterAndRankMaterials<MaterialModel>(
+      items: all,
+      query: query,
+      getName: (m) => m.name,
+      getCategory: (m) => m.category,
     );
-    return result.map((json) => MaterialModel.fromJson(json)).toList();
   }
 
   Future<int> updateProjectMaterialPrice(int projectId, String materialId, double newPrice) async {
