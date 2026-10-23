@@ -18,7 +18,8 @@ class MaterialsTab extends StatelessWidget {
   }
 
   void _showEditQuantityDialog(BuildContext context, ProjectItemModel item) {
-    final textController = TextEditingController(text: item.quantity.toString());
+    final qtyController = TextEditingController(text: item.quantity.toString());
+    final priceController = TextEditingController(text: item.price.toStringAsFixed(1).replaceAll(RegExp(r"\.0$"), ""));
     
     showDialog(
       context: context,
@@ -30,19 +31,27 @@ class MaterialsTab extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Единица измерения: ${item.unit}'),
-              Text('Цена за единицу: ${_formatCurrency(item.price)}'),
               if (item.weight > 0) ...[
                 const SizedBox(height: 4),
                 Text('Вес: ${item.weight.toString().replaceAll(RegExp(r"\.0$"), "")} кг/${item.unit} (всего: ${item.totalWeight.toStringAsFixed(1).replaceAll(RegExp(r"\.0$"), "")} кг)'),
               ],
               const SizedBox(height: 16),
               TextField(
-                controller: textController,
+                controller: qtyController,
                 autofocus: true,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 decoration: const InputDecoration(
                   labelText: 'Количество',
-                  hintText: 'Введите новое количество',
+                  hintText: 'Введите количество',
+                ),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: priceController,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                decoration: InputDecoration(
+                  labelText: 'Цена за ${item.unit} (₽)',
+                  hintText: 'Введите цену',
                 ),
               ),
             ],
@@ -54,11 +63,17 @@ class MaterialsTab extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                final double? qty = double.tryParse(textController.text.replaceAll(',', '.').trim());
+                final double? qty = double.tryParse(qtyController.text.replaceAll(',', '.').trim());
+                final double? newPrice = double.tryParse(priceController.text.replaceAll(',', '.').trim());
                 final provider = Provider.of<ProjectProvider>(context, listen: false);
                 Navigator.of(ctx).pop();
-                if (qty != null && qty > 0 && item.id != null) {
-                  provider.updateItemQuantity(item.id!, qty);
+                if (item.id != null) {
+                  if (qty != null && qty > 0) {
+                    provider.updateItemQuantity(item.id!, qty);
+                  }
+                  if (newPrice != null && newPrice >= 0 && newPrice != item.price) {
+                    provider.updateItemPrice(item.id!, newPrice);
+                  }
                 }
               },
               style: ElevatedButton.styleFrom(

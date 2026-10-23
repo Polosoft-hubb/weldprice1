@@ -220,6 +220,16 @@ class ProjectProvider extends ChangeNotifier {
     await selectProject(projectId);
   }
 
+  Future<void> updateItemPrice(int itemId, double price) async {
+    if (_selectedProject == null || _selectedProject!.id == null) return;
+    final projectId = (_selectedProject!.id as num).toInt();
+    
+    await _dbHelper.updateProjectItemPrice(itemId, price);
+    
+    await loadProjects();
+    await selectProject(projectId);
+  }
+
   Future<void> updateItemPaintingArea(int itemId, double area) async {
     if (_selectedProject == null || _selectedProject!.id == null) return;
     final projectId = (_selectedProject!.id as num).toInt();
@@ -269,27 +279,17 @@ class ProjectProvider extends ChangeNotifier {
     await selectProject(projectId);
   }
 
-  // Web Scraping / Synchronization (Project Specific or Global)
+  // Web Scraping / Synchronization (Global Catalog Templates Only)
   Future<void> syncPrices() async {
     _isScraping = true;
     _scrapingError = null;
     notifyListeners();
 
     try {
-      // 1. Scrape newest template prices
+      // 1. Scrape newest template prices for global catalog
       await _scraperService.scrapeAndUpdatePrices();
-      final updatedTemplates = await _dbHelper.getAllMaterials();
       
-      // 2. Batch update this specific project's materials catalog only if an active (not completed) project is selected
-      if (_selectedProject != null && _selectedProject!.id != null && _selectedProject!.status != ProjectStatus.completed) {
-        final projectId = (_selectedProject!.id as num).toInt();
-        await _dbHelper.updateProjectMaterialsBatch(projectId, updatedTemplates);
-        await loadProjectMaterials(projectId);
-        await loadProjects();
-        await selectProject(projectId);
-      }
-      
-      // 3. Reload last update date
+      // 2. Reload last update date
       await loadLastUpdateDate();
       
       _isScraping = false;

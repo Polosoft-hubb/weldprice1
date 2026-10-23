@@ -744,36 +744,21 @@ class DatabaseHelper {
   Future<List<ProjectItemModel>> getProjectItems(int projectId) async {
     if (kIsWeb) {
       await _initWebData();
-      final items = _webProjectItems!.where((element) => (element.projectId as num).toInt() == projectId).toList();
-      
-      // Merge current price from project specific materials
-      final mergedItems = <ProjectItemModel>[];
-      for (final item in items) {
-        final pm = _webProjectMaterials!.firstWhere(
-          (e) => (e['project_id'] as num).toInt() == projectId && e['id'] == item.materialId,
-          orElse: () => {'price': item.price},
-        );
-        final currentPrice = (pm['price'] as num).toDouble();
-        mergedItems.add(item.copyWith(price: currentPrice));
-      }
-      return mergedItems;
+      // Return project items directly with their own fixed/saved prices.
+      // Do not overwrite them dynamically with current catalog prices.
+      return _webProjectItems!
+          .where((element) => (element.projectId as num).toInt() == projectId)
+          .toList();
     }
 
     final db = await instance.database;
-    final result = await db.rawQuery('''
-      SELECT pi.*, pm.price as current_price
-      FROM project_items pi
-      LEFT JOIN project_materials pm ON pi.project_id = pm.project_id AND pi.material_id = pm.material_id
-      WHERE pi.project_id = ?
-    ''', [projectId]);
+    final result = await db.query(
+      'project_items',
+      where: 'project_id = ?',
+      whereArgs: [projectId],
+    );
     
-    return result.map((row) {
-      final map = Map<String, dynamic>.from(row);
-      if (row['current_price'] != null) {
-        map['price'] = row['current_price'];
-      }
-      return ProjectItemModel.fromJson(map);
-    }).toList();
+    return result.map((row) => ProjectItemModel.fromJson(row)).toList();
   }
 
   Future<ProjectItemModel> addProjectItem(ProjectItemModel item) async {
@@ -842,6 +827,27 @@ class DatabaseHelper {
     return await db.update(
       'project_items',
       {'quantity': quantity},
+      where: 'id = ?',
+      whereArgs: [itemId],
+    );
+  }
+
+  Future<int> updateProjectItemPrice(int itemId, double price) async {
+    if (kIsWeb) {
+      await _initWebData();
+      final index = _webProjectItems!.indexWhere((element) => (element.id as num).toInt() == itemId);
+      if (index != -1) {
+        _webProjectItems![index] = _webProjectItems![index].copyWith(price: price);
+        await _saveWebProjectItems();
+        return 1;
+      }
+      return 0;
+    }
+
+    final db = await instance.database;
+    return await db.update(
+      'project_items',
+      {'price': price},
       where: 'id = ?',
       whereArgs: [itemId],
     );
