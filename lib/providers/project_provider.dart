@@ -280,8 +280,8 @@ class ProjectProvider extends ChangeNotifier {
       await _scraperService.scrapeAndUpdatePrices();
       final updatedTemplates = await _dbHelper.getAllMaterials();
       
-      // 2. Batch update this specific project's materials list if a project is selected
-      if (_selectedProject != null && _selectedProject!.id != null) {
+      // 2. Batch update this specific project's materials catalog only if an active (not completed) project is selected
+      if (_selectedProject != null && _selectedProject!.id != null && _selectedProject!.status != ProjectStatus.completed) {
         final projectId = (_selectedProject!.id as num).toInt();
         await _dbHelper.updateProjectMaterialsBatch(projectId, updatedTemplates);
         await loadProjectMaterials(projectId);
