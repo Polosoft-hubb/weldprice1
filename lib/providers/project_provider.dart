@@ -279,7 +279,7 @@ class ProjectProvider extends ChangeNotifier {
     await selectProject(projectId);
   }
 
-  // Web Scraping / Synchronization (Global Catalog Templates Only)
+  // Web Scraping / Synchronization (Catalog Materials)
   Future<void> syncPrices() async {
     _isScraping = true;
     _scrapingError = null;
@@ -288,8 +288,16 @@ class ProjectProvider extends ChangeNotifier {
     try {
       // 1. Scrape newest template prices for global catalog
       await _scraperService.scrapeAndUpdatePrices();
+      final updatedTemplates = await _dbHelper.getAllMaterials();
+
+      // 2. Update catalog materials in open project (does NOT touch project estimate items)
+      if (_selectedProject != null && _selectedProject!.id != null) {
+        final projectId = (_selectedProject!.id as num).toInt();
+        await _dbHelper.updateProjectMaterialsBatch(projectId, updatedTemplates);
+        await loadProjectMaterials(projectId);
+      }
       
-      // 2. Reload last update date
+      // 3. Reload last update date
       await loadLastUpdateDate();
       
       _isScraping = false;

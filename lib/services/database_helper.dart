@@ -281,7 +281,7 @@ class DatabaseHelper {
     // 1. Global Materials
     final int webMaterialsVersion = prefs.getInt('web_materials_version') ?? 0;
     final matsJson = prefs.getString('web_materials');
-    if (matsJson != null && webMaterialsVersion >= 4) {
+    if (matsJson != null && webMaterialsVersion >= 5) {
       final List<dynamic> decoded = json.decode(matsJson);
       _webMaterials = decoded.map((e) => MaterialModel.fromJson(e)).toList();
     } else {
@@ -290,7 +290,7 @@ class DatabaseHelper {
         final List<dynamic> jsonList = json.decode(jsonString);
         _webMaterials = jsonList.map((e) => MaterialModel.fromJson(e)).toList();
         await _saveWebMaterials();
-        await prefs.setInt('web_materials_version', 4);
+        await prefs.setInt('web_materials_version', 5);
       } catch (e) {
         _webMaterials = [];
       }
@@ -358,6 +358,26 @@ class DatabaseHelper {
           return template.id.isNotEmpty ? item.copyWith(weight: template.weight) : item;
         }).toList();
         await _saveWebProjectItems();
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    // Web Migration: Update project materials catalog to fresh prices (does NOT touch project estimate items)
+    if (_webMaterials != null && _webMaterials!.isNotEmpty && webMaterialsVersion < 5) {
+      try {
+        for (var pm in _webProjectMaterials!) {
+          final template = _webMaterials!.firstWhere(
+            (m) => m.id == pm['material_id'] || m.id == pm['id'],
+            orElse: () => MaterialModel(id: '', name: '', url: '', unit: '', price: 0.0, category: ''),
+          );
+          if (template.id.isNotEmpty && template.price > 0) {
+            pm['price'] = template.price;
+            pm['weight'] = template.weight;
+          }
+        }
+        await _saveWebProjectMaterials();
+        await prefs.setInt('web_materials_version', 5);
       } catch (e) {
         // ignore
       }

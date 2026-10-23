@@ -465,6 +465,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             : ElevatedButton(
                                 onPressed: () async {
                                   await provider.syncPrices();
+                                  if (_searchController.text.isNotEmpty || _selectedCategory != 'Все') {
+                                    provider.filterMaterials(_searchController.text, category: _selectedCategory);
+                                  }
                                   if (context.mounted && provider.scrapingError == null) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
