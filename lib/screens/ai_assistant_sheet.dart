@@ -128,7 +128,7 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
               final isSelected = model['id'] == aiProvider.selectedModel;
 
               return ListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 title: Row(
                   children: [
                     Expanded(
@@ -136,21 +136,14 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
                         model['name']!,
                         style: TextStyle(
                           color: isSelected ? const Color(0xFFFF4081) : Colors.white,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                          fontSize: 14,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                          fontSize: 15,
                         ),
                       ),
                     ),
                     if (isSelected)
-                      const Icon(Icons.check_circle, color: Color(0xFFFF4081), size: 18),
+                      const Icon(Icons.check_circle, color: Color(0xFFFF4081), size: 20),
                   ],
-                ),
-                subtitle: Padding(
-                  padding: const EdgeInsets.only(top: 4.0),
-                  child: Text(
-                    model['desc']!,
-                    style: const TextStyle(color: Colors.white60, fontSize: 12),
-                  ),
                 ),
                 onTap: () {
                   aiProvider.setSelectedModel(model['id']!);
