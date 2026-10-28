@@ -138,16 +138,16 @@ class AIAssistantService {
       '1. Отвечай кратко, понятно, профессионально и по делу.\n'
       '2. Используй Markdown (жирный шрифт, списки, таблицы) для читаемости смет и расчетов.\n'
       '3. Учитывай стандартные длины проката (хлысты по 6 или 12 м) и запас на рез/обрезки (5-10%).\n'
-      '4. ВАЖНО: Если ты предлагаешь конкретные материалы для добавления в смету, '
-      'всегда в конце ответа приводи специальный JSON-блок в тегах ```weldprice_materials, '
-      'чтобы пользователь мог в 1 клик добавить их в проект:\n'
+      '4. ВАЖНО: Если ты предлагаешь материалы и расходники (трубы, электроды, диски, краску, грунтовку, крепеж) для добавления в смету, '
+      'всегда в конце ответа приводи специальный JSON-блок в тегах ```weldprice_materials с реалистичной ценой price за единицу:\n'
       '```weldprice_materials\n'
       '[\n'
-      '  {"name": "Труба профильная 40х40х2 мм", "quantity": 36.0, "unit": "пог. м"},\n'
-      '  {"name": "Труба профильная 80х80х3 мм", "quantity": 18.0, "unit": "пог. м"}\n'
+      '  {"name": "Труба профильная 40х40х2 мм", "quantity": 36.0, "unit": "пог. м", "price": 160.0},\n'
+      '  {"name": "Электроды сварочные УОНИ 13/45, Ø 3 мм", "quantity": 5.0, "unit": "кг", "price": 450.0},\n'
+      '  {"name": "Диск отрезной по металлу 125х1.6х22.2 мм", "quantity": 10.0, "unit": "шт", "price": 45.0}\n'
       ']\n'
       '```\n'
-      'Этот блок интерфейс автоматически преобразует в кнопки добавления.'
+      'Этот блок интерфейс автоматически преобразует в кнопки добавления в смету.'
     );
 
     return buffer.toString();
@@ -193,10 +193,6 @@ class AIAssistantService {
     final apiKey = await getApiKey();
 
     // Ranked list of fast, verified working models on OpenRouter
-    // 1. nvidia/nemotron-3.5-super-vl:free (consistently answers in 4-5s!)
-    // 2. nvidia/nemotron-3.5-lightning:free (fast reasoning model)
-    // 3. nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free
-    // 4. nvidia/nemotron-3-ultra-550b-a55b:free
     final orCandidates = [
       'nvidia/nemotron-3.5-super-vl:free',
       'nvidia/nemotron-3.5-lightning:free',
@@ -227,7 +223,6 @@ class AIAssistantService {
           if (choices != null && choices.isNotEmpty) {
             final msgObj = choices[0]['message'];
             if (msgObj is Map) {
-              // Extract content or reasoning or reasoning_content
               final contentStr = msgObj['content']?.toString() ?? '';
               final reasoningStr = msgObj['reasoning']?.toString() ??
                                    msgObj['reasoning_content']?.toString() ?? '';
@@ -245,7 +240,7 @@ class AIAssistantService {
       }
     }
 
-    // Secondary fallback: Pollinations backend (from Start_Antigravity_UI.bat server.py)
+    // Secondary fallback: Pollinations backend
     if (responseText == null || responseText.trim().isEmpty) {
       try {
         final pollResp = await http.post(

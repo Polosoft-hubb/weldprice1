@@ -208,7 +208,7 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
                 ),
               ),
 
-              // Header (Clean, professional, without key disclosure or badges)
+              // Header
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
                 child: Row(
@@ -640,7 +640,9 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
                             ),
                             const SizedBox(height: 2),
                             Text(
-                              'Количество: ${mat.quantity} ${mat.unit}',
+                              mat.price != null && mat.price! > 0
+                                  ? 'Количество: ${mat.quantity} ${mat.unit} • ${mat.price!.toStringAsFixed(0)} ₽'
+                                  : 'Количество: ${mat.quantity} ${mat.unit}',
                               style: const TextStyle(color: Colors.white70, fontSize: 12),
                             ),
                           ],

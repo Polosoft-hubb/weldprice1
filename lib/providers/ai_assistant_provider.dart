@@ -122,46 +122,68 @@ class AIAssistantProvider extends ChangeNotifier {
     }
 
     final catalog = projectProvider.projectMaterials;
-    if (catalog.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Каталог материалов пуст')),
-      );
-      return false;
-    }
 
     // Try finding the best matching material in the catalog using intelligent ranking
-    final searchMatches = filterAndRankMaterials<MaterialModel>(
-      items: catalog,
-      query: item.name,
-      getName: (m) => m.name,
-      getCategory: (m) => m.category,
-    );
-
-    MaterialModel targetMat;
-    if (searchMatches.isNotEmpty) {
-      targetMat = searchMatches.first;
-    } else {
-      targetMat = catalog.first;
-    }
-
-    final matToAdd = item.price != null
-        ? MaterialModel(
-            id: targetMat.id,
-            name: targetMat.name,
-            url: targetMat.url,
-            unit: targetMat.unit,
-            price: item.price!,
-            category: targetMat.category,
-            weight: targetMat.weight,
+    final searchMatches = catalog.isNotEmpty
+        ? filterAndRankMaterials<MaterialModel>(
+            items: catalog,
+            query: item.name,
+            getName: (m) => m.name,
+            getCategory: (m) => m.category,
           )
-        : targetMat;
+        : <MaterialModel>[];
+
+    MaterialModel matToAdd;
+    if (searchMatches.isNotEmpty) {
+      final targetMat = searchMatches.first;
+      matToAdd = item.price != null
+          ? MaterialModel(
+              id: targetMat.id,
+              name: targetMat.name,
+              url: targetMat.url,
+              unit: targetMat.unit,
+              price: item.price!,
+              category: targetMat.category,
+              weight: targetMat.weight,
+            )
+          : targetMat;
+    } else {
+      // Consumables, fasteners or custom items not present in the metal catalog
+      // Add with their EXACT name, unit, and price (never replace with Armatura!)
+      final customId = 'custom_${DateTime.now().millisecondsSinceEpoch}_${item.name.hashCode.abs()}';
+      double price = item.price ?? 0.0;
+      if (price <= 0.0) {
+        final lower = item.name.toLowerCase();
+        if (lower.contains('электрод')) {
+          price = 450.0;
+        } else if (lower.contains('диск')) {
+          price = 50.0;
+        } else if (lower.contains('грунтовк') || lower.contains('эмал') || lower.contains('краск')) {
+          price = 400.0;
+        } else if (lower.contains('болт') || lower.contains('анкер') || lower.contains('саморез')) {
+          price = 35.0;
+        } else if (lower.contains('петл')) {
+          price = 250.0;
+        }
+      }
+
+      matToAdd = MaterialModel(
+        id: customId,
+        name: item.name,
+        url: '',
+        unit: item.unit.isNotEmpty ? item.unit : 'шт',
+        price: price,
+        category: 'Расходные материалы',
+        weight: 0.0,
+      );
+    }
 
     await projectProvider.addMaterialToProject(matToAdd, item.quantity);
 
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('✓ Добавлено в смету: ${targetMat.name} (${item.quantity} ${item.unit})'),
+          content: Text('✓ Добавлено в смету: ${matToAdd.name} (${item.quantity} ${matToAdd.unit})'),
           backgroundColor: const Color(0xFF2E7D32),
           duration: const Duration(seconds: 3),
         ),
