@@ -72,6 +72,14 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
     });
   }
 
+  void _pasteToInput(String text) {
+    _textController.text = text;
+    _textController.selection = TextSelection.fromPosition(
+      TextPosition(offset: _textController.text.length),
+    );
+    _focusNode.requestFocus();
+  }
+
   void _sendMessage(String text) {
     final trimmed = text.trim();
     if (trimmed.isEmpty) return;
@@ -462,7 +470,7 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   backgroundColor: const Color(0xFF1A1A1A),
                 ),
-                onPressed: () => _sendMessage(item['prompt']!),
+                onPressed: () => _pasteToInput(item['prompt']!),
                 child: Row(
                   children: [
                     Expanded(
@@ -695,151 +703,127 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
     final currentProject = projectProvider.selectedProject;
     final projects = projectProvider.projects;
 
-    final actions = <_ActionItem>[];
+    final actions = <_ActionItem>[
+      // 1. Смета
+      _ActionItem(
+        icon: Icons.receipt_long_rounded,
+        label: 'Смета',
+        badge: currentProject != null ? '${currentProject.items.length}' : null,
+        color: const Color(0xFFFF4081),
+        onTap: () {
+          if (currentProject != null) {
+            final buffer = StringBuffer();
+            buffer.writeln('Проект: ${currentProject.name}');
+            buffer.writeln('Смета:');
+            if (currentProject.items.isNotEmpty) {
+              for (int i = 0; i < currentProject.items.length; i++) {
+                final it = currentProject.items[i];
+                buffer.writeln(
+                  '${i + 1}. ${it.name} — ${it.quantity} ${it.unit} '
+                  '(${it.totalPrice.toStringAsFixed(0)} ₽, вес: ${it.totalWeight.toStringAsFixed(1)} кг)',
+                );
+              }
+            } else {
+              buffer.writeln('(позиции не добавлены)');
+            }
+            buffer.writeln('Материалы: ${currentProject.materialsCost.toStringAsFixed(0)} ₽');
+            buffer.writeln('Работы: ${currentProject.workCost.toStringAsFixed(0)} ₽');
+            buffer.writeln('Расходники: ${currentProject.consumablesCost.toStringAsFixed(0)} ₽');
+            if (currentProject.isPaintingEnabled) {
+              buffer.writeln('Покраска: ${currentProject.totalPaintingCost.toStringAsFixed(0)} ₽');
+            }
+            buffer.writeln('Итого: ${currentProject.totalPrice.toStringAsFixed(0)} ₽');
+            buffer.write('Общий вес: ${currentProject.totalWeight.toStringAsFixed(1)} кг');
+            _pasteToInput(buffer.toString());
+          } else {
+            _pasteToInput('Проект не выбран.');
+          }
+        },
+      ),
 
-    // 1. Смета проекта
-    if (currentProject != null) {
-      actions.add(
-        _ActionItem(
-          icon: Icons.receipt_long_rounded,
-          label: 'Смета',
-          badge: '${currentProject.items.length}',
-          color: const Color(0xFFFF4081),
-          onTap: () {
-            final itemsDesc = currentProject.items.isNotEmpty
-                ? currentProject.items
-                    .map((it) => '• ${it.name} — ${it.quantity} ${it.unit} (${it.price.toStringAsFixed(0)} ₽, вес: ${it.totalWeight.toStringAsFixed(1)} кг)')
-                    .join('\n')
-                : 'В смете пока нет добавленных позиций.';
-            final prompt =
-                'Проанализируй смету проекта "${currentProject.name}":\n'
-                '- Позиций: ${currentProject.items.length}\n'
-                '- Стоимость материалов: ${currentProject.materialsCost.toStringAsFixed(0)} ₽\n'
-                '- Работы: ${currentProject.workCost.toStringAsFixed(0)} ₽\n'
-                '- Расходники (5%): ${currentProject.consumablesCost.toStringAsFixed(0)} ₽\n'
-                '${currentProject.isPaintingEnabled ? "- Покраска: ${currentProject.totalPaintingCost.toStringAsFixed(0)} ₽\n" : ""}'
-                '- Итого клиенту: ${currentProject.totalPrice.toStringAsFixed(0)} ₽\n'
-                '- Общий расчетный вес: ${currentProject.totalWeight.toStringAsFixed(1)} кг\n\n'
-                'Состав сметы:\n$itemsDesc\n\n'
-                'Дай профессиональную оценку: всё ли учтено, нет ли ошибок в расчетах и какие позиции или работы нужно предусмотреть?';
-            _sendMessage(prompt);
-          },
-        ),
-      );
-    } else {
-      actions.add(
-        _ActionItem(
-          icon: Icons.receipt_long_rounded,
-          label: 'Смета',
-          color: const Color(0xFFFF4081),
-          onTap: () {
-            _sendMessage('Как правильно составить смету на металлоконструкцию: структура затрат, коэффициенты на работу и непредвиденные расходы?');
-          },
-        ),
-      );
-    }
+      // 2. Материалы
+      _ActionItem(
+        icon: Icons.inventory_2_outlined,
+        label: 'Материалы',
+        badge: currentProject != null ? '${currentProject.items.length}' : null,
+        color: const Color(0xFF29B6F6),
+        onTap: () {
+          if (currentProject != null) {
+            final buffer = StringBuffer();
+            buffer.writeln('Материалы по проекту "${currentProject.name}":');
+            if (currentProject.items.isNotEmpty) {
+              for (int i = 0; i < currentProject.items.length; i++) {
+                final it = currentProject.items[i];
+                buffer.writeln(
+                  '${i + 1}. ${it.name}: ${it.quantity} ${it.unit} '
+                  '(${it.totalPrice.toStringAsFixed(0)} ₽, вес: ${it.totalWeight.toStringAsFixed(1)} кг)',
+                );
+              }
+            } else {
+              buffer.writeln('(список материалов пуст)');
+            }
+            buffer.write('Общий вес металлопроката: ${currentProject.totalWeight.toStringAsFixed(1)} кг');
+            _pasteToInput(buffer.toString());
+          } else {
+            _pasteToInput('Проект не выбран.');
+          }
+        },
+      ),
 
-    // 2. Материалы
-    if (currentProject != null) {
-      actions.add(
-        _ActionItem(
-          icon: Icons.inventory_2_outlined,
-          label: 'Материалы',
-          badge: '${currentProject.items.length}',
-          color: const Color(0xFF29B6F6),
-          onTap: () {
-            final itemsList = currentProject.items.isNotEmpty
-                ? currentProject.items
-                    .map((it) => '- ${it.name}: ${it.quantity} ${it.unit} (${it.totalWeight.toStringAsFixed(1)} кг)')
-                    .join('\n')
-                : 'Список пуст.';
-            final prompt =
-                'Составь подробную ведомость материалов для закупки по проекту "${currentProject.name}":\n'
-                'Текущие позиции:\n$itemsList\n'
-                'Общий вес металлопроката: ${currentProject.totalWeight.toStringAsFixed(1)} кг.\n\n'
-                'Укажи запас на рез (5-7%), стандартную длину хлыстов для заказа (обычно 6 м) и проверь правильность подбора сечений.';
-            _sendMessage(prompt);
-          },
-        ),
-      );
-    } else {
-      actions.add(
-        _ActionItem(
-          icon: Icons.inventory_2_outlined,
-          label: 'Материалы',
-          color: const Color(0xFF29B6F6),
-          onTap: () {
-            _sendMessage('Какие основные профильные трубы и металлопрокат используются в строительстве и навесах, и как рассчитывать запас на раскрой?');
-          },
-        ),
-      );
-    }
+      // 3. Покраска и вес
+      _ActionItem(
+        icon: Icons.format_paint_outlined,
+        label: 'Покраска и вес',
+        color: const Color(0xFFFFA726),
+        onTap: () {
+          if (currentProject != null) {
+            final buffer = StringBuffer();
+            buffer.writeln('Покраска и вес проекта "${currentProject.name}":');
+            buffer.writeln('Общий вес металла: ${currentProject.totalWeight.toStringAsFixed(1)} кг');
+            buffer.writeln('Площадь покраски: ${currentProject.totalPaintingArea.toStringAsFixed(1)} м²');
+            buffer.writeln('Расход краски: ${currentProject.paintConsumption} кг/м²');
+            buffer.writeln('Количество банок: ${currentProject.cansNeeded} шт (по ${currentProject.paintCanWeight} кг)');
+            buffer.write('Стоимость покраски: ${currentProject.totalPaintingCost.toStringAsFixed(0)} ₽');
+            _pasteToInput(buffer.toString());
+          } else {
+            _pasteToInput('Проект не выбран.');
+          }
+        },
+      ),
 
-    // 3. Покраска и вес
-    if (currentProject != null) {
-      actions.add(
-        _ActionItem(
-          icon: Icons.format_paint_outlined,
-          label: 'Покраска и вес',
-          color: const Color(0xFFFFA726),
-          onTap: () {
-            final prompt =
-                'Рассчитай покраску и вес для проекта "${currentProject.name}":\n'
-                '- Общий вес металла: ${currentProject.totalWeight.toStringAsFixed(1)} кг\n'
-                '- Общая площадь покраски: ${currentProject.totalPaintingArea.toStringAsFixed(1)} м²\n'
-                '- Расход краски: ${currentProject.paintConsumption} кг/м²\n'
-                '- Нужно банок краски: ${currentProject.cansNeeded} (по ${currentProject.paintCanWeight} кг)\n'
-                '- Стоимость покрасочных материалов: ${currentProject.totalPaintingCost.toStringAsFixed(0)} ₽\n\n'
-                'Порекомендуй оптимальную грунт-эмаль (например 3-в-1 или раздельно грунт ГФ-021 + эмаль), растворитель и технологию подготовки (обезжиривание, зачистка швов).';
-            _sendMessage(prompt);
-          },
-        ),
-      );
-    } else {
-      actions.add(
-        _ActionItem(
-          icon: Icons.format_paint_outlined,
-          label: 'Покраска и вес',
-          color: const Color(0xFFFFA726),
-          onTap: () {
-            _sendMessage('Как быстро рассчитать площадь окрашиваемой поверхности металлопроката и расход грунтовки и эмали на 1 м²?');
-          },
-        ),
-      );
-    }
-
-    // 4. Статистика проекта
-    if (currentProject != null) {
-      actions.add(
-        _ActionItem(
-          icon: Icons.analytics_outlined,
-          label: 'Статистика проекта',
-          color: const Color(0xFF66BB6A),
-          onTap: () {
+      // 4. Статистика проекта
+      _ActionItem(
+        icon: Icons.analytics_outlined,
+        label: 'Статистика проекта',
+        color: const Color(0xFF66BB6A),
+        onTap: () {
+          if (currentProject != null) {
             final pricePerKg = currentProject.totalWeight > 0
                 ? (currentProject.totalPrice / currentProject.totalWeight).toStringAsFixed(0)
                 : '0';
-            final prompt =
-                'Дай экономическую и техническую оценку проекта "${currentProject.name}":\n'
-                '- Статус: ${ProjectStatus.getLabel(currentProject.status)}\n'
-                '- Стоимость материалов: ${currentProject.materialsCost.toStringAsFixed(0)} ₽\n'
-                '- Стоимость работ: ${currentProject.workCost.toStringAsFixed(0)} ₽ (коэфф. сложности ${currentProject.complexity})\n'
-                '- Расходники (5%): ${currentProject.consumablesCost.toStringAsFixed(0)} ₽\n'
-                '- Итого клиенту: ${currentProject.totalPrice.toStringAsFixed(0)} ₽\n'
-                '- Общий вес: ${currentProject.totalWeight.toStringAsFixed(1)} кг\n'
-                '- Цена за 1 кг готового изделия: $pricePerKg ₽/кг\n\n'
-                'Оцени адекватность расценки за работу, маржинальность и подскажи, как обосновать смету заказчику.';
-            _sendMessage(prompt);
-          },
-        ),
-      );
-    }
+            final buffer = StringBuffer();
+            buffer.writeln('Статистика проекта "${currentProject.name}":');
+            buffer.writeln('Статус: ${ProjectStatus.getLabel(currentProject.status)}');
+            buffer.writeln('Материалы: ${currentProject.materialsCost.toStringAsFixed(0)} ₽');
+            buffer.writeln('Работы: ${currentProject.workCost.toStringAsFixed(0)} ₽ (коэфф. ${currentProject.complexity})');
+            buffer.writeln('Расходники: ${currentProject.consumablesCost.toStringAsFixed(0)} ₽');
+            if (currentProject.isPaintingEnabled) {
+              buffer.writeln('Покраска: ${currentProject.totalPaintingCost.toStringAsFixed(0)} ₽');
+            }
+            buffer.writeln('Итого клиенту: ${currentProject.totalPrice.toStringAsFixed(0)} ₽');
+            buffer.writeln('Общий вес: ${currentProject.totalWeight.toStringAsFixed(1)} кг');
+            buffer.write('Цена за 1 кг изделия: $pricePerKg ₽/кг');
+            _pasteToInput(buffer.toString());
+          } else {
+            _pasteToInput('Проект не выбран.');
+          }
+        },
+      ),
 
-    // 5. Общая статистика цеха (из главного меню!)
-    actions.add(
+      // 5. Статистика проектов (из главного меню)
       _ActionItem(
         icon: Icons.query_stats_rounded,
-        label: 'Статистика цеха',
+        label: 'Статистика проектов',
         badge: '${projects.length}',
         color: const Color(0xFFAB47BC),
         onTap: () {
@@ -851,57 +835,17 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
           final inProgressRevenue = inProgress.fold(0.0, (sum, p) => sum + p.totalPrice);
           final avgCheck = completed.isNotEmpty ? completedRevenue / completed.length : 0.0;
 
-          final prompt =
-              'Сделай анализ общей статистики сварочного цеха по всем проектам:\n'
-              '- Всего проектов в базе: ${projects.length}\n'
-              '- Завершено заказов: ${completed.length} (общая выручка: ${completedRevenue.toStringAsFixed(0)} ₽, чистая оплата работ: ${completedProfit.toStringAsFixed(0)} ₽)\n'
-              '- Проектов в работе: ${inProgress.length} (на сумму: ${inProgressRevenue.toStringAsFixed(0)} ₽)\n'
-              '- Отклонено / отказов: ${rejected.length}\n'
-              '- Средний чек выполненного заказа: ${avgCheck.toStringAsFixed(0)} ₽\n\n'
-              'Дай аналитический отчет: оценку эффективности цеха, конверсию сделок и 3-4 практических совета по повышению прибыли и сокращению издержек.';
-          _sendMessage(prompt);
+          final buffer = StringBuffer();
+          buffer.writeln('Общая статистика проектов:');
+          buffer.writeln('Всего проектов: ${projects.length}');
+          buffer.writeln('В работе: ${inProgress.length} (на сумму ${inProgressRevenue.toStringAsFixed(0)} ₽)');
+          buffer.writeln('Завершено: ${completed.length} (выручка: ${completedRevenue.toStringAsFixed(0)} ₽, прибыль с работ: ${completedProfit.toStringAsFixed(0)} ₽)');
+          buffer.writeln('Отклонено: ${rejected.length}');
+          buffer.write('Средний чек: ${avgCheck.toStringAsFixed(0)} ₽');
+          _pasteToInput(buffer.toString());
         },
       ),
-    );
-
-    // 6. Расходники и метизы
-    actions.add(
-      _ActionItem(
-        icon: Icons.build_outlined,
-        label: 'Расходники',
-        color: const Color(0xFF26A69A),
-        onTap: () {
-          if (currentProject != null) {
-            final prompt =
-                'Рассчитай и предложи конкретный список расходных материалов для проекта "${currentProject.name}" (вес металла: ${currentProject.totalWeight.toStringAsFixed(1)} кг):\n'
-                '- Сварочные электроды или проволока для полуавтомата\n'
-                '- Отрезные и зачистные диски 125 мм\n'
-                '- Заглушки пластиковые для профильных труб\n'
-                '- Крепеж (анкеры, кровельные саморезы, болты)\n\n'
-                'Обязательно добавь блок weldprice_materials с ценами, чтобы я мог добавить их в смету в 1 клик!';
-            _sendMessage(prompt);
-          } else {
-            _sendMessage('Какие расходные материалы (электроды, круги, перчатки, герметик, крепеж) и в каком количестве обычно закладываются на типовой металлокаркас? Добавь блок weldprice_materials.');
-          }
-        },
-      ),
-    );
-
-    // 7. Раскрой 6м
-    actions.add(
-      _ActionItem(
-        icon: Icons.content_cut_rounded,
-        label: 'Раскрой 6м',
-        color: const Color(0xFFFF7043),
-        onTap: () {
-          if (currentProject != null) {
-            _sendMessage('Помоги с раскроем проката для проекта "${currentProject.name}". Как с минимальным остатком порезать профильные трубы из стандартных хлыстов 6 м, учитывая толщину реза диска 2-3 мм?');
-          } else {
-            _sendMessage('Как правильно составить карту раскроя профильных труб из хлыстов 6 метров, чтобы минимизировать деловой остаток и отходы?');
-          }
-        },
-      ),
-    );
+    ];
 
     return Container(
       height: 42,
