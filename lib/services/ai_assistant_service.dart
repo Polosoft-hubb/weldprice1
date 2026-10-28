@@ -18,14 +18,24 @@ class AIAssistantService {
   static String get defaultApiKey =>
       utf8.decode(base64.decode('c2stb3ItdjEtZDA4ZTM2Yzc0ZTEzYjg4MjE4NDI0YjcyMDMyYzVmNTI5OTc0MjNlOThkNjc3NmVlMDNjNmNmNzQyMjAzZjMxNg=='));
 
-  // 3 real, active models used in WELDPRICE AI
+  // Models used in WELDPRICE AI
   static const List<Map<String, String>> availableModels = [
     {
+      'id': 'pollinations-openai',
+      'name': 'Studio Engine (Основная, стабильная)',
+      'shortName': 'Studio Engine',
+      'category': 'Antigravity Studio',
+      'desc': 'Надёжный движок из вашей Antigravity Studio: полные таблицы расчётов, вес и сметы (~12-18 сек).',
+      'persona': 'Ты — WELDPRICE AI, профессиональный инженер-сметчик и металлоконструктор. Отвечай глубоко, точно, структурированно, оформляй расчеты в аккуратные Markdown-таблицы.',
+      'remoteModel': 'openai-fast',
+      'backend': 'pollinations',
+    },
+    {
       'id': 'dots-studio',
-      'name': 'Dots Studio (Основная, ~1 сек)',
+      'name': 'Dots Studio (Быстрый чат)',
       'shortName': 'Dots Studio',
       'category': 'OpenRouter',
-      'desc': 'Основная скоростная модель: моментальный расчет смет, веса металлопроката и сортаментов по ГОСТ (~1.2 сек).',
+      'desc': 'Экспериментальная скоростная модель OpenRouter для коротких ответов.',
       'persona': 'Ты — WELDPRICE AI, профессиональный инженер-сметчик и металлоконструктор. Отвечай глубоко, точно, лаконично и структурированно.',
       'remoteModel': 'dots-studio/dots-3-note-preview:free',
       'backend': 'openrouter',
@@ -35,24 +45,14 @@ class AIAssistantService {
       'name': 'Nvidia Nemotron 550B (Инженерная)',
       'shortName': 'Nemotron 550B',
       'category': 'OpenRouter / Nvidia',
-      'desc': 'Тяжелая флагманская модель на 550 млрд параметров: глубокий инженерный аудит смет, сложных конструкций и нагрузок.',
+      'desc': 'Тяжелая флагманская 550B модель Nvidia для сложных инженерных чертежей.',
       'persona': 'Ты — старший инженер WELDPRICE AI на базе 550B-модели Nvidia Nemotron. Проводи глубокий инженерный анализ смет и конструкций.',
       'remoteModel': 'nvidia/nemotron-3-ultra-550b-a55b:free',
       'backend': 'openrouter',
     },
-    {
-      'id': 'pollinations-openai',
-      'name': 'OpenAI Fast (Шлюз Antigravity Studio)',
-      'shortName': 'Studio Engine',
-      'category': 'Antigravity Studio',
-      'desc': 'Автономный шлюз напрямую из вашей Antigravity Studio: резервный канал без ограничений ключа.',
-      'persona': 'Ты — инженер WELDPRICE AI на базе шлюза Antigravity Studio. Рассчитывай металлоконструкции и сметы быстро, точно и профессионально.',
-      'remoteModel': 'openai-fast',
-      'backend': 'pollinations',
-    },
   ];
 
-  static const String defaultModel = 'dots-studio';
+  static const String defaultModel = 'pollinations-openai';
 
   Future<String> getApiKey() async {
     final prefs = await SharedPreferences.getInstance();
@@ -212,7 +212,7 @@ class AIAssistantService {
             'messages': messages,
             'temperature': 0.3,
           }),
-        ).timeout(const Duration(seconds: 15));
+        ).timeout(const Duration(seconds: 40));
 
         if (polResp.statusCode == 200) {
           final decoded = jsonDecode(utf8.decode(polResp.bodyBytes));
@@ -304,7 +304,7 @@ class AIAssistantService {
             'messages': messages,
             'temperature': 0.3,
           }),
-        ).timeout(const Duration(seconds: 15));
+        ).timeout(const Duration(seconds: 40));
 
         if (polResp.statusCode == 200) {
           final decoded = jsonDecode(utf8.decode(polResp.bodyBytes));

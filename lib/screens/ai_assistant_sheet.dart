@@ -689,10 +689,7 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
               ),
             ),
             SizedBox(width: 12),
-            Text(
-              'WELDPRICE AI считает...',
-              style: TextStyle(color: Colors.white70, fontSize: 13),
-            ),
+            Text('WELDPRICE AI выполняет расчёт (~10-15 сек)...', style: TextStyle(color: Colors.white70, fontSize: 13)),
           ],
         ),
       ),
