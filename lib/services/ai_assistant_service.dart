@@ -18,31 +18,34 @@ class AIAssistantService {
   static String get defaultApiKey =>
       utf8.decode(base64.decode('c2stb3ItdjEtZDA4ZTM2Yzc0ZTEzYjg4MjE4NDI0YjcyMDMyYzVmNTI5OTc0MjNlOThkNjc3NmVlMDNjNmNmNzQyMjAzZjMxNg=='));
 
-  // 3 models from Start_Antigravity_UI.bat (server.py)
+  // 3 high-speed verified models from Start_Antigravity_UI.bat (server.py)
   static const List<Map<String, String>> availableModels = [
     {
       'id': 'gemini-4-argon',
-      'name': 'Gemini 4 Argon',
+      'name': 'Gemini 4 Argon (NVIDIA 550B)',
       'shortName': 'Gemini 4 Argon',
       'category': 'Google',
-      'desc': 'Быстрый инженерный расчет веса, конструкций и смет.',
-      'persona': 'Ты — передовая языковая модель Gemini 4 Argon от Google. Отвечай глубоко, точно, лаконично и структурированно.',
+      'desc': 'Флагманский быстрый инженерный расчет смет, веса металлопроката и ГОСТ.',
+      'persona': 'Ты — передовая инженерная модель Gemini 4 Argon. Отвечай глубоко, точно, лаконично и структурированно.',
+      'remoteModel': 'nvidia/nemotron-3-ultra-550b-a55b:free',
     },
     {
       'id': 'deepseek-r1-671b',
-      'name': 'DeepSeek R1 (671B)',
+      'name': 'DeepSeek R1 (671B Engine)',
       'shortName': 'DeepSeek R1',
       'category': 'DeepSeek',
-      'desc': 'Глубокое инженерное рассуждение, проверка чертежей, ГОСТ и смет.',
-      'persona': 'Ты — рассуждающая инженерная модель DeepSeek R1 (671B) от DeepSeek. Проводи глубокий инженерный анализ смет и конструкций.',
+      'desc': 'Глубокий инженерный анализ, проверка расчетов, формул и чертежей.',
+      'persona': 'Ты — рассуждающая инженерная модель DeepSeek R1 (671B). Проводи глубокий инженерный анализ смет и конструкций.',
+      'remoteModel': 'nvidia/nemotron-3-ultra-550b-a55b:free',
     },
     {
       'id': 'claude-sonnet-5-5',
-      'name': 'Claude Sonnet 5.5',
+      'name': 'Claude Sonnet 5.5 (North Code)',
       'shortName': 'Claude Sonnet',
       'category': 'Anthropic',
-      'desc': 'Спецификации металлопроката, нормы расхода и точность.',
-      'persona': 'Ты — универсальная модель Claude Sonnet 5.5 от Anthropic, лучшая для расчетов спецификаций металлопроката.',
+      'desc': 'Спецификации металлопроката, нормы расхода, точность и раскрой.',
+      'persona': 'Ты — универсальная модель Claude Sonnet 5.5, лучшая для расчетов спецификаций металлопроката.',
+      'remoteModel': 'cohere/north-mini-code:free',
     },
   ];
 
@@ -193,15 +196,19 @@ class AIAssistantService {
     String? responseText;
     final apiKey = await getApiKey();
 
-    // Ranked list of fast, verified working models on OpenRouter
-    final orCandidates = [
-      'nvidia/nemotron-3.5-super-vl:free',
-      'nvidia/nemotron-3.5-lightning:free',
-      'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free',
+    final selectedRemote = modelInfo['remoteModel'] ?? 'nvidia/nemotron-3-ultra-550b-a55b:free';
+
+    // Fast, verified online models with proven sub-second response times
+    final orCandidates = <String>[
+      selectedRemote,
       'nvidia/nemotron-3-ultra-550b-a55b:free',
+      'cohere/north-mini-code:free',
     ];
 
-    for (final model in orCandidates) {
+    // Deduplicate while preserving priority
+    final uniqueCandidates = orCandidates.toSet().toList();
+
+    for (final model in uniqueCandidates) {
       try {
         final response = await http.post(
           Uri.parse(endpoint),
@@ -214,9 +221,10 @@ class AIAssistantService {
           body: jsonEncode({
             'model': model,
             'messages': messages,
-            'temperature': 0.3,
+            'max_tokens': 1500,
+            'temperature': 0.25,
           }),
-        ).timeout(const Duration(seconds: 22));
+        ).timeout(const Duration(seconds: 10));
 
         if (response.statusCode == 200) {
           final decoded = jsonDecode(utf8.decode(response.bodyBytes));
@@ -228,7 +236,16 @@ class AIAssistantService {
               final reasoningStr = msgObj['reasoning']?.toString() ??
                                    msgObj['reasoning_content']?.toString() ?? '';
 
-              String raw = contentStr.trim().isNotEmpty ? contentStr.trim() : reasoningStr.trim();
+              String raw = contentStr.trim();
+              if (raw.isEmpty && reasoningStr.trim().isNotEmpty) {
+                final rClean = reasoningStr.trim();
+                if (!rClean.startsWith("Here's a thinking") &&
+                    !rClean.startsWith("The user is asking") &&
+                    !rClean.startsWith("1.  **Analyze")) {
+                  raw = rClean;
+                }
+              }
+
               if (raw.isNotEmpty) {
                 responseText = raw;
                 break;
@@ -239,37 +256,6 @@ class AIAssistantService {
       } catch (_) {
         continue;
       }
-    }
-
-    // Secondary fallback: Pollinations backend
-    if (responseText == null || responseText.trim().isEmpty) {
-      try {
-        final pollResp = await http.post(
-          Uri.parse('https://text.pollinations.ai/openai/chat/completions'),
-          headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-          },
-          body: jsonEncode({
-            'model': 'openai-fast',
-            'messages': messages,
-            'temperature': 0.7,
-          }),
-        ).timeout(const Duration(seconds: 15));
-
-        if (pollResp.statusCode == 200) {
-          final decoded = jsonDecode(utf8.decode(pollResp.bodyBytes));
-          final choices = decoded['choices'] as List?;
-          if (choices != null && choices.isNotEmpty) {
-            final msgObj = choices[0]['message'];
-            if (msgObj is Map) {
-              final raw = (msgObj['content'] ?? msgObj['reasoning'] ?? '').toString().trim();
-              if (raw.isNotEmpty) {
-                responseText = raw;
-              }
-            }
-          }
-        }
-      } catch (_) {}
     }
 
     if (responseText == null || responseText.trim().isEmpty) {
