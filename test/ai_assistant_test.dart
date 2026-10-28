@@ -33,6 +33,7 @@ void main() {
       ];
 
       final prompt = service.buildSystemPrompt(
+        persona: 'Ты — передовая языковая модель Gemini 4 Argon от Google.',
         currentProject: project,
         projectItems: items,
       );
@@ -41,14 +42,14 @@ void main() {
       expect(prompt, contains('Труба профильная 40х40х2 мм'));
       expect(prompt, contains('weldprice_materials'));
       expect(prompt, contains('WELDPRICE AI'));
+      expect(prompt, contains('Gemini 4 Argon'));
     });
 
-    test('availableModels contains the user requested free models', () {
+    test('availableModels contains the user requested models from Start_Antigravity_UI.bat', () {
       final modelIds = AIAssistantService.availableModels.map((m) => m['id']).toList();
-      expect(modelIds, contains('google/gemma-4-31b-it:free'));
-      expect(modelIds, contains('nvidia/nemotron-3-ultra-550b-a55b:free'));
-      expect(modelIds, contains('nvidia/nemotron-3.5-lightning:free'));
-      expect(modelIds, contains('openrouter/free'));
+      expect(modelIds, contains('gemini-4-argon'));
+      expect(modelIds, contains('deepseek-r1-671b'));
+      expect(modelIds, contains('claude-sonnet-5-5'));
     });
   });
 }

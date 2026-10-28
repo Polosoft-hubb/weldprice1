@@ -11,7 +11,7 @@ import 'project_provider.dart';
 class AIAssistantProvider extends ChangeNotifier {
   final AIAssistantService _service = AIAssistantService.instance;
 
-  List<AIMessage> _messages = [];
+  final List<AIMessage> _messages = [];
   bool _isLoading = false;
   String? _errorMessage;
   String _apiKey = '';
@@ -23,6 +23,14 @@ class AIAssistantProvider extends ChangeNotifier {
   String get apiKey => _apiKey;
   String get selectedModel => _selectedModel;
   bool get hasApiKey => _apiKey.trim().isNotEmpty;
+
+  String get selectedModelName {
+    final match = AIAssistantService.availableModels.firstWhere(
+      (m) => m['id'] == _selectedModel,
+      orElse: () => {'name': _selectedModel, 'shortName': _selectedModel},
+    );
+    return match['shortName'] ?? match['name'] ?? _selectedModel;
+  }
 
   AIAssistantProvider() {
     loadSettings();
@@ -89,7 +97,7 @@ class AIAssistantProvider extends ChangeNotifier {
       _messages.add(
         AIMessage(
           id: DateTime.now().millisecondsSinceEpoch.toString(),
-          text: '⚠️ Ошибка при обращении к ИИ: $errText',
+          text: 'Ошибка при обращении к ИИ: $errText',
           isUser: false,
         ),
       );
@@ -108,7 +116,7 @@ class AIAssistantProvider extends ChangeNotifier {
     final currentProject = projectProvider.selectedProject;
     if (currentProject == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('⚠️ Сначала откройте проект, чтобы добавить в него материалы')),
+        const SnackBar(content: Text('Сначала выберите проект, чтобы добавить в него материалы')),
       );
       return false;
     }
@@ -116,7 +124,7 @@ class AIAssistantProvider extends ChangeNotifier {
     final catalog = projectProvider.projectMaterials;
     if (catalog.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('⚠️ Каталог материалов пуст')),
+        const SnackBar(content: Text('Каталог материалов пуст')),
       );
       return false;
     }
@@ -133,7 +141,6 @@ class AIAssistantProvider extends ChangeNotifier {
     if (searchMatches.isNotEmpty) {
       targetMat = searchMatches.first;
     } else {
-      // Fallback: pick first material matching category or first in catalog
       targetMat = catalog.first;
     }
 
@@ -154,7 +161,7 @@ class AIAssistantProvider extends ChangeNotifier {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('✅ Добавлено в смету: ${targetMat.name} (${item.quantity} ${item.unit})'),
+          content: Text('✓ Добавлено в смету: ${targetMat.name} (${item.quantity} ${item.unit})'),
           backgroundColor: const Color(0xFF2E7D32),
           duration: const Duration(seconds: 3),
         ),

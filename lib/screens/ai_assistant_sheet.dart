@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../models/ai_message.dart';
 import '../providers/ai_assistant_provider.dart';
 import '../providers/project_provider.dart';
@@ -32,27 +31,27 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
   final List<Map<String, String>> _quickSuggestions = const [
     {
       'title': '🏗️ Навес 6х4 м',
-      'prompt': 'Рассчитай материал для односкатного навеса 6х4 метра: столбы, фермы, обрешетка под профнастил.',
+      'prompt': 'Рассчитай металл для односкатного навеса 6х4 метра: столбы, фермы, обрешетка с запасом.',
     },
     {
-      'title': '🚪 Ворота 3х2 м',
-      'prompt': 'Составь смету на распашные ворота 3х2 метра с встроенной калиткой из профильной трубы.',
+      'title': '🚪 Калитка 1х2 м',
+      'prompt': 'Сколько нужно профильной трубы на каркас калитки 1х2 метра и какие петли лучше взять?',
     },
     {
       'title': '🔍 Проверить смету',
-      'prompt': 'Внимательно изучи текущие позиции в смете проекта. Найди скрытые ошибки, забытый крепеж, расходники или несоответствия.',
+      'prompt': 'Проанализируй позиции в моей текущей смете. Все ли учтено, какие расходники нужны дополнительно?',
     },
     {
-      'title': '📝 Составить КП',
-      'prompt': 'Составь красивое коммерческое предложение для заказчика на основе позиций и стоимости текущего проекта.',
+      'title': '⚖️ Расчет веса',
+      'prompt': 'Посчитай общий вес и площадь покраски для добавленных в смету материалов.',
     },
     {
-      'title': '📐 Подбор трубы',
-      'prompt': 'Какое сечение профильной трубы и какую толщину стенки выбрать для столбов забора высотой 2 метра?',
+      'title': '📏 Подбор трубы',
+      'prompt': 'Какую трубу выбрать на стойки забора высотой 2 метра из профлиста?',
     },
     {
-      'title': '⚡ Режимы сварки',
-      'prompt': 'Подскажи оптимальный сварочный ток, диаметр электродов и рекомендации по сварке профильной трубы со стенкой 1.5 - 2 мм.',
+      'title': '📐 Шаг ферм',
+      'prompt': 'Какой оптимальный шаг и уклон ферм делать при перекрытии пролета 6 метров?',
     },
   ];
 
@@ -94,108 +93,6 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
     _scrollToBottom();
   }
 
-  void _showApiKeyDialog(BuildContext context) {
-    final aiProvider = Provider.of<AIAssistantProvider>(context, listen: false);
-    final controller = TextEditingController(text: aiProvider.apiKey);
-    bool obscure = true;
-
-    showDialog(
-      context: context,
-      builder: (dlgCtx) => StatefulBuilder(
-        builder: (context, setDlgState) => AlertDialog(
-          backgroundColor: const Color(0xFF1E1E1E),
-          title: const Row(
-            children: [
-              Icon(Icons.key, color: Color(0xFFFF4081)),
-              SizedBox(width: 10),
-              Text('API ключ OpenRouter'),
-            ],
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Ключ хранится локально в вашем браузере. Вы можете получить его бесплатно на сайте OpenRouter.',
-                style: TextStyle(color: Colors.white70, fontSize: 13),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: controller,
-                obscureText: obscure,
-                decoration: InputDecoration(
-                  hintText: 'sk-or-v1-...',
-                  labelText: 'OpenRouter API Key',
-                  suffixIcon: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          obscure ? Icons.visibility_off : Icons.visibility,
-                          color: Colors.grey,
-                        ),
-                        onPressed: () => setDlgState(() => obscure = !obscure),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.paste, color: Colors.grey),
-                        tooltip: 'Вставить из буфера',
-                        onPressed: () async {
-                          final data = await Clipboard.getData('text/plain');
-                          if (data?.text != null) {
-                            controller.text = data!.text!.trim();
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              InkWell(
-                onTap: () async {
-                  final uri = Uri.parse('https://openrouter.ai/keys');
-                  if (await canLaunchUrl(uri)) {
-                    await launchUrl(uri, mode: LaunchMode.externalApplication);
-                  }
-                },
-                child: const Row(
-                  children: [
-                    Icon(Icons.open_in_new, size: 16, color: Color(0xFFFF4081)),
-                    SizedBox(width: 6),
-                    Text(
-                      'Получить бесплатный ключ на openrouter.ai',
-                      style: TextStyle(
-                        color: Color(0xFFFF4081),
-                        fontSize: 12,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(dlgCtx).pop(),
-              child: const Text('Отмена'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                aiProvider.setApiKey(controller.text);
-                Navigator.of(dlgCtx).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('✅ API ключ сохранён')),
-                );
-              },
-              child: const Text('Сохранить'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   void _showModelSelectionDialog(BuildContext context) {
     final aiProvider = Provider.of<AIAssistantProvider>(context, listen: false);
 
@@ -203,7 +100,13 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
       context: context,
       builder: (dlgCtx) => AlertDialog(
         backgroundColor: const Color(0xFF1E1E1E),
-        title: const Text('Выбор модели ИИ (OpenRouter)'),
+        title: const Row(
+          children: [
+            Icon(Icons.tune, color: Color(0xFFFF4081)),
+            SizedBox(width: 8),
+            Text('Выбор модели ИИ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          ],
+        ),
         content: SizedBox(
           width: double.maxFinite,
           child: ListView.separated(
@@ -305,7 +208,7 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
                 ),
               ),
 
-              // Header
+              // Header (Clean, professional, without key disclosure or badges)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
                 child: Row(
@@ -327,35 +230,16 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              const Text(
-                                'WELDPRICE AI',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                  letterSpacing: 0.5,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF2E7D32),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: const Text(
-                                  'FREE',
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
+                          const Text(
+                            'WELDPRICE AI',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.white,
+                              letterSpacing: 0.5,
+                            ),
                           ),
+                          const SizedBox(height: 2),
                           InkWell(
                             onTap: () => _showModelSelectionDialog(context),
                             borderRadius: BorderRadius.circular(4),
@@ -367,6 +251,7 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
                                   style: const TextStyle(
                                     fontSize: 12,
                                     color: Color(0xFFFF4081),
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                                 const Icon(Icons.arrow_drop_down, color: Color(0xFFFF4081), size: 16),
@@ -377,43 +262,14 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
                       ),
                     ),
 
-                    // Key Settings Icon
+                    // Actions: Clear Chat & Close
                     IconButton(
-                      icon: Stack(
-                        children: [
-                          Icon(
-                            Icons.key,
-                            color: aiProvider.hasApiKey ? Colors.white70 : Colors.amber,
-                            size: 22,
-                          ),
-                          if (!aiProvider.hasApiKey)
-                            Positioned(
-                              right: 0,
-                              top: 0,
-                              child: Container(
-                                width: 8,
-                                height: 8,
-                                decoration: const BoxDecoration(
-                                  color: Colors.amber,
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                      tooltip: 'API Ключ OpenRouter',
-                      onPressed: () => _showApiKeyDialog(context),
+                      icon: const Icon(Icons.delete_sweep_outlined, color: Colors.white70, size: 22),
+                      tooltip: 'Очистить историю',
+                      onPressed: () {
+                        aiProvider.clearChat();
+                      },
                     ),
-
-                    // Clear Chat Button
-                    if (aiProvider.messages.isNotEmpty)
-                      IconButton(
-                        icon: const Icon(Icons.delete_outline, color: Colors.white60, size: 22),
-                        tooltip: 'Очистить историю чата',
-                        onPressed: () => aiProvider.clearChat(),
-                      ),
-
-                    // Close Button
                     IconButton(
                       icon: const Icon(Icons.close, color: Colors.white70, size: 22),
                       tooltip: 'Закрыть',
@@ -423,20 +279,25 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
                 ),
               ),
 
-              // Active Project Context Banner
+              // Active Project Context Banner (if project selected)
               if (currentProject != null)
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  color: const Color(0xFF1E1E1E),
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1E1E1E),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.white10),
+                  ),
                   child: Row(
                     children: [
-                      const Icon(Icons.folder_outlined, color: Colors.white60, size: 16),
+                      const Icon(Icons.folder_outlined, size: 16, color: Color(0xFFFF4081)),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          'Проект: "${currentProject.name}" (${currentProject.items.length} поз.)',
-                          style: const TextStyle(color: Colors.white70, fontSize: 12),
+                          'Проект: ${currentProject.name} (${currentProject.items.length} позиций)',
+                          style: const TextStyle(fontSize: 12, color: Colors.white70),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -444,114 +305,106 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
                   ),
                 ),
 
-              // API Key Warning Banner (if missing)
-              if (!aiProvider.hasApiKey)
-                Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.all(12),
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.amber.withOpacity(0.12),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.amber.withOpacity(0.3)),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.info_outline, color: Colors.amber, size: 24),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Требуется ключ OpenRouter',
-                              style: TextStyle(
-                                color: Colors.amber,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            const Text(
-                              'Бесплатный ключ даёт доступ к Gemma 4, Nemotron и другим моделям.',
-                              style: TextStyle(color: Colors.white70, fontSize: 11),
-                            ),
-                          ],
-                        ),
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.amber,
-                          foregroundColor: Colors.black,
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        ),
-                        onPressed: () => _showApiKeyDialog(context),
-                        child: const Text('Ввести', style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                    ],
-                  ),
-                ),
+              const Divider(color: Colors.white12, height: 1),
 
-              // Messages List or Suggestions
+              // Chat Messages List
               Expanded(
                 child: aiProvider.messages.isEmpty
                     ? _buildEmptyState(context)
                     : ListView.builder(
                         controller: _scrollController,
-                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                         itemCount: aiProvider.messages.length + (aiProvider.isLoading ? 1 : 0),
-                        itemBuilder: (ctx, index) {
+                        itemBuilder: (context, index) {
                           if (index == aiProvider.messages.length) {
                             return _buildLoadingBubble();
                           }
                           final msg = aiProvider.messages[index];
-                          return _buildMessageBubble(msg, currentProject != null);
+                          return _buildMessageBubble(context, msg);
                         },
                       ),
               ),
 
-              // Input Bar
+              // Quick Suggestions Bar (when chat has few messages)
+              if (aiProvider.messages.length <= 2 && !aiProvider.isLoading)
+                SizedBox(
+                  height: 38,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    itemCount: _quickSuggestions.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 8),
+                    itemBuilder: (context, i) {
+                      final item = _quickSuggestions[i];
+                      return ActionChip(
+                        label: Text(
+                          item['title']!,
+                          style: const TextStyle(fontSize: 12, color: Colors.white),
+                        ),
+                        backgroundColor: const Color(0xFF222222),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          side: const BorderSide(color: Colors.white12),
+                        ),
+                        onPressed: () => _sendMessage(item['prompt']!),
+                      );
+                    },
+                  ),
+                ),
+
+              const SizedBox(height: 8),
+
+              // Input bar
               Container(
                 padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
                 decoration: const BoxDecoration(
                   color: Color(0xFF1E1E1E),
                   border: Border(top: BorderSide(color: Colors.white10)),
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _textController,
-                        focusNode: _focusNode,
-                        maxLines: 4,
-                        minLines: 1,
-                        textInputAction: TextInputAction.send,
-                        onSubmitted: (_) {
-                          _sendMessage(_textController.text);
-                          _focusNode.requestFocus();
-                        },
-                        style: const TextStyle(color: Colors.white, fontSize: 14),
-                        decoration: InputDecoration(
-                          hintText: 'Спросите о расчёте, металле, смете...',
-                          hintStyle: const TextStyle(color: Colors.white38, fontSize: 14),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                          filled: true,
-                          fillColor: const Color(0xFF262626),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide.none,
+                child: SafeArea(
+                  top: false,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _textController,
+                          focusNode: _focusNode,
+                          style: const TextStyle(color: Colors.white, fontSize: 14),
+                          maxLines: 4,
+                          minLines: 1,
+                          textInputAction: TextInputAction.send,
+                          onSubmitted: (_) {
+                            _sendMessage(_textController.text);
+                            _focusNode.requestFocus();
+                          },
+                          decoration: InputDecoration(
+                            hintText: 'Задайте вопрос по смете или металлу...',
+                            hintStyle: const TextStyle(color: Colors.white38, fontSize: 14),
+                            filled: true,
+                            fillColor: const Color(0xFF141414),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: const BorderSide(color: Colors.white12),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: const BorderSide(color: Colors.white12),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: const BorderSide(color: Color(0xFFFF4081)),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFFF4081),
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
+                      const SizedBox(width: 8),
+                      IconButton(
+                        style: IconButton.styleFrom(
+                          backgroundColor: const Color(0xFFFF4081),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.all(12),
+                        ),
                         icon: aiProvider.isLoading
                             ? const SizedBox(
                                 width: 20,
@@ -561,17 +414,13 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
                                   color: Colors.white,
                                 ),
                               )
-                            : const Icon(Icons.send_rounded, color: Colors.white, size: 20),
-                        tooltip: 'Отправить',
+                            : const Icon(Icons.send_rounded, size: 20),
                         onPressed: aiProvider.isLoading
                             ? null
-                            : () {
-                                _sendMessage(_textController.text);
-                                _focusNode.requestFocus();
-                              },
+                            : () => _sendMessage(_textController.text),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -583,134 +432,123 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
 
   Widget _buildEmptyState(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(24.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(
-            child: Column(
-              children: [
-                const SizedBox(height: 16),
-                Container(
-                  width: 64,
-                  height: 64,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFF4081).withOpacity(0.12),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.auto_awesome,
-                    color: Color(0xFFFF4081),
-                    size: 32,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  'Чем помочь по проекту?',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                const Text(
-                  'Рассчитаю конструкцию, подберу металл под нагрузки, составлю смету или КП для клиента.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 13, color: Colors.white60),
-                ),
-              ],
+          const SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFF4081).withOpacity(0.1),
+              shape: BoxShape.circle,
             ),
+            child: const Icon(
+              Icons.auto_awesome,
+              size: 40,
+              color: Color(0xFFFF4081),
+            ),
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            'Инженерный ИИ-Сметчик',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Помогу рассчитать металлоконструкцию, подобрать профильные трубы, рассчитать вес и найти ошибки в смете.',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white60, fontSize: 13, height: 1.4),
           ),
           const SizedBox(height: 24),
-          const Text(
-            'Быстрые подсказки:',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.bold,
-              color: Colors.white70,
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Примеры запросов:',
+              style: TextStyle(
+                color: Colors.white70,
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+              ),
             ),
           ),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: _quickSuggestions.map((s) {
-              return ActionChip(
-                backgroundColor: const Color(0xFF262626),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+          const SizedBox(height: 12),
+          ..._quickSuggestions.map((item) {
+            return Container(
+              margin: const EdgeInsets.only(bottom: 8),
+              width: double.infinity,
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                   side: const BorderSide(color: Colors.white12),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  backgroundColor: const Color(0xFF1A1A1A),
                 ),
-                label: Text(
-                  s['title']!,
-                  style: const TextStyle(color: Colors.white, fontSize: 13),
+                onPressed: () => _sendMessage(item['prompt']!),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        item['title']!,
+                        style: const TextStyle(color: Colors.white, fontSize: 13),
+                      ),
+                    ),
+                    const Icon(Icons.arrow_forward_ios, size: 12, color: Colors.white38),
+                  ],
                 ),
-                onPressed: () {
-                  _sendMessage(s['prompt']!);
-                },
-              );
-            }).toList(),
-          ),
+              ),
+            );
+          }),
         ],
       ),
     );
   }
 
-  Widget _buildMessageBubble(AIMessage msg, bool hasActiveProject) {
-    if (msg.isUser) {
-      return Align(
-        alignment: Alignment.centerRight,
-        child: Container(
-          margin: const EdgeInsets.only(top: 8, bottom: 8, left: 48),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          decoration: BoxDecoration(
-            color: const Color(0xFFFF4081).withOpacity(0.2),
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(18),
-              topRight: Radius.circular(18),
-              bottomLeft: Radius.circular(18),
-              bottomRight: Radius.circular(4),
-            ),
-            border: Border.all(color: const Color(0xFFFF4081).withOpacity(0.4)),
-          ),
-          child: Text(
-            msg.text,
-            style: const TextStyle(color: Colors.white, fontSize: 14),
-          ),
-        ),
-      );
-    }
+  Widget _buildMessageBubble(BuildContext context, AIMessage msg) {
+    final isUser = msg.isUser;
 
     return Align(
-      alignment: Alignment.centerLeft,
+      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: const EdgeInsets.only(top: 8, bottom: 8, right: 24),
-        padding: const EdgeInsets.all(14),
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.88,
+        ),
         decoration: BoxDecoration(
-          color: const Color(0xFF222222),
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(18),
-            topRight: Radius.circular(18),
-            bottomRight: Radius.circular(18),
-            bottomLeft: Radius.circular(4),
+          color: isUser ? const Color(0xFFFF4081).withOpacity(0.2) : const Color(0xFF1E1E1E),
+          borderRadius: BorderRadius.circular(16).copyWith(
+            bottomRight: isUser ? const Radius.circular(4) : null,
+            bottomLeft: !isUser ? const Radius.circular(4) : null,
           ),
-          border: Border.all(color: Colors.white12),
+          border: Border.all(
+            color: isUser ? const Color(0xFFFF4081).withOpacity(0.4) : Colors.white12,
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // AI Header with Copy Button
+            // Header with role and copy button
             Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.auto_awesome, color: Color(0xFFFF4081), size: 16),
+                Icon(
+                  isUser ? Icons.person : Icons.auto_awesome,
+                  size: 14,
+                  color: isUser ? const Color(0xFFFF4081) : const Color(0xFFFF4081),
+                ),
                 const SizedBox(width: 6),
-                const Text(
-                  'WELDPRICE AI',
-                  style: TextStyle(
-                    color: Color(0xFFFF4081),
+                Text(
+                  isUser ? 'Вы' : 'WELDPRICE AI',
+                  style: const TextStyle(
+                    fontSize: 11,
                     fontWeight: FontWeight.bold,
-                    fontSize: 12,
+                    color: Colors.white60,
                   ),
                 ),
                 const Spacer(),
@@ -718,37 +556,35 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
                   onTap: () {
                     Clipboard.setData(ClipboardData(text: msg.text));
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Текст скопирован в буфер')),
+                      const SnackBar(
+                        content: Text('Текст скопирован'),
+                        duration: Duration(seconds: 2),
+                      ),
                     );
                   },
                   child: const Padding(
                     padding: EdgeInsets.all(4.0),
-                    child: Icon(Icons.copy, size: 15, color: Colors.white54),
+                    child: Icon(Icons.copy, size: 14, color: Colors.white38),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
 
-            // Markdown Message Body
+            // Text Body
             MarkdownBody(
               data: msg.text,
               selectable: true,
               styleSheet: MarkdownStyleSheet(
-                p: const TextStyle(color: Colors.white, fontSize: 14, height: 1.45),
-                h1: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                h2: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-                h3: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
-                strong: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                em: const TextStyle(color: Colors.white70, fontStyle: FontStyle.italic),
+                p: const TextStyle(color: Colors.white, fontSize: 13, height: 1.4),
                 code: const TextStyle(
+                  backgroundColor: Color(0xFF121212),
                   color: Color(0xFFFF80AB),
-                  backgroundColor: Color(0xFF141414),
-                  fontSize: 13,
+                  fontSize: 12,
                   fontFamily: 'monospace',
                 ),
                 codeblockDecoration: BoxDecoration(
-                  color: const Color(0xFF141414),
+                  color: const Color(0xFF121212),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: Colors.white12),
                 ),
@@ -865,7 +701,7 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
             ),
             SizedBox(width: 12),
             Text(
-              'WELDPRICE AI думает...',
+              'WELDPRICE AI считает...',
               style: TextStyle(color: Colors.white70, fontSize: 13),
             ),
           ],

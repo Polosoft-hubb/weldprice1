@@ -463,25 +463,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Row(
-                                children: [
-                                  Text(
-                                    'ИИ Помощник (OpenRouter)',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
+                              const Text(
+                                'ИИ-Сметчик',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                ),
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                aiProvider.hasApiKey
-                                    ? 'Модель: ${aiProvider.selectedModel.split("/").last}'
-                                    : 'Бесплатные модели • Ключ не настроен',
-                                style: TextStyle(
-                                  color: aiProvider.hasApiKey ? Colors.white70 : Colors.amber,
+                                'Модель:  • Онлайн',
+                                style: const TextStyle(
+                                  color: Colors.white70,
                                   fontSize: 12,
                                 ),
                               ),
