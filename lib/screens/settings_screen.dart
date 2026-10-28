@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import '../providers/project_provider.dart';
 import '../models/project.dart';
 import '../models/material.dart' as model;
+import '../providers/ai_assistant_provider.dart';
+import 'ai_assistant_sheet.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -428,6 +430,85 @@ class _SettingsScreenState extends State<SettingsScreen> {
             children: [
               if (provider.selectedProject != null)
                 _buildStatusSelector(context, provider),
+
+              // AI ASSISTANT CARD
+              Consumer<AIAssistantProvider>(
+                builder: (context, aiProvider, _) {
+                  return Container(
+                    margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1E1E1E),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: const Color(0xFFFF4081).withOpacity(0.3),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFF4081).withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Icon(
+                            Icons.auto_awesome,
+                            color: Color(0xFFFF4081),
+                            size: 22,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Row(
+                                children: [
+                                  Text(
+                                    'ИИ Помощник (OpenRouter)',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                aiProvider.hasApiKey
+                                    ? 'Модель: ${aiProvider.selectedModel.split("/").last}'
+                                    : 'Бесплатные модели • Ключ не настроен',
+                                style: TextStyle(
+                                  color: aiProvider.hasApiKey ? Colors.white70 : Colors.amber,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        ElevatedButton.icon(
+                          icon: const Icon(Icons.chat_bubble_outline, size: 16),
+                          label: const Text('Открыть', style: TextStyle(fontSize: 12)),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFFF4081),
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onPressed: () {
+                            AIAssistantSheet.show(context);
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 8),
 
               // SCRAPER CONTAINER
               Container(

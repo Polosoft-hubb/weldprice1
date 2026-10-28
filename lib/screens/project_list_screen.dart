@@ -8,6 +8,7 @@ import 'project_details_screen.dart';
 import 'calculator_screen.dart';
 import 'notes_screen.dart';
 import 'detailed_stats_screen.dart';
+import 'ai_assistant_sheet.dart';
 
 class ProjectListScreen extends StatelessWidget {
   const ProjectListScreen({super.key});
@@ -346,6 +347,14 @@ class ProjectListScreen extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const CalculatorScreen()),
               );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.auto_awesome, color: Color(0xFFFF4081), size: 28),
+            iconSize: 28,
+            tooltip: 'ИИ Помощник (WELDPRICE AI)',
+            onPressed: () {
+              AIAssistantSheet.show(context);
             },
           ),
           const SizedBox(width: 8),

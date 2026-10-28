@@ -6,6 +6,7 @@ import 'materials_tab.dart';
 import 'parts_tab.dart';
 import 'painting_tab.dart';
 import 'settings_screen.dart';
+import 'ai_assistant_sheet.dart';
 
 class ProjectDetailsScreen extends StatefulWidget {
   const ProjectDetailsScreen({super.key});
@@ -52,6 +53,16 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                 Navigator.of(context).pop();
               },
             ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.auto_awesome, color: Color(0xFFFF4081)),
+                tooltip: 'ИИ Помощник (WELDPRICE AI)',
+                onPressed: () {
+                  AIAssistantSheet.show(context);
+                },
+              ),
+              const SizedBox(width: 8),
+            ],
           ),
           body: IndexedStack(
             index: _currentIndex,

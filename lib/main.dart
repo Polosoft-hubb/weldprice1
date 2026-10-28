@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/project_provider.dart';
 import 'providers/notes_provider.dart';
+import 'providers/ai_assistant_provider.dart';
 import 'screens/project_list_screen.dart';
 
 void main() async {
@@ -13,11 +14,14 @@ void main() async {
   final notesProvider = NotesProvider();
   await notesProvider.loadNotes();
 
+  final aiProvider = AIAssistantProvider();
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider<ProjectProvider>.value(value: projectProvider),
         ChangeNotifierProvider<NotesProvider>.value(value: notesProvider),
+        ChangeNotifierProvider<AIAssistantProvider>.value(value: aiProvider),
       ],
       child: const MyApp(),
     ),
