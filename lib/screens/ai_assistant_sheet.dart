@@ -112,11 +112,16 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
             Text('Выбор модели ИИ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           ],
         ),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: ListView.separated(
-            shrinkWrap: true,
-            itemCount: AIAssistantService.availableModels.length,
+        content: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.7,
+            maxWidth: 500,
+          ),
+          child: SizedBox(
+            width: double.maxFinite,
+            child: ListView.separated(
+              shrinkWrap: true,
+              itemCount: AIAssistantService.availableModels.length,
             separatorBuilder: (_, __) => const Divider(color: Colors.white12),
             itemBuilder: (ctx, i) {
               final model = AIAssistantService.availableModels[i];
@@ -153,6 +158,7 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
                 },
               );
             },
+            ),
           ),
         ),
         actions: [

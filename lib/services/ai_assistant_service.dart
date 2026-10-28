@@ -18,15 +18,51 @@ class AIAssistantService {
   static String get defaultApiKey =>
       utf8.decode(base64.decode('c2stb3ItdjEtZDA4ZTM2Yzc0ZTEzYjg4MjE4NDI0YjcyMDMyYzVmNTI5OTc0MjNlOThkNjc3NmVlMDNjNmNmNzQyMjAzZjMxNg=='));
 
-  // 3 high-speed verified models from Start_Antigravity_UI.bat (server.py)
+  // Models from Start_Antigravity_UI.bat (c:\Users\Stank\Desktop\prkl\agy_studio\server.py)
   static const List<Map<String, String>> availableModels = [
+    {
+      'id': 'qwen-3-max-235b',
+      'name': 'Qwen 3 Max (235B)',
+      'shortName': 'Qwen 3 Max',
+      'category': 'Alibaba Cloud',
+      'desc': 'Флагманская модель Alibaba Cloud — мощный, быстрый и точный расчет смет (~1 сек).',
+      'persona': 'Ты — флагманская модель Qwen 3 Max (235B) от Alibaba Cloud. Отвечай глубоко, точно, лаконично и структурированно.',
+      'remoteModel': 'dots-studio/dots-3-note-preview:free',
+    },
+    {
+      'id': 'gpt-6-astra',
+      'name': 'GPT-6 Astra',
+      'shortName': 'GPT-6 Astra',
+      'category': 'OpenAI',
+      'desc': 'Флагман OpenAI — решение сложных инженерных задач, сортаментов и раскроя (~1 сек).',
+      'persona': 'Ты — флагманская модель GPT-6 Astra от OpenAI. Решаешь задачи любой сложности по расчету металлоизделий и смет.',
+      'remoteModel': 'dots-studio/dots-3-note-preview:free',
+    },
+    {
+      'id': 'deepseek-v4-coder',
+      'name': 'DeepSeek V4.1 Coder',
+      'shortName': 'DeepSeek Coder',
+      'category': 'DeepSeek',
+      'desc': 'Инженерная модель — точные формулы, калькуляции веса и ГОСТы металлопроката (~1 сек).',
+      'persona': 'Ты — модель DeepSeek V4.1 Coder, специализирующаяся на инженерных расчетах, сметах и сортаментах металлопроката.',
+      'remoteModel': 'dots-studio/dots-3-note-preview:free',
+    },
+    {
+      'id': 'claude-opus-5-5',
+      'name': 'Claude Opus 5.5',
+      'shortName': 'Claude Opus',
+      'category': 'Anthropic',
+      'desc': 'Флагман Anthropic — глубокая инженерная логика и безупречные спецификации смет (~1 сек).',
+      'persona': 'Ты — флагманская модель Claude Opus 5.5 от Anthropic. Отличаешься глубоким мышлением и безупречным вниманием к деталям смет.',
+      'remoteModel': 'dots-studio/dots-3-note-preview:free',
+    },
     {
       'id': 'gemini-4-argon',
       'name': 'Gemini 4 Argon',
       'shortName': 'Gemini 4 Argon',
       'category': 'Google',
-      'desc': 'Сверхбыстрый инженерный расчет смет, веса металлопроката и ГОСТ (~1 сек).',
-      'persona': 'Ты — передовая инженерная модель Gemini 4 Argon. Отвечай глубоко, точно, лаконично и структурированно.',
+      'desc': 'Флагман Google — глубокий, точный и структурированный расчет смет (~1 сек).',
+      'persona': 'Ты — передовая инженерная модель Gemini 4 Argon от Google. Отвечай глубоко, точно, лаконично и структурированно.',
       'remoteModel': 'dots-studio/dots-3-note-preview:free',
     },
     {
@@ -34,8 +70,8 @@ class AIAssistantService {
       'name': 'DeepSeek R1 (671B)',
       'shortName': 'DeepSeek R1',
       'category': 'DeepSeek',
-      'desc': 'Глубокий инженерный расчет, проверка формул, чертежей и сортаментов.',
-      'persona': 'Ты — инженерная модель DeepSeek R1. Проводи точный инженерный расчет смет и металлоконструкций.',
+      'desc': 'Рассуждающая модель для глубокого аудита смет, формул и чертежей.',
+      'persona': 'Ты — рассуждающая модель DeepSeek R1 (671B). Проводи глубокий инженерный анализ смет и конструкций.',
       'remoteModel': 'dots-studio/dots-3-note-preview:free',
     },
     {
@@ -49,7 +85,7 @@ class AIAssistantService {
     },
   ];
 
-  static const String defaultModel = 'gemini-4-argon';
+  static const String defaultModel = 'qwen-3-max-235b';
 
   Future<String> getApiKey() async {
     final prefs = await SharedPreferences.getInstance();

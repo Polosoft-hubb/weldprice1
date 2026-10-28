@@ -47,6 +47,8 @@ void main() {
 
     test('availableModels contains the user requested models from Start_Antigravity_UI.bat', () {
       final modelIds = AIAssistantService.availableModels.map((m) => m['id']).toList();
+      expect(modelIds, contains('qwen-3-max-235b'));
+      expect(modelIds, contains('gpt-6-astra'));
       expect(modelIds, contains('gemini-4-argon'));
       expect(modelIds, contains('deepseek-r1-671b'));
       expect(modelIds, contains('claude-sonnet-5-5'));
