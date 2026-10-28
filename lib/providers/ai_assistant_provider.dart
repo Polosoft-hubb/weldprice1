@@ -135,7 +135,19 @@ class AIAssistantProvider extends ChangeNotifier {
 
     MaterialModel matToAdd;
     if (searchMatches.isNotEmpty) {
-      final targetMat = searchMatches.first;
+      final queryWantsGalvanized = RegExp(r'\\bоц\\b|\\bоцинк', caseSensitive: false).hasMatch(item.name);
+      final nonGalvanizedMatches = searchMatches.where((m) {
+        final nameLower = m.name.toLowerCase();
+        final catLower = m.category.toLowerCase();
+        return !nameLower.contains('оцинк') &&
+            !catLower.contains('оцинк') &&
+            !RegExp(r'\\bоц\\b', caseSensitive: false).hasMatch(nameLower);
+      }).toList();
+
+      final targetMat = (!queryWantsGalvanized && nonGalvanizedMatches.isNotEmpty)
+          ? nonGalvanizedMatches.first
+          : searchMatches.first;
+
       matToAdd = item.price != null
           ? MaterialModel(
               id: targetMat.id,

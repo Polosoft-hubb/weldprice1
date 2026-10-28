@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
 import '../models/ai_message.dart';
+import '../models/project.dart';
 import '../providers/ai_assistant_provider.dart';
 import '../providers/project_provider.dart';
 import '../services/ai_assistant_service.dart';
@@ -30,28 +31,24 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
 
   final List<Map<String, String>> _quickSuggestions = const [
     {
-      'title': '🏗️ Навес 6х4 м',
-      'prompt': 'Рассчитай металл для односкатного навеса 6х4 метра: столбы, фермы, обрешетка с запасом.',
+      'title': '🏗️ Навес 6х4 м: стойки, фермы, обрешетка',
+      'prompt': 'Рассчитай металл для односкатного навеса 6х4 метра: столбы, фермы, обрешетка с запасом на раскрой.',
     },
     {
-      'title': '🚪 Калитка 1х2 м',
-      'prompt': 'Сколько нужно профильной трубы на каркас калитки 1х2 метра и какие петли лучше взять?',
+      'title': '🚪 Каркас калитки 1х2 м и распашные ворота',
+      'prompt': 'Сколько нужно профильной трубы на каркас калитки 1х2 метра и какие петли и замок лучше взять?',
     },
     {
-      'title': '🔍 Проверить смету',
-      'prompt': 'Проанализируй позиции в моей текущей смете. Все ли учтено, какие расходники нужны дополнительно?',
+      'title': '📏 Подбор трубы на забор из профнастила',
+      'prompt': 'Какую трубу выбрать на стойки и лаги забора высотой 2 метра из профлиста, и какой шаг столбов делать?',
     },
     {
-      'title': '⚖️ Расчет веса',
-      'prompt': 'Посчитай общий вес и площадь покраски для добавленных в смету материалов.',
+      'title': '📐 Расчет шага и сечений стропильных ферм',
+      'prompt': 'Какой оптимальный шаг и уклон ферм делать при перекрытии пролета 6 метров из профильной трубы?',
     },
     {
-      'title': '📏 Подбор трубы',
-      'prompt': 'Какую трубу выбрать на стойки забора высотой 2 метра из профлиста?',
-    },
-    {
-      'title': '📐 Шаг ферм',
-      'prompt': 'Какой оптимальный шаг и уклон ферм делать при перекрытии пролета 6 метров?',
+      'title': '⚡ Расход электродов и сварочной смеси',
+      'prompt': 'Сколько электродов (кг) и отрезных дисков требуется на 1 тонну типовых легких металлоконструкций?',
     },
   ];
 
@@ -325,32 +322,8 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
                       ),
               ),
 
-              // Quick Suggestions Bar (when chat has few messages)
-              if (aiProvider.messages.length <= 2 && !aiProvider.isLoading)
-                SizedBox(
-                  height: 38,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: _quickSuggestions.length,
-                    separatorBuilder: (_, __) => const SizedBox(width: 8),
-                    itemBuilder: (context, i) {
-                      final item = _quickSuggestions[i];
-                      return ActionChip(
-                        label: Text(
-                          item['title']!,
-                          style: const TextStyle(fontSize: 12, color: Colors.white),
-                        ),
-                        backgroundColor: const Color(0xFF222222),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          side: const BorderSide(color: Colors.white12),
-                        ),
-                        onPressed: () => _sendMessage(item['prompt']!),
-                      );
-                    },
-                  ),
-                ),
+              // Quick Action Buttons Bar (Project & Workshop actions)
+              _buildQuickActionButtons(context, projectProvider, aiProvider),
 
               const SizedBox(height: 8),
 
@@ -711,4 +684,298 @@ class _AIAssistantSheetState extends State<AIAssistantSheet> {
       ),
     );
   }
+
+  Widget _buildQuickActionButtons(
+    BuildContext context,
+    ProjectProvider projectProvider,
+    AIAssistantProvider aiProvider,
+  ) {
+    if (aiProvider.isLoading) return const SizedBox.shrink();
+
+    final currentProject = projectProvider.selectedProject;
+    final projects = projectProvider.projects;
+
+    final actions = <_ActionItem>[];
+
+    // 1. Смета проекта
+    if (currentProject != null) {
+      actions.add(
+        _ActionItem(
+          icon: Icons.receipt_long_rounded,
+          label: 'Смета',
+          badge: '${currentProject.items.length}',
+          color: const Color(0xFFFF4081),
+          onTap: () {
+            final itemsDesc = currentProject.items.isNotEmpty
+                ? currentProject.items
+                    .map((it) => '• ${it.name} — ${it.quantity} ${it.unit} (${it.price.toStringAsFixed(0)} ₽, вес: ${it.totalWeight.toStringAsFixed(1)} кг)')
+                    .join('\n')
+                : 'В смете пока нет добавленных позиций.';
+            final prompt =
+                'Проанализируй смету проекта "${currentProject.name}":\n'
+                '- Позиций: ${currentProject.items.length}\n'
+                '- Стоимость материалов: ${currentProject.materialsCost.toStringAsFixed(0)} ₽\n'
+                '- Работы: ${currentProject.workCost.toStringAsFixed(0)} ₽\n'
+                '- Расходники (5%): ${currentProject.consumablesCost.toStringAsFixed(0)} ₽\n'
+                '${currentProject.isPaintingEnabled ? "- Покраска: ${currentProject.totalPaintingCost.toStringAsFixed(0)} ₽\n" : ""}'
+                '- Итого клиенту: ${currentProject.totalPrice.toStringAsFixed(0)} ₽\n'
+                '- Общий расчетный вес: ${currentProject.totalWeight.toStringAsFixed(1)} кг\n\n'
+                'Состав сметы:\n$itemsDesc\n\n'
+                'Дай профессиональную оценку: всё ли учтено, нет ли ошибок в расчетах и какие позиции или работы нужно предусмотреть?';
+            _sendMessage(prompt);
+          },
+        ),
+      );
+    } else {
+      actions.add(
+        _ActionItem(
+          icon: Icons.receipt_long_rounded,
+          label: 'Смета',
+          color: const Color(0xFFFF4081),
+          onTap: () {
+            _sendMessage('Как правильно составить смету на металлоконструкцию: структура затрат, коэффициенты на работу и непредвиденные расходы?');
+          },
+        ),
+      );
+    }
+
+    // 2. Материалы
+    if (currentProject != null) {
+      actions.add(
+        _ActionItem(
+          icon: Icons.inventory_2_outlined,
+          label: 'Материалы',
+          badge: '${currentProject.items.length}',
+          color: const Color(0xFF29B6F6),
+          onTap: () {
+            final itemsList = currentProject.items.isNotEmpty
+                ? currentProject.items
+                    .map((it) => '- ${it.name}: ${it.quantity} ${it.unit} (${it.totalWeight.toStringAsFixed(1)} кг)')
+                    .join('\n')
+                : 'Список пуст.';
+            final prompt =
+                'Составь подробную ведомость материалов для закупки по проекту "${currentProject.name}":\n'
+                'Текущие позиции:\n$itemsList\n'
+                'Общий вес металлопроката: ${currentProject.totalWeight.toStringAsFixed(1)} кг.\n\n'
+                'Укажи запас на рез (5-7%), стандартную длину хлыстов для заказа (обычно 6 м) и проверь правильность подбора сечений.';
+            _sendMessage(prompt);
+          },
+        ),
+      );
+    } else {
+      actions.add(
+        _ActionItem(
+          icon: Icons.inventory_2_outlined,
+          label: 'Материалы',
+          color: const Color(0xFF29B6F6),
+          onTap: () {
+            _sendMessage('Какие основные профильные трубы и металлопрокат используются в строительстве и навесах, и как рассчитывать запас на раскрой?');
+          },
+        ),
+      );
+    }
+
+    // 3. Покраска и вес
+    if (currentProject != null) {
+      actions.add(
+        _ActionItem(
+          icon: Icons.format_paint_outlined,
+          label: 'Покраска и вес',
+          color: const Color(0xFFFFA726),
+          onTap: () {
+            final prompt =
+                'Рассчитай покраску и вес для проекта "${currentProject.name}":\n'
+                '- Общий вес металла: ${currentProject.totalWeight.toStringAsFixed(1)} кг\n'
+                '- Общая площадь покраски: ${currentProject.totalPaintingArea.toStringAsFixed(1)} м²\n'
+                '- Расход краски: ${currentProject.paintConsumption} кг/м²\n'
+                '- Нужно банок краски: ${currentProject.cansNeeded} (по ${currentProject.paintCanWeight} кг)\n'
+                '- Стоимость покрасочных материалов: ${currentProject.totalPaintingCost.toStringAsFixed(0)} ₽\n\n'
+                'Порекомендуй оптимальную грунт-эмаль (например 3-в-1 или раздельно грунт ГФ-021 + эмаль), растворитель и технологию подготовки (обезжиривание, зачистка швов).';
+            _sendMessage(prompt);
+          },
+        ),
+      );
+    } else {
+      actions.add(
+        _ActionItem(
+          icon: Icons.format_paint_outlined,
+          label: 'Покраска и вес',
+          color: const Color(0xFFFFA726),
+          onTap: () {
+            _sendMessage('Как быстро рассчитать площадь окрашиваемой поверхности металлопроката и расход грунтовки и эмали на 1 м²?');
+          },
+        ),
+      );
+    }
+
+    // 4. Статистика проекта
+    if (currentProject != null) {
+      actions.add(
+        _ActionItem(
+          icon: Icons.analytics_outlined,
+          label: 'Статистика проекта',
+          color: const Color(0xFF66BB6A),
+          onTap: () {
+            final pricePerKg = currentProject.totalWeight > 0
+                ? (currentProject.totalPrice / currentProject.totalWeight).toStringAsFixed(0)
+                : '0';
+            final prompt =
+                'Дай экономическую и техническую оценку проекта "${currentProject.name}":\n'
+                '- Статус: ${ProjectStatus.getLabel(currentProject.status)}\n'
+                '- Стоимость материалов: ${currentProject.materialsCost.toStringAsFixed(0)} ₽\n'
+                '- Стоимость работ: ${currentProject.workCost.toStringAsFixed(0)} ₽ (коэфф. сложности ${currentProject.complexity})\n'
+                '- Расходники (5%): ${currentProject.consumablesCost.toStringAsFixed(0)} ₽\n'
+                '- Итого клиенту: ${currentProject.totalPrice.toStringAsFixed(0)} ₽\n'
+                '- Общий вес: ${currentProject.totalWeight.toStringAsFixed(1)} кг\n'
+                '- Цена за 1 кг готового изделия: $pricePerKg ₽/кг\n\n'
+                'Оцени адекватность расценки за работу, маржинальность и подскажи, как обосновать смету заказчику.';
+            _sendMessage(prompt);
+          },
+        ),
+      );
+    }
+
+    // 5. Общая статистика цеха (из главного меню!)
+    actions.add(
+      _ActionItem(
+        icon: Icons.query_stats_rounded,
+        label: 'Статистика цеха',
+        badge: '${projects.length}',
+        color: const Color(0xFFAB47BC),
+        onTap: () {
+          final completed = projects.where((p) => p.status == ProjectStatus.completed).toList();
+          final inProgress = projects.where((p) => p.status == ProjectStatus.inProgress).toList();
+          final rejected = projects.where((p) => p.status == ProjectStatus.rejected).toList();
+          final completedRevenue = completed.fold(0.0, (sum, p) => sum + p.totalPrice);
+          final completedProfit = completed.fold(0.0, (sum, p) => sum + p.workCost);
+          final inProgressRevenue = inProgress.fold(0.0, (sum, p) => sum + p.totalPrice);
+          final avgCheck = completed.isNotEmpty ? completedRevenue / completed.length : 0.0;
+
+          final prompt =
+              'Сделай анализ общей статистики сварочного цеха по всем проектам:\n'
+              '- Всего проектов в базе: ${projects.length}\n'
+              '- Завершено заказов: ${completed.length} (общая выручка: ${completedRevenue.toStringAsFixed(0)} ₽, чистая оплата работ: ${completedProfit.toStringAsFixed(0)} ₽)\n'
+              '- Проектов в работе: ${inProgress.length} (на сумму: ${inProgressRevenue.toStringAsFixed(0)} ₽)\n'
+              '- Отклонено / отказов: ${rejected.length}\n'
+              '- Средний чек выполненного заказа: ${avgCheck.toStringAsFixed(0)} ₽\n\n'
+              'Дай аналитический отчет: оценку эффективности цеха, конверсию сделок и 3-4 практических совета по повышению прибыли и сокращению издержек.';
+          _sendMessage(prompt);
+        },
+      ),
+    );
+
+    // 6. Расходники и метизы
+    actions.add(
+      _ActionItem(
+        icon: Icons.build_outlined,
+        label: 'Расходники',
+        color: const Color(0xFF26A69A),
+        onTap: () {
+          if (currentProject != null) {
+            final prompt =
+                'Рассчитай и предложи конкретный список расходных материалов для проекта "${currentProject.name}" (вес металла: ${currentProject.totalWeight.toStringAsFixed(1)} кг):\n'
+                '- Сварочные электроды или проволока для полуавтомата\n'
+                '- Отрезные и зачистные диски 125 мм\n'
+                '- Заглушки пластиковые для профильных труб\n'
+                '- Крепеж (анкеры, кровельные саморезы, болты)\n\n'
+                'Обязательно добавь блок weldprice_materials с ценами, чтобы я мог добавить их в смету в 1 клик!';
+            _sendMessage(prompt);
+          } else {
+            _sendMessage('Какие расходные материалы (электроды, круги, перчатки, герметик, крепеж) и в каком количестве обычно закладываются на типовой металлокаркас? Добавь блок weldprice_materials.');
+          }
+        },
+      ),
+    );
+
+    // 7. Раскрой 6м
+    actions.add(
+      _ActionItem(
+        icon: Icons.content_cut_rounded,
+        label: 'Раскрой 6м',
+        color: const Color(0xFFFF7043),
+        onTap: () {
+          if (currentProject != null) {
+            _sendMessage('Помоги с раскроем проката для проекта "${currentProject.name}". Как с минимальным остатком порезать профильные трубы из стандартных хлыстов 6 м, учитывая толщину реза диска 2-3 мм?');
+          } else {
+            _sendMessage('Как правильно составить карту раскроя профильных труб из хлыстов 6 метров, чтобы минимизировать деловой остаток и отходы?');
+          }
+        },
+      ),
+    );
+
+    return Container(
+      height: 42,
+      margin: const EdgeInsets.only(bottom: 6),
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: actions.length,
+        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        itemBuilder: (context, i) {
+          final a = actions[i];
+          return InkWell(
+            onTap: a.onTap,
+            borderRadius: BorderRadius.circular(16),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: a.color.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: a.color.withOpacity(0.35)),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(a.icon, size: 16, color: a.color),
+                  const SizedBox(width: 6),
+                  Text(
+                    a.label,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: a.color.withOpacity(0.95),
+                    ),
+                  ),
+                  if (a.badge != null) ...[
+                    const SizedBox(width: 5),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                      decoration: BoxDecoration(
+                        color: a.color.withOpacity(0.25),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        a.badge!,
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          color: a.color,
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _ActionItem {
+  final IconData icon;
+  final String label;
+  final String? badge;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _ActionItem({
+    required this.icon,
+    required this.label,
+    this.badge,
+    required this.color,
+    required this.onTap,
+  });
 }

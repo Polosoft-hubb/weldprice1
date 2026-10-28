@@ -149,7 +149,6 @@ List<T> filterAndRankMaterials<T>({
     }
 
     // Bonus for every dimension in the item that equals any numeric query token
-    // (e.g. 20x20 has two dimensions matching 20 -> gets +1000 bonus!)
     final numTokens = rawTokens
         .map((t) => t.replaceAll(',', '.'))
         .where((t) => RegExp(r'^\d+(?:\.\d+)?$').hasMatch(t))
@@ -181,6 +180,18 @@ List<T> filterAndRankMaterials<T>({
       if (extraDims > 0) {
         score -= extraDims * 10;
       }
+    }
+
+    // Specialized coating adjustment: galvanized vs black steel
+    // Standard black metal should always rank above galvanized unless the query explicitly asks for galvanized!
+    final isGalvanizedItem = nameLower.contains('оцинк') ||
+        catLower.contains('оцинк') ||
+        RegExp(r'\bоц\b', caseSensitive: false).hasMatch(nameLower);
+    final queryWantsGalvanized = RegExp(r'\bоц\b|\bоцинк', caseSensitive: false).hasMatch(trimmed);
+    if (isGalvanizedItem && !queryWantsGalvanized) {
+      score -= 1000; // Strong penalty so standard black steel ranks above galvanized steel
+    } else if (isGalvanizedItem && queryWantsGalvanized) {
+      score += 1000;
     }
 
     scored.add(MapEntry(score, item));
