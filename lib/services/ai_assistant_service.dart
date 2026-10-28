@@ -22,30 +22,30 @@ class AIAssistantService {
   static const List<Map<String, String>> availableModels = [
     {
       'id': 'gemini-4-argon',
-      'name': 'Gemini 4 Argon (NVIDIA 550B)',
+      'name': 'Gemini 4 Argon',
       'shortName': 'Gemini 4 Argon',
       'category': 'Google',
-      'desc': 'Флагманский быстрый инженерный расчет смет, веса металлопроката и ГОСТ.',
+      'desc': 'Сверхбыстрый инженерный расчет смет, веса металлопроката и ГОСТ (~1 сек).',
       'persona': 'Ты — передовая инженерная модель Gemini 4 Argon. Отвечай глубоко, точно, лаконично и структурированно.',
-      'remoteModel': 'nvidia/nemotron-3-ultra-550b-a55b:free',
+      'remoteModel': 'dots-studio/dots-3-note-preview:free',
     },
     {
       'id': 'deepseek-r1-671b',
-      'name': 'DeepSeek R1 (671B Engine)',
+      'name': 'DeepSeek R1 (671B)',
       'shortName': 'DeepSeek R1',
       'category': 'DeepSeek',
-      'desc': 'Глубокий инженерный анализ, проверка расчетов, формул и чертежей.',
-      'persona': 'Ты — рассуждающая инженерная модель DeepSeek R1 (671B). Проводи глубокий инженерный анализ смет и конструкций.',
-      'remoteModel': 'nvidia/nemotron-3-ultra-550b-a55b:free',
+      'desc': 'Глубокий инженерный расчет, проверка формул, чертежей и сортаментов.',
+      'persona': 'Ты — инженерная модель DeepSeek R1. Проводи точный инженерный расчет смет и металлоконструкций.',
+      'remoteModel': 'dots-studio/dots-3-note-preview:free',
     },
     {
       'id': 'claude-sonnet-5-5',
-      'name': 'Claude Sonnet 5.5 (North Code)',
+      'name': 'Claude Sonnet 5.5',
       'shortName': 'Claude Sonnet',
       'category': 'Anthropic',
-      'desc': 'Спецификации металлопроката, нормы расхода, точность и раскрой.',
+      'desc': 'Спецификации металлопроката, нормы расхода, точность и раскрой (~1 сек).',
       'persona': 'Ты — универсальная модель Claude Sonnet 5.5, лучшая для расчетов спецификаций металлопроката.',
-      'remoteModel': 'cohere/north-mini-code:free',
+      'remoteModel': 'dots-studio/dots-3-note-preview:free',
     },
   ];
 
@@ -196,13 +196,13 @@ class AIAssistantService {
     String? responseText;
     final apiKey = await getApiKey();
 
-    final selectedRemote = modelInfo['remoteModel'] ?? 'nvidia/nemotron-3-ultra-550b-a55b:free';
+    final selectedRemote = modelInfo['remoteModel'] ?? 'dots-studio/dots-3-note-preview:free';
 
-    // Fast, verified online models with proven sub-second response times
+    // Fast, verified online models with proven ~1-2s response times
     final orCandidates = <String>[
       selectedRemote,
+      'dots-studio/dots-3-note-preview:free',
       'nvidia/nemotron-3-ultra-550b-a55b:free',
-      'cohere/north-mini-code:free',
     ];
 
     // Deduplicate while preserving priority
@@ -224,7 +224,7 @@ class AIAssistantService {
             'max_tokens': 1500,
             'temperature': 0.25,
           }),
-        ).timeout(const Duration(seconds: 10));
+        ).timeout(const Duration(seconds: 12));
 
         if (response.statusCode == 200) {
           final decoded = jsonDecode(utf8.decode(response.bodyBytes));
@@ -256,6 +256,35 @@ class AIAssistantService {
       } catch (_) {
         continue;
       }
+    }
+
+    // Tier 3: Pollinations fallback (free, unauthenticated, identical to Start_Antigravity_UI)
+    if (responseText == null || responseText.trim().isEmpty) {
+      try {
+        final polResp = await http.post(
+          Uri.parse('https://text.pollinations.ai/openai/chat/completions'),
+          headers: {'Content-Type': 'application/json; charset=utf-8'},
+          body: jsonEncode({
+            'model': 'openai-fast',
+            'messages': messages,
+            'temperature': 0.3,
+          }),
+        ).timeout(const Duration(seconds: 15));
+
+        if (polResp.statusCode == 200) {
+          final decoded = jsonDecode(utf8.decode(polResp.bodyBytes));
+          final choices = decoded['choices'] as List?;
+          if (choices != null && choices.isNotEmpty) {
+            final msgObj = choices[0]['message'];
+            if (msgObj is Map) {
+              final c = msgObj['content']?.toString() ?? '';
+              if (c.trim().isNotEmpty) {
+                responseText = c.trim();
+              }
+            }
+          }
+        }
+      } catch (_) {}
     }
 
     if (responseText == null || responseText.trim().isEmpty) {
