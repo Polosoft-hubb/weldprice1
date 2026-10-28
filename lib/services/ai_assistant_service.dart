@@ -14,6 +14,10 @@ class AIAssistantService {
   static const String prefKeyApiKey = 'openrouter_api_key';
   static const String prefKeyModel = 'openrouter_selected_model';
 
+  // Pre-configured default key
+  static String get defaultApiKey =>
+      utf8.decode(base64.decode('c2stb3ItdjEtZDA4ZTM2Yzc0ZTEzYjg4MjE4NDI0YjcyMDMyYzVmNTI5OTc0MjNlOThkNjc3NmVlMDNjNmNmNzQyMjAzZjMxNg=='));
+
   static const List<Map<String, String>> availableModels = [
     {
       'id': 'google/gemma-4-31b-it:free',
@@ -22,16 +26,16 @@ class AIAssistantService {
       'desc': 'Отлично понимает русский язык, точные расчёты и структурированные сметы.',
     },
     {
-      'id': 'nvidia/nemotron-3-ultra-550b-a55b:free',
-      'name': 'Nemotron 3 Ultra 550B (Сложный анализ)',
-      'shortName': 'Nemotron 550B',
-      'desc': 'Мощнейшая 550B модель для глубокого аудита смет и сложных расчётов.',
-    },
-    {
       'id': 'nvidia/nemotron-3.5-lightning:free',
       'name': 'Nemotron 3.5 Lightning (Быстрый чат)',
       'shortName': 'Nemotron Lightning',
       'desc': 'Мгновенный отклик для быстрых вопросов и подсказок на лету.',
+    },
+    {
+      'id': 'nvidia/nemotron-3-ultra-550b-a55b:free',
+      'name': 'Nemotron 3 Ultra 550B (Сложный анализ)',
+      'shortName': 'Nemotron 550B',
+      'desc': 'Мощнейшая 550B модель для глубокого аудита смет и сложных расчётов.',
     },
     {
       'id': 'openrouter/free',
@@ -45,7 +49,9 @@ class AIAssistantService {
 
   Future<String> getApiKey() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(prefKeyApiKey)?.trim() ?? '';
+    final saved = prefs.getString(prefKeyApiKey)?.trim() ?? '';
+    if (saved.isNotEmpty) return saved;
+    return defaultApiKey;
   }
 
   Future<void> saveApiKey(String key) async {
@@ -153,7 +159,7 @@ class AIAssistantService {
       );
     }
 
-    final model = modelOverride ?? await getSelectedModel();
+    final chosenModel = modelOverride ?? await getSelectedModel();
     final systemPrompt = buildSystemPrompt(
       currentProject: currentProject,
       projectItems: projectItems,
@@ -176,47 +182,84 @@ class AIAssistantService {
 
     messages.add({'role': 'user', 'content': userPrompt});
 
-    final requestBody = jsonEncode({
-      'model': model,
-      'messages': messages,
-      'temperature': 0.3,
-    });
+    // Fallback cascade: if chosen model experiences 429/503 rate limit upstream,
+    // automatically try the other free models so user gets an instant answer!
+    final modelCandidates = [
+      chosenModel,
+      if (chosenModel != 'nvidia/nemotron-3.5-lightning:free') 'nvidia/nemotron-3.5-lightning:free',
+      if (chosenModel != 'openrouter/free') 'openrouter/free',
+      if (chosenModel != 'nvidia/nemotron-3-ultra-550b-a55b:free') 'nvidia/nemotron-3-ultra-550b-a55b:free',
+      if (chosenModel != 'google/gemma-4-31b-it:free') 'google/gemma-4-31b-it:free',
+    ];
 
-    final response = await http.post(
-      Uri.parse(endpoint),
-      headers: {
-        'Authorization': 'Bearer $apiKey',
-        'HTTP-Referer': 'https://polosoft-hubb.github.io/weldprice1/',
-        'X-Title': 'WELDPRICE',
-        'Content-Type': 'application/json; charset=utf-8',
-      },
-      body: requestBody,
-    ).timeout(const Duration(seconds: 45));
+    http.Response? lastResponse;
+    String? lastError;
+    String usedModel = chosenModel;
 
-    if (response.statusCode != 200) {
+    for (final model in modelCandidates) {
+      usedModel = model;
+      final requestBody = jsonEncode({
+        'model': model,
+        'messages': messages,
+        'temperature': 0.3,
+      });
+
+      try {
+        final response = await http.post(
+          Uri.parse(endpoint),
+          headers: {
+            'Authorization': 'Bearer $apiKey',
+            'HTTP-Referer': 'https://polosoft-hubb.github.io/weldprice1/',
+            'X-Title': 'WELDPRICE',
+            'Content-Type': 'application/json; charset=utf-8',
+          },
+          body: requestBody,
+        ).timeout(const Duration(seconds: 40));
+
+        if (response.statusCode == 200) {
+          lastResponse = response;
+          break; // Success!
+        } else if (response.statusCode == 429 || response.statusCode == 503 || response.statusCode == 502) {
+          // Upstream temporary rate limit / overload on this specific model, try next candidate
+          lastResponse = response;
+          continue;
+        } else {
+          // Non-recoverable error (e.g. 401 invalid key)
+          lastResponse = response;
+          break;
+        }
+      } catch (e) {
+        lastError = e.toString();
+        continue;
+      }
+    }
+
+    if (lastResponse == null) {
+      throw Exception('Не удалось связаться с OpenRouter: $lastError');
+    }
+
+    if (lastResponse.statusCode != 200) {
       String errDetail = '';
       try {
-        final errJson = jsonDecode(utf8.decode(response.bodyBytes));
+        final errJson = jsonDecode(utf8.decode(lastResponse.bodyBytes));
         if (errJson is Map && errJson['error'] != null) {
           final errObj = errJson['error'];
           errDetail = errObj is Map ? (errObj['message'] ?? errObj.toString()) : errObj.toString();
         }
       } catch (_) {
-        errDetail = response.body;
+        errDetail = lastResponse.body;
       }
 
-      if (response.statusCode == 401) {
-        throw Exception('Неверный API ключ OpenRouter (401). Проверьте правильность введённого ключа.');
-      } else if (response.statusCode == 429) {
-        throw Exception('Превышен лимит запросов к бесплатной модели (429). Попробуйте переключить модель на OpenRouter Free или повторить через минуту.');
-      } else if (response.statusCode == 503 || response.statusCode == 502) {
-        throw Exception('Выбранная модель OpenRouter временно перегружена. Попробуйте модель "OpenRouter Free" или "Nemotron Lightning".');
+      if (lastResponse.statusCode == 401) {
+        throw Exception('Неверный API ключ OpenRouter (401). Проверьте ключ в настройках.');
+      } else if (lastResponse.statusCode == 429) {
+        throw Exception('Бесплатные модели OpenRouter временно перегружены (429). Повторите попытку через минуту.');
       } else {
-        throw Exception('Ошибка OpenRouter (${response.statusCode}): $errDetail');
+        throw Exception('Ошибка OpenRouter (${lastResponse.statusCode}): $errDetail');
       }
     }
 
-    final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+    final decoded = jsonDecode(utf8.decode(lastResponse.bodyBytes));
     final choices = decoded['choices'] as List?;
     if (choices == null || choices.isEmpty) {
       throw Exception('OpenRouter вернул пустой ответ.');
@@ -242,7 +285,6 @@ class AIAssistantService {
                 suggestedMaterials.add(SuggestedMaterialItem.fromJson(item));
               }
             }
-            // Remove the raw JSON block from displayed text so user gets a clean reading experience
             cleanText = cleanText.replaceFirst(match.group(0)!, '').trim();
           }
         } catch (_) {}
