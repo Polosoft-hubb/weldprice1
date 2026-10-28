@@ -18,7 +18,7 @@ class AIAssistantService {
   static String get defaultApiKey =>
       utf8.decode(base64.decode('c2stb3ItdjEtZDA4ZTM2Yzc0ZTEzYjg4MjE4NDI0YjcyMDMyYzVmNTI5OTc0MjNlOThkNjc3NmVlMDNjNmNmNzQyMjAzZjMxNg=='));
 
-  // 2-3 models from Start_Antigravity_UI.bat (server.py)
+  // 3 models from Start_Antigravity_UI.bat (server.py)
   static const List<Map<String, String>> availableModels = [
     {
       'id': 'gemini-4-argon',
@@ -190,94 +190,90 @@ class AIAssistantService {
     messages.add({'role': 'user', 'content': userPrompt});
 
     String? responseText;
+    final apiKey = await getApiKey();
 
-    // 1. Try Pollinations backend first (same backend as in Start_Antigravity_UI.bat server.py)
-    // No API key required, completely free and fast!
-    try {
-      final pollResp = await http.post(
-        Uri.parse('https://text.pollinations.ai/openai/chat/completions'),
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-        },
-        body: jsonEncode({
-          'model': 'openai-fast',
-          'messages': messages,
-          'temperature': 0.7,
-        }),
-      ).timeout(const Duration(seconds: 8));
+    // Ranked list of fast, verified working models on OpenRouter
+    // 1. nvidia/nemotron-3.5-super-vl:free (consistently answers in 4-5s!)
+    // 2. nvidia/nemotron-3.5-lightning:free (fast reasoning model)
+    // 3. nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free
+    // 4. nvidia/nemotron-3-ultra-550b-a55b:free
+    final orCandidates = [
+      'nvidia/nemotron-3.5-super-vl:free',
+      'nvidia/nemotron-3.5-lightning:free',
+      'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free',
+      'nvidia/nemotron-3-ultra-550b-a55b:free',
+    ];
 
-      if (pollResp.statusCode == 200) {
-        final decoded = jsonDecode(utf8.decode(pollResp.bodyBytes));
-        final choices = decoded['choices'] as List?;
-        if (choices != null && choices.isNotEmpty) {
-          final content = choices[0]['message']?['content']?.toString() ?? '';
-          if (content.trim().isNotEmpty) {
-            responseText = content;
-          }
-        }
-      }
-    } catch (_) {
-      // Pollinations busy or timed out; fall through to fast OpenRouter models
-    }
+    for (final model in orCandidates) {
+      try {
+        final response = await http.post(
+          Uri.parse(endpoint),
+          headers: {
+            'Authorization': 'Bearer $apiKey',
+            'HTTP-Referer': 'https://polosoft-hubb.github.io/weldprice1/',
+            'X-Title': 'WELDPRICE',
+            'Content-Type': 'application/json; charset=utf-8',
+          },
+          body: jsonEncode({
+            'model': model,
+            'messages': messages,
+            'temperature': 0.3,
+          }),
+        ).timeout(const Duration(seconds: 22));
 
-    // 2. Fallback to ultra-reliable fast OpenRouter models (respond in ~2s)
-    if (responseText == null || responseText.trim().isEmpty) {
-      final apiKey = await getApiKey();
+        if (response.statusCode == 200) {
+          final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+          final choices = decoded['choices'] as List?;
+          if (choices != null && choices.isNotEmpty) {
+            final msgObj = choices[0]['message'];
+            if (msgObj is Map) {
+              // Extract content or reasoning or reasoning_content
+              final contentStr = msgObj['content']?.toString() ?? '';
+              final reasoningStr = msgObj['reasoning']?.toString() ??
+                                   msgObj['reasoning_content']?.toString() ?? '';
 
-      List<String> orCandidates;
-      if (chosenModelId == 'deepseek-r1-671b') {
-        orCandidates = [
-          'nvidia/nemotron-3.5-lightning:free',
-          'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free',
-          'nvidia/nemotron-3-ultra-550b-a55b:free',
-        ];
-      } else if (chosenModelId == 'claude-sonnet-5-5') {
-        orCandidates = [
-          'nvidia/nemotron-3.5-lightning:free',
-          'nvidia/nemotron-3.5-super-vl:free',
-          'nvidia/nemotron-3-ultra-550b-a55b:free',
-        ];
-      } else {
-        // gemini-4-argon
-        orCandidates = [
-          'nvidia/nemotron-3.5-lightning:free',
-          'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free',
-          'nvidia/nemotron-3.5-super-vl:free',
-        ];
-      }
-
-      for (final model in orCandidates) {
-        try {
-          final response = await http.post(
-            Uri.parse(endpoint),
-            headers: {
-              'Authorization': 'Bearer $apiKey',
-              'HTTP-Referer': 'https://polosoft-hubb.github.io/weldprice1/',
-              'X-Title': 'WELDPRICE',
-              'Content-Type': 'application/json; charset=utf-8',
-            },
-            body: jsonEncode({
-              'model': model,
-              'messages': messages,
-              'temperature': 0.3,
-            }),
-          ).timeout(const Duration(seconds: 12));
-
-          if (response.statusCode == 200) {
-            final decoded = jsonDecode(utf8.decode(response.bodyBytes));
-            final choices = decoded['choices'] as List?;
-            if (choices != null && choices.isNotEmpty) {
-              final content = choices[0]['message']?['content']?.toString() ?? '';
-              if (content.trim().isNotEmpty) {
-                responseText = content;
+              String raw = contentStr.trim().isNotEmpty ? contentStr.trim() : reasoningStr.trim();
+              if (raw.isNotEmpty) {
+                responseText = raw;
                 break;
               }
             }
           }
-        } catch (_) {
-          continue;
         }
+      } catch (_) {
+        continue;
       }
+    }
+
+    // Secondary fallback: Pollinations backend (from Start_Antigravity_UI.bat server.py)
+    if (responseText == null || responseText.trim().isEmpty) {
+      try {
+        final pollResp = await http.post(
+          Uri.parse('https://text.pollinations.ai/openai/chat/completions'),
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+          },
+          body: jsonEncode({
+            'model': 'openai-fast',
+            'messages': messages,
+            'temperature': 0.7,
+          }),
+        ).timeout(const Duration(seconds: 15));
+
+        if (pollResp.statusCode == 200) {
+          final decoded = jsonDecode(utf8.decode(pollResp.bodyBytes));
+          final choices = decoded['choices'] as List?;
+          if (choices != null && choices.isNotEmpty) {
+            final msgObj = choices[0]['message'];
+            if (msgObj is Map) {
+              final raw = (msgObj['content'] ?? msgObj['reasoning'] ?? '').toString().trim();
+              if (raw.isNotEmpty) {
+                responseText = raw;
+              }
+            }
+          }
+        }
+      } catch (_) {}
     }
 
     if (responseText == null || responseText.trim().isEmpty) {
@@ -287,6 +283,14 @@ class AIAssistantService {
     // Strip <think> tags if generated by reasoning models
     if (responseText.contains('<think>') && responseText.contains('</think>')) {
       responseText = responseText.replaceAll(RegExp(r'<think>[\s\S]*?<\/think>'), '').trim();
+    }
+
+    // Clean up reasoning preamble if raw reasoning was used
+    if (responseText.startsWith("Here's a thinking process:") && responseText.contains('\n\n')) {
+      final parts = responseText.split('\n\n');
+      if (parts.length > 1) {
+        responseText = parts.sublist(1).join('\n\n').trim();
+      }
     }
 
     // Parse any suggested materials block
