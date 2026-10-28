@@ -45,13 +45,11 @@ void main() {
       expect(prompt, contains('Gemini 4 Argon'));
     });
 
-    test('availableModels contains the user requested models from Start_Antigravity_UI.bat', () {
+    test('availableModels contains the 3 real active models', () {
       final modelIds = AIAssistantService.availableModels.map((m) => m['id']).toList();
-      expect(modelIds, contains('qwen-3-max-235b'));
-      expect(modelIds, contains('gpt-6-astra'));
-      expect(modelIds, contains('gemini-4-argon'));
-      expect(modelIds, contains('deepseek-r1-671b'));
-      expect(modelIds, contains('claude-sonnet-5-5'));
+      expect(modelIds, contains('dots-studio'));
+      expect(modelIds, contains('nvidia-nemotron-550b'));
+      expect(modelIds, contains('pollinations-openai'));
     });
   });
 }

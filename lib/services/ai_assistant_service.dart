@@ -18,74 +18,41 @@ class AIAssistantService {
   static String get defaultApiKey =>
       utf8.decode(base64.decode('c2stb3ItdjEtZDA4ZTM2Yzc0ZTEzYjg4MjE4NDI0YjcyMDMyYzVmNTI5OTc0MjNlOThkNjc3NmVlMDNjNmNmNzQyMjAzZjMxNg=='));
 
-  // Models from Start_Antigravity_UI.bat (c:\Users\Stank\Desktop\prkl\agy_studio\server.py)
+  // 3 real, active models used in WELDPRICE AI
   static const List<Map<String, String>> availableModels = [
     {
-      'id': 'qwen-3-max-235b',
-      'name': 'Qwen 3 Max (235B)',
-      'shortName': 'Qwen 3 Max',
-      'category': 'Alibaba Cloud',
-      'desc': 'Флагманская модель Alibaba Cloud — мощный, быстрый и точный расчет смет (~1 сек).',
-      'persona': 'Ты — флагманская модель Qwen 3 Max (235B) от Alibaba Cloud. Отвечай глубоко, точно, лаконично и структурированно.',
+      'id': 'dots-studio',
+      'name': 'Dots Studio (Основная, ~1 сек)',
+      'shortName': 'Dots Studio',
+      'category': 'OpenRouter',
+      'desc': 'Основная скоростная модель: моментальный расчет смет, веса металлопроката и сортаментов по ГОСТ (~1.2 сек).',
+      'persona': 'Ты — WELDPRICE AI, профессиональный инженер-сметчик и металлоконструктор. Отвечай глубоко, точно, лаконично и структурированно.',
       'remoteModel': 'dots-studio/dots-3-note-preview:free',
+      'backend': 'openrouter',
     },
     {
-      'id': 'gpt-6-astra',
-      'name': 'GPT-6 Astra',
-      'shortName': 'GPT-6 Astra',
-      'category': 'OpenAI',
-      'desc': 'Флагман OpenAI — решение сложных инженерных задач, сортаментов и раскроя (~1 сек).',
-      'persona': 'Ты — флагманская модель GPT-6 Astra от OpenAI. Решаешь задачи любой сложности по расчету металлоизделий и смет.',
-      'remoteModel': 'dots-studio/dots-3-note-preview:free',
+      'id': 'nvidia-nemotron-550b',
+      'name': 'Nvidia Nemotron 550B (Инженерная)',
+      'shortName': 'Nemotron 550B',
+      'category': 'OpenRouter / Nvidia',
+      'desc': 'Тяжелая флагманская модель на 550 млрд параметров: глубокий инженерный аудит смет, сложных конструкций и нагрузок.',
+      'persona': 'Ты — старший инженер WELDPRICE AI на базе 550B-модели Nvidia Nemotron. Проводи глубокий инженерный анализ смет и конструкций.',
+      'remoteModel': 'nvidia/nemotron-3-ultra-550b-a55b:free',
+      'backend': 'openrouter',
     },
     {
-      'id': 'deepseek-v4-coder',
-      'name': 'DeepSeek V4.1 Coder',
-      'shortName': 'DeepSeek Coder',
-      'category': 'DeepSeek',
-      'desc': 'Инженерная модель — точные формулы, калькуляции веса и ГОСТы металлопроката (~1 сек).',
-      'persona': 'Ты — модель DeepSeek V4.1 Coder, специализирующаяся на инженерных расчетах, сметах и сортаментах металлопроката.',
-      'remoteModel': 'dots-studio/dots-3-note-preview:free',
-    },
-    {
-      'id': 'claude-opus-5-5',
-      'name': 'Claude Opus 5.5',
-      'shortName': 'Claude Opus',
-      'category': 'Anthropic',
-      'desc': 'Флагман Anthropic — глубокая инженерная логика и безупречные спецификации смет (~1 сек).',
-      'persona': 'Ты — флагманская модель Claude Opus 5.5 от Anthropic. Отличаешься глубоким мышлением и безупречным вниманием к деталям смет.',
-      'remoteModel': 'dots-studio/dots-3-note-preview:free',
-    },
-    {
-      'id': 'gemini-4-argon',
-      'name': 'Gemini 4 Argon',
-      'shortName': 'Gemini 4 Argon',
-      'category': 'Google',
-      'desc': 'Флагман Google — глубокий, точный и структурированный расчет смет (~1 сек).',
-      'persona': 'Ты — передовая инженерная модель Gemini 4 Argon от Google. Отвечай глубоко, точно, лаконично и структурированно.',
-      'remoteModel': 'dots-studio/dots-3-note-preview:free',
-    },
-    {
-      'id': 'deepseek-r1-671b',
-      'name': 'DeepSeek R1 (671B)',
-      'shortName': 'DeepSeek R1',
-      'category': 'DeepSeek',
-      'desc': 'Рассуждающая модель для глубокого аудита смет, формул и чертежей.',
-      'persona': 'Ты — рассуждающая модель DeepSeek R1 (671B). Проводи глубокий инженерный анализ смет и конструкций.',
-      'remoteModel': 'dots-studio/dots-3-note-preview:free',
-    },
-    {
-      'id': 'claude-sonnet-5-5',
-      'name': 'Claude Sonnet 5.5',
-      'shortName': 'Claude Sonnet',
-      'category': 'Anthropic',
-      'desc': 'Спецификации металлопроката, нормы расхода, точность и раскрой (~1 сек).',
-      'persona': 'Ты — универсальная модель Claude Sonnet 5.5, лучшая для расчетов спецификаций металлопроката.',
-      'remoteModel': 'dots-studio/dots-3-note-preview:free',
+      'id': 'pollinations-openai',
+      'name': 'OpenAI Fast (Шлюз Antigravity Studio)',
+      'shortName': 'Studio Engine',
+      'category': 'Antigravity Studio',
+      'desc': 'Автономный шлюз напрямую из вашей Antigravity Studio: резервный канал без ограничений ключа.',
+      'persona': 'Ты — инженер WELDPRICE AI на базе шлюза Antigravity Studio. Рассчитывай металлоконструкции и сметы быстро, точно и профессионально.',
+      'remoteModel': 'openai-fast',
+      'backend': 'pollinations',
     },
   ];
 
-  static const String defaultModel = 'qwen-3-max-235b';
+  static const String defaultModel = 'dots-studio';
 
   Future<String> getApiKey() async {
     final prefs = await SharedPreferences.getInstance();
@@ -232,69 +199,101 @@ class AIAssistantService {
     String? responseText;
     final apiKey = await getApiKey();
 
-    final selectedRemote = modelInfo['remoteModel'] ?? 'dots-studio/dots-3-note-preview:free';
+    final isPollinationsFirst = modelInfo['backend'] == 'pollinations';
 
-    // Fast, verified online models with proven ~1-2s response times
-    final orCandidates = <String>[
-      selectedRemote,
-      'dots-studio/dots-3-note-preview:free',
-      'nvidia/nemotron-3-ultra-550b-a55b:free',
-    ];
-
-    // Deduplicate while preserving priority
-    final uniqueCandidates = orCandidates.toSet().toList();
-
-    for (final model in uniqueCandidates) {
+    // If user explicitly chose Pollinations (Studio Engine), call it first
+    if (isPollinationsFirst) {
       try {
-        final response = await http.post(
-          Uri.parse(endpoint),
-          headers: {
-            'Authorization': 'Bearer $apiKey',
-            'HTTP-Referer': 'https://polosoft-hubb.github.io/weldprice1/',
-            'X-Title': 'WELDPRICE',
-            'Content-Type': 'application/json; charset=utf-8',
-          },
+        final polResp = await http.post(
+          Uri.parse('https://text.pollinations.ai/openai/chat/completions'),
+          headers: {'Content-Type': 'application/json; charset=utf-8'},
           body: jsonEncode({
-            'model': model,
+            'model': 'openai-fast',
             'messages': messages,
-            'max_tokens': 1500,
-            'temperature': 0.25,
+            'temperature': 0.3,
           }),
-        ).timeout(const Duration(seconds: 12));
+        ).timeout(const Duration(seconds: 15));
 
-        if (response.statusCode == 200) {
-          final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        if (polResp.statusCode == 200) {
+          final decoded = jsonDecode(utf8.decode(polResp.bodyBytes));
           final choices = decoded['choices'] as List?;
           if (choices != null && choices.isNotEmpty) {
             final msgObj = choices[0]['message'];
             if (msgObj is Map) {
-              final contentStr = msgObj['content']?.toString() ?? '';
-              final reasoningStr = msgObj['reasoning']?.toString() ??
-                                   msgObj['reasoning_content']?.toString() ?? '';
-
-              String raw = contentStr.trim();
-              if (raw.isEmpty && reasoningStr.trim().isNotEmpty) {
-                final rClean = reasoningStr.trim();
-                if (!rClean.startsWith("Here's a thinking") &&
-                    !rClean.startsWith("The user is asking") &&
-                    !rClean.startsWith("1.  **Analyze")) {
-                  raw = rClean;
-                }
-              }
-
-              if (raw.isNotEmpty) {
-                responseText = raw;
-                break;
+              final c = msgObj['content']?.toString() ?? '';
+              if (c.trim().isNotEmpty) {
+                responseText = c.trim();
               }
             }
           }
         }
-      } catch (_) {
-        continue;
+      } catch (_) {}
+    }
+
+    // Call OpenRouter models
+    if (responseText == null || responseText.trim().isEmpty) {
+      final selectedRemote = modelInfo['remoteModel'] ?? 'dots-studio/dots-3-note-preview:free';
+
+      final orCandidates = <String>[
+        selectedRemote,
+        'dots-studio/dots-3-note-preview:free',
+        'nvidia/nemotron-3-ultra-550b-a55b:free',
+      ];
+      final uniqueCandidates = orCandidates.toSet().toList();
+
+      for (final model in uniqueCandidates) {
+        if (model == 'openai-fast') continue;
+        try {
+          final response = await http.post(
+            Uri.parse(endpoint),
+            headers: {
+              'Authorization': 'Bearer $apiKey',
+              'HTTP-Referer': 'https://polosoft-hubb.github.io/weldprice1/',
+              'X-Title': 'WELDPRICE',
+              'Content-Type': 'application/json; charset=utf-8',
+            },
+            body: jsonEncode({
+              'model': model,
+              'messages': messages,
+              'max_tokens': 1500,
+              'temperature': 0.25,
+            }),
+          ).timeout(const Duration(seconds: 12));
+
+          if (response.statusCode == 200) {
+            final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+            final choices = decoded['choices'] as List?;
+            if (choices != null && choices.isNotEmpty) {
+              final msgObj = choices[0]['message'];
+              if (msgObj is Map) {
+                final contentStr = msgObj['content']?.toString() ?? '';
+                final reasoningStr = msgObj['reasoning']?.toString() ??
+                                     msgObj['reasoning_content']?.toString() ?? '';
+
+                String raw = contentStr.trim();
+                if (raw.isEmpty && reasoningStr.trim().isNotEmpty) {
+                  final rClean = reasoningStr.trim();
+                  if (!rClean.startsWith("Here's a thinking") &&
+                      !rClean.startsWith("The user is asking") &&
+                      !rClean.startsWith("1.  **Analyze")) {
+                    raw = rClean;
+                  }
+                }
+
+                if (raw.isNotEmpty) {
+                  responseText = raw;
+                  break;
+                }
+              }
+            }
+          }
+        } catch (_) {
+          continue;
+        }
       }
     }
 
-    // Tier 3: Pollinations fallback (free, unauthenticated, identical to Start_Antigravity_UI)
+    // Final fallback to Pollinations if OpenRouter failed
     if (responseText == null || responseText.trim().isEmpty) {
       try {
         final polResp = await http.post(
